@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASA-PL-02 · Stimulants — Altered State Archive · ViceLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════════ */
+:root {
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  VICELAB GLOBAL COLOUR SYSTEM — single source of truth      ║
+   ║  Edit here to repaint the entire site.                      ║
+   ║  Do not hard-code colours outside this block.               ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+  /* ── Backgrounds ───────────────────────────────────────────── */
+  --bg-space:          #04060D;            /* page root / deep field    */
+  --bg-panel:          #070B15;            /* card / panel surface      */
+  --bg-telemetry:      #091723;            /* telemetry log strip       */
+
+  /* ── Text ──────────────────────────────────────────────────── */
+  --text-primary:      #f4f7ff;            /* console / log body text   */
+  --text-secondary:    #8fa3c3;            /* metadata, labels          */
+  --text-system:       #dce6ff;            /* system strips, orientation*/
+  --text-body:         #b8c2d4;            /* paragraph / prose text    */
+  --text-dim:          #7a91b0;            /* dimmed secondary labels   */
+  --text-muted:        #5e7a9a;            /* decorative / footnote     */
+  --text-white:        #eceff7;            /* near-white headings       */
+
+  /* ── Dividers ───────────────────────────────────────────────── */
+  --line-divider:      rgba(255,255,255,0.15);  /* structural dividers  */
+  --line-subtle:       rgba(255,255,255,0.12);  /* panel borders        */
+
+  /* ── Signal states (telemetry) ─────────────────────────────── */
+  --signal-ok:         #3cff9c;            /* nominal / pass            */
+  --signal-warn:       #ffcc66;            /* caution                   */
+  --signal-alert:      #ff5a5a;            /* critical / fail           */
+
+  /* ── Substance class accents ───────────────────────────────── */
+  --accent-stimulant:    #FFB830;          /* Stimulants — amber-gold   */
+  --accent-psychedelic:  #00FFC6;          /* Psychedelics — cyan       */
+  --accent-empathogen:   #E43CFF;          /* Empathogens — magenta     */
+  --accent-dissociative: #4DA3FF;          /* Dissociatives — blue      */
+  --accent-opioid:       #FF6B6B;          /* Depressants/Opioids — red */
+  --accent-cannabinoid:  #7EE482;          /* Cannabis — soft green     */
+  --accent-entactogen:   #A78BFA;          /* Entactogens — violet      */
+
+  /* ── Ecosystem entity accents ──────────────────────────────── */
+  --brand-cp:          #2BFF88;            /* Cooked Pilot — neon green */
+  --brand-vg:          #4DA3FF;            /* VibeGuard    — neon blue  */
+  --brand-vl:          #E43CFF;            /* ViceLab      — magenta    */
+
+  /* ── File-local tokens ──────────────── */
+  --bg:         var(--bg-space);
+  --bg-1:       #07090F;
+  --bg-2:       #090C16;
+  --bg-card:    var(--bg-panel);
+  --bg-plate:   var(--bg-panel);
+
+  --border:     var(--line-subtle);
+  --border-2:   var(--line-subtle);
+  --border-3:   var(--line-divider);
+
+  --text:       var(--text-body);
+  --text-dimmer:var(--text-muted);
+  --white:      var(--text-white);
+
+  /* Archive accent — magenta primary */
+  --arc:        var(--accent-empathogen);
+  --arc-dim:    rgba(228,60,255,0.06);
+  --arc-mid:    rgba(228,60,255,0.14);
+  --arc-border: rgba(228,60,255,0.28);
+  --arc-glow:   0 0 32px rgba(228,60,255,0.18);
+
+  /* Secondary accents */
+  --cyan:       var(--accent-psychedelic);
+  --cyan-dim:   rgba(0,255,198,0.06);
+  --cyan-border:rgba(0,255,198,0.22);
+  --blue:       var(--accent-dissociative);
+
+  /* Stimulant plate accent — electric amber-gold */
+  --stim:       var(--accent-stimulant);
+  --stim-dim:   rgba(255,184,48,0.06);
+  --stim-border:rgba(255,184,48,0.24);
+  --stim-glow:  0 0 40px rgba(255,184,48,0.14), 0 0 80px rgba(255,184,48,0.06);
+
+  --mono:    'IBM Plex Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body:    'Instrument Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.70;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ATMOSPHERIC CANVAS LAYERS
+═══════════════════════════════════════════════════════ */
+#c-dust {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  width: 100%; height: 100%;
+}
+
+/* Nebula hazes — CSS radial gradients, no canvas needed */
+.nebula {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+}
+.nebula::before {
+  content: '';
+  position: absolute;
+  top: -15%; left: -10%;
+  width: 70vw; height: 70vh;
+  background: radial-gradient(ellipse at 30% 20%,
+    rgba(228,60,255,0.028) 0%, transparent 60%);
+  animation: nebula-drift 38s ease-in-out infinite alternate;
+}
+.nebula::after {
+  content: '';
+  position: absolute;
+  bottom: -10%; right: -5%;
+  width: 60vw; height: 60vh;
+  background: radial-gradient(ellipse at 70% 80%,
+    rgba(77,163,255,0.022) 0%, transparent 60%);
+  animation: nebula-drift 52s ease-in-out infinite alternate-reverse;
+}
+@keyframes nebula-drift {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(40px,30px) scale(1.08); }
+}
+
+/* Grain */
+.grain {
+  position: fixed; inset: 0; z-index: 2;
+  pointer-events: none; opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* Floating archive reference tags */
+.tag-layer {
+  position: fixed; inset: 0; z-index: 3;
+  pointer-events: none; overflow: hidden;
+}
+.atag {
+  position: absolute;
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(228,60,255,0.042);
+  white-space: nowrap;
+  animation: tag-rise linear infinite;
+}
+@keyframes tag-rise {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateY(-100px) rotate(1.5deg); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SITE WRAPPER
+═══════════════════════════════════════════════════════ */
+.site { position: relative; z-index: 10; }
+
+/* ═══════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(4,6,13,0.88);
+  backdrop-filter: blur(22px);
+  border-bottom: 1px solid rgba(228,60,255,0.07);
+}
+.nav-logo {
+  font-family: var(--display); font-size: 14px; font-weight: 800;
+  letter-spacing: 0.04em; color: var(--white); text-decoration: none;
+}
+.nav-logo em { font-style: normal; color: var(--brand-cp); }
+.nav-links {
+  display: flex; align-items: center; gap: 32px;
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-active { color: var(--arc) !important; }
+.nav-badge {
+  font-family: var(--mono); font-size: 0.80rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--cyan);
+  border: 1px solid var(--cyan-border);
+  padding: 5px 14px; text-decoration: none; transition: background 0.2s;
+}
+.nav-badge:hover { background: var(--cyan-dim); }
+
+/* ═══════════════════════════════════════════════════════
+   SHARED UTILITIES
+═══════════════════════════════════════════════════════ */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+.container-wide { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+
+.eyebrow {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--arc); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content:''; width:14px; height:1px; background:var(--arc); }
+
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(26px, 3vw, 40px); font-weight: 800;
+  line-height: 1.08; letter-spacing: -0.02em; color: var(--white);
+  margin-bottom: 16px;
+}
+.section-title em { font-style: normal; color: var(--arc); }
+
+/* Reveal */
+.reveal {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.in { opacity:1; transform:none; }
+.reveal-stagger > * {
+  opacity:0; transform:translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal-stagger.in > *:nth-child(1) { opacity:1;transform:none;transition-delay:0.04s; }
+.reveal-stagger.in > *:nth-child(2) { opacity:1;transform:none;transition-delay:0.11s; }
+.reveal-stagger.in > *:nth-child(3) { opacity:1;transform:none;transition-delay:0.18s; }
+.reveal-stagger.in > *:nth-child(4) { opacity:1;transform:none;transition-delay:0.25s; }
+
+/* ═══════════════════════════════════════════════════════
+   BREADCRUMB + PLATE HEADER
+═══════════════════════════════════════════════════════ */
+.plate-header {
+  padding: 100px 48px 48px;
+  max-width: 1100px; margin: 0 auto;
+}
+
+.breadcrumb {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-dimmer); margin-bottom: 28px;
+  display: flex; align-items: center; gap: 8px;
+}
+.breadcrumb a { color: var(--text-dimmer); text-decoration: none; transition: color 0.2s; }
+.breadcrumb a:hover { color: var(--arc); }
+.breadcrumb-sep { color: var(--text-dimmer); opacity: 0.4; }
+.breadcrumb-current { color: var(--arc); }
+
+.plate-code {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--stim); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.plate-code-pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--stim); flex-shrink: 0;
+  animation: stim-pulse 2.4s ease-in-out infinite;
+}
+@keyframes stim-pulse {
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,184,48,0);}
+  50%{opacity:.6;box-shadow:0 0 10px 3px rgba(255,184,48,0.28);}
+}
+
+.plate-title {
+  font-family: var(--display);
+  font-size: clamp(52px, 10vw, 108px);
+  font-weight: 800; line-height: 0.92;
+  letter-spacing: -0.04em; color: var(--white);
+  margin-bottom: 22px;
+}
+.plate-title span { color: var(--stim); }
+
+.plate-meta-row {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.plate-meta-sep { opacity: 0.28; }
+.plate-meta-accent { color: rgba(255,184,48,0.55); }
+
+/* ═══════════════════════════════════════════════════════
+   PLATE DISPLAY — main artifact
+═══════════════════════════════════════════════════════ */
+.plate-display-section {
+  padding: 0 48px 80px;
+  max-width: 1100px; margin: 0 auto;
+}
+
+.plate-frame-outer {
+  position: relative;
+  margin: 0 auto;
+  max-width: 860px;
+}
+
+/* Corner bracket accents */
+.plate-frame-outer::before,
+.plate-frame-outer::after {
+  content: ''; position: absolute; z-index: 2;
+  width: 22px; height: 22px; pointer-events: none;
+}
+.plate-frame-outer::before {
+  top: -1px; left: -1px;
+  border-top: 1px solid rgba(255,184,48,0.40);
+  border-left: 1px solid rgba(255,184,48,0.40);
+}
+.plate-frame-outer::after {
+  bottom: -1px; right: -1px;
+  border-bottom: 1px solid rgba(255,184,48,0.40);
+  border-right: 1px solid rgba(255,184,48,0.40);
+}
+
+/* Inner brackets */
+.plate-frame-outer .corner-br { position: absolute; z-index: 2; width: 22px; height: 22px; }
+.plate-frame-outer .corner-tl { top:-1px; right:-1px; border-top:1px solid rgba(255,184,48,0.40); border-right:1px solid rgba(255,184,48,0.40); }
+.plate-frame-outer .corner-bl { bottom:-1px; left:-1px; border-bottom:1px solid rgba(255,184,48,0.40); border-left:1px solid rgba(255,184,48,0.40); }
+
+.plate-frame {
+  background: var(--bg-plate);
+  border: 1px solid var(--line-divider);
+  box-shadow:
+    var(--stim-glow),
+    0 32px 80px rgba(0,0,0,0.70),
+    0 8px 24px rgba(0,0,0,0.50);
+  position: relative; overflow: hidden;
+}
+
+/* Scanline sweep — passes slowly every ~12s */
+.plate-frame::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px; z-index: 10; pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,184,48,0.10) 30%,
+    rgba(255,184,48,0.28) 50%,
+    rgba(255,184,48,0.10) 70%,
+    transparent 100%);
+  animation: scanline 12s ease-in-out infinite;
+}
+@keyframes scanline {
+  0%   { top: -3px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 0.6; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* The plate visual itself — SVG-rendered art */
+.plate-visual {
+  width: 100%; display: block;
+  aspect-ratio: 4/3;
+  position: relative;
+}
+
+.plate-visual svg {
+  width: 100%; height: 100%; display: block;
+}
+
+/* Plate bottom label strip */
+.plate-strip {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 18px;
+  border-top: 1px solid var(--line-subtle);
+  background: rgba(0,0,0,0.38);
+}
+.plate-strip-id {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.plate-strip-status {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,184,48,0.55);
+}
+.plate-strip-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--stim); animation: stim-pulse 2.6s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════
+   INFORMATION PANEL
+═══════════════════════════════════════════════════════ */
+.info-section {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+
+.info-block {
+  padding: 28px 30px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  position: relative;
+}
+.info-block::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: var(--stim); opacity: 0;
+  transition: opacity 0.3s;
+}
+.info-block:hover::before { opacity: 0.35; }
+
+.info-block-label {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,184,48,0.50); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.info-block-label::before {
+  content: ''; display: block;
+  width: 12px; height: 1px; background: var(--stim); opacity: 0.40;
+}
+.info-block-title {
+  font-family: var(--display); font-size: 17px; font-weight: 800;
+  letter-spacing: -0.01em; color: var(--white); margin-bottom: 14px;
+}
+.info-block-body {
+  font-size: 14px; color: var(--text); line-height: 1.78;
+}
+.info-block-body strong { color: var(--white); font-weight: 600; }
+
+/* Full-width block */
+.info-block.full { grid-column: 1 / -1; }
+
+/* ═══════════════════════════════════════════════════════
+   ARCHIVE METADATA STRIP
+═══════════════════════════════════════════════════════ */
+.meta-section {
+  padding: 48px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.meta-strip {
+  background: rgba(0,0,0,0.28);
+  border: 1px solid var(--border);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+}
+.meta-field {
+  padding: 18px 22px;
+  border-right: 1px solid var(--border);
+}
+.meta-field:last-child { border-right: none; }
+.meta-field-key {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dimmer); margin-bottom: 7px;
+}
+.meta-field-val {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+}
+.meta-field-val.accent { color: var(--stim); }
+
+/* ═══════════════════════════════════════════════════════
+   RELATED PLATES
+═══════════════════════════════════════════════════════ */
+.related-section { padding: 80px 0; }
+.related-header { margin-bottom: 32px; }
+.related-header-title {
+  font-family: var(--display); font-size: 20px; font-weight: 800;
+  letter-spacing: -0.01em; color: var(--white);
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+}
+
+.plate-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  display: flex; flex-direction: column;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  position: relative; overflow: hidden;
+}
+.plate-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.30s ease;
+}
+.plate-card.c1::before { background: var(--arc); }
+.plate-card.c2::before { background: var(--cyan); }
+.plate-card.c3::before { background: var(--blue); }
+.plate-card.c4::before { background: var(--accent-opioid); }
+.plate-card:hover { border-color: rgba(228,60,255,0.30); box-shadow: 0 0 28px rgba(228,60,255,0.06); }
+.plate-card:hover::before { transform: scaleX(1); }
+
+/* Plate card thumbnail — SVG mini art */
+.pc-thumb {
+  aspect-ratio: 3/2;
+  position: relative; overflow: hidden;
+  background: var(--bg);
+}
+.pc-thumb svg { width: 100%; height: 100%; display: block; }
+
+/* Scan shimmer on card hover */
+.plate-card:hover .pc-thumb::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(228,60,255,0.05) 50%, transparent 70%);
+}
+
+.pc-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+.pc-id {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-dimmer); margin-bottom: 5px;
+}
+.pc-title {
+  font-family: var(--display); font-size: 15px; font-weight: 800;
+  letter-spacing: -0.01em; color: var(--white); margin-bottom: 6px;
+}
+.plate-card.c1 .pc-title { color: var(--arc); }
+.plate-card.c2 .pc-title { color: var(--cyan); }
+.plate-card.c3 .pc-title { color: var(--blue); }
+.plate-card.c4 .pc-title { color: var(--accent-opioid); }
+.pc-desc {
+  font-size: 0.80rem; color: var(--text-dim); line-height: 1.6; flex: 1; margin-bottom: 10px;
+}
+.pc-link {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dimmer); transition: color 0.2s;
+  display: flex; align-items: center; gap: 5px;
+}
+.plate-card:hover .pc-link { color: var(--arc); }
+
+/* ═══════════════════════════════════════════════════════
+   CLOSING STATEMENT
+═══════════════════════════════════════════════════════ */
+.closing-section {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg-1);
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.closing-section::before {
+  content: ''; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse at center, rgba(228,60,255,0.038) 0%, transparent 65%);
+  pointer-events: none;
+}
+.closing-inner { position: relative; z-index: 1; }
+.closing-label {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(228,60,255,0.40); margin-bottom: 22px;
+}
+.closing-text {
+  font-family: var(--display); font-size: clamp(18px, 2.5vw, 28px);
+  font-weight: 800; line-height: 1.3; letter-spacing: -0.015em;
+  color: var(--white); max-width: 600px; margin: 0 auto 14px;
+}
+.closing-text em { font-style: normal; color: var(--arc); }
+.closing-sub {
+  font-size: 14px; color: var(--text-dim);
+  max-width: 480px; margin: 0 auto 40px; line-height: 1.72;
+}
+.cta-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+}
+
+.btn-arc {
+  font-family: var(--mono); font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 13px 30px;
+  background: transparent; color: var(--arc);
+  border: 1px solid var(--arc-border);
+  text-decoration: none; display: inline-block;
+  transition: all 0.24s; position: relative; overflow: hidden;
+}
+.btn-arc::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--arc-mid);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.24s ease;
+}
+.btn-arc:hover { box-shadow: var(--arc-glow); }
+.btn-arc:hover::before { transform: scaleX(1); }
+.btn-arc span { position: relative; z-index: 1; }
+
+.btn-ghost {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 12px 26px;
+  border: 1px solid var(--border-2); color: var(--text-dim);
+  background: transparent; text-decoration: none; display: inline-block;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--line-divider); color: var(--white); }
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-brand {
+  font-family: var(--display); font-size: 13px; font-weight: 800;
+  color: var(--white); text-decoration: none;
+}
+.footer-brand em { font-style: normal; color: var(--brand-cp); }
+.footer-links {
+  display: flex; gap: 28px;
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.footer-links a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--white); }
+.footer-note {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dimmer);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .info-grid { grid-template-columns: 1fr; }
+  .meta-strip { grid-template-columns: repeat(3, 1fr); }
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
+  .plate-header, .plate-display-section { padding-left: 24px; padding-right: 24px; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links a:not(.nav-active):not(.nav-badge) { display: none; }
+  .container, .container-wide { padding: 0 20px; }
+  .plate-header { padding: 88px 20px 36px; }
+  .plate-display-section { padding: 0 20px 60px; }
+  .meta-strip { grid-template-columns: repeat(2, 1fr); }
+  .related-grid { grid-template-columns: 1fr; }
+  .info-section, .related-section, .closing-section { padding: 60px 0; }
+  footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; gap: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal, .reveal-stagger > * { opacity: 1; transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   GLOBAL READABILITY PATCH — contrast uplift
+   Applied: 2026. Do not override without versioning.
+═══════════════════════════════════════════════════════ */
+
+/* Telemetry / console text */
+.tel-line { font-size: 0.85rem !important; line-height: 1.9 !important; }
+.tel-msg  { color: var(--text-primary) !important; }
+.tel-ts   { color: var(--text-secondary) !important; }
+.tel-ok   .tel-msg { color: var(--signal-ok) !important; }
+.tel-warn .tel-msg { color: var(--signal-warn) !important; }
+.tel-info .tel-msg { color: var(--text-primary) !important; }
+
+/* System labels, archive metadata, console strips */
+.system-label,
+.archive-meta,
+.console-strip,
+.metadata-text,
+.sys-desc-line,
+.sys-orient,
+.plate-meta-row,
+.meta-field-key,
+.pc-id,
+.pc-classification,
+.info-block-label,
+.vault-cell-tag,
+.tc-module-label,
+.tc-id,
+.tc-status,
+.mx-head-label,
+.eco-num,
+.eco-path,
+.ah-stat-lbl,
+.rr,
+.footer-note,
+.closing-label,
+.final-label,
+.vault-tag {
+  color: var(--text-secondary) !important;
+  font-size: max(0.75rem, 1em) !important;
+  line-height: 1.9 !important;
+}
+
+/* Primary console / plate ID text */
+.meta-field-val,
+.plate-code,
+.plate-strip-id,
+.breadcrumb,
+.ah-orient,
+.hero-orient,
+.hero-cta-sub,
+.tc-foot,
+.pc-foot,
+.mx-foot,
+.plate-meta-row span {
+  color: var(--text-system) !important;
+}
+
+/* Metadata values get full brightness */
+.meta-field-val.accent { color: var(--stim, var(--accent-stimulant)) !important; }
+
+/* Minimum sizes — hard floor */
+.eyebrow,
+.nav-links a,
+.filter-btn,
+.tc-module-label,
+.tc-id,
+.pc-id,
+.pc-classification,
+.meta-field-key,
+.plate-strip-id,
+.plate-meta-row,
+.ah-stat-lbl,
+.footer-note,
+.eco-num,
+.eco-path {
+  font-size: max(0.75rem, 1em) !important;
+}
+
+/* Dashboard specific — sc-id / sl labels */
+.sc-id  { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.sc-mode { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.sl-mode { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+
+/* sys-desc orientation lines */
+.sys-desc-line.primary   { color: var(--text-system) !important; }
+.sys-desc-line.secondary { color: var(--text-secondary) !important; }
+
+/* Archive card metadata */
+.pc-badge, .pc-edition { font-size: 0.75rem !important; color: var(--text-secondary) !important; }
+.pc-edition.locked { color: rgba(228,60,255,0.70) !important; }
+.pc-edition.ed01   { color: rgba(0,255,198,0.70) !important; }
+
+/* Waveform subtitle */
+#wave-sub, .wave-sub { color: var(--text-muted) !important; font-size: 0.75rem !important; }
+
+/* Info block labels */
+.info-block-label { color: rgba(255,184,48,0.65) !important; }
+.info-block-label::before { opacity: 0.55 !important; }
+
+</style>
+</head>
+<body>
+
+<!-- ── Atmosphere layers ── -->
+<canvas id="c-dust"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="tag-layer" id="tag-layer"></div>
+
+<div class="site">
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <a href="/" class="nav-logo">Vice<em>Lab</em></a>
+  <div class="nav-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive" class="nav-active">Archive</a>
+    <a href="/contact" class="nav-badge">Work with us</a>
+  </div>
+</nav>
+
+
+<!-- ══════════ PLATE HEADER ══════════ -->
+<div class="plate-header">
+
+  <div class="breadcrumb reveal">
+    <a href="/archive">Archive</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Plate ASA-PL-02</span>
+  </div>
+
+  <div class="plate-code reveal">
+    <div class="plate-code-pulse"></div>
+    ASA-PL-02 · Class Plate · Altered State Archive
+  </div>
+
+  <h1 class="plate-title reveal">
+    <span>Stimul</span>ants
+  </h1>
+
+  <div class="plate-meta-row reveal">
+    <span class="plate-meta-accent">Class Plate</span>
+    <span class="plate-meta-sep">·</span>
+    <span>Canonical Lock</span>
+    <span class="plate-meta-sep">·</span>
+    <span>Archive Edition</span>
+    <span class="plate-meta-sep">·</span>
+    <span>ViceLab Research Intelligence</span>
+  </div>
+
+</div>
+
+
+<!-- ══════════ PLATE DISPLAY ══════════ -->
+<div class="plate-display-section">
+  <div class="plate-frame-outer reveal">
+    <div class="corner-br corner-tl"></div>
+    <div class="corner-br corner-bl"></div>
+    <div class="plate-frame">
+
+      <!-- THE PLATE — SVG generative art representing stimulant class -->
+      <div class="plate-visual">
+        <svg viewBox="0 0 860 645" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <!-- Background gradient -->
+            <radialGradient id="bg-grad" cx="50%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#0e0b04"/>
+              <stop offset="60%" stop-color="#070B15"/>
+              <stop offset="100%" stop-color="#04060D"/>
+            </radialGradient>
+
+            <!-- Stimulant glow gradients -->
+            <radialGradient id="core-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFB830" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#FFB830" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="outer-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FF6B00" stop-opacity="0.08"/>
+              <stop offset="100%" stop-color="#FF6B00" stop-opacity="0"/>
+            </radialGradient>
+
+            <!-- Graticule line pattern -->
+            <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,184,48,0.055)" stroke-width="0.5"/>
+            </pattern>
+
+            <!-- Neural path filter -->
+            <filter id="glow-filter">
+              <feGaussianBlur stdDeviation="2.5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="glow-strong">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="soft-blur">
+              <feGaussianBlur stdDeviation="8"/>
+            </filter>
+
+            <!-- Synaptic node -->
+            <radialGradient id="node-grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFD060" stop-opacity="0.95"/>
+              <stop offset="60%" stop-color="#FFB830" stop-opacity="0.70"/>
+              <stop offset="100%" stop-color="#FF6B00" stop-opacity="0.20"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Base background -->
+          <rect width="860" height="645" fill="url(#bg-grad)"/>
+
+          <!-- Coordinate grid -->
+          <rect width="860" height="645" fill="url(#grid)"/>
+
+          <!-- Ambient outer glow blobs -->
+          <ellipse cx="430" cy="280" rx="380" ry="260" fill="url(#outer-glow)" filter="url(#soft-blur)"/>
+          <ellipse cx="430" cy="300" rx="220" ry="160" fill="url(#core-glow)" filter="url(#soft-blur)"/>
+
+          <!-- ── NEURAL NETWORK PATHS — Stimulant signal cascade ── -->
+          <!-- Primary neural trunk -->
+          <path d="M 180 480 Q 240 380 310 300 Q 380 220 430 200 Q 480 180 550 220 Q 620 260 680 180"
+            fill="none" stroke="#FFB830" stroke-width="1.2" stroke-opacity="0.55" filter="url(#glow-filter)"/>
+
+          <!-- Secondary branches -->
+          <path d="M 310 300 Q 290 240 260 200 Q 230 160 200 130"
+            fill="none" stroke="#FFB830" stroke-width="0.8" stroke-opacity="0.35" filter="url(#glow-filter)"/>
+          <path d="M 430 200 Q 420 160 400 120 Q 380 80 360 60"
+            fill="none" stroke="#FFD060" stroke-width="0.7" stroke-opacity="0.28"/>
+          <path d="M 550 220 Q 560 180 590 150 Q 620 120 640 100"
+            fill="none" stroke="#FFB830" stroke-width="0.8" stroke-opacity="0.32"/>
+          <path d="M 680 180 Q 720 160 750 140 Q 780 120 800 100"
+            fill="none" stroke="#FF8800" stroke-width="0.7" stroke-opacity="0.28"/>
+
+          <!-- Tertiary lattice — fast dopamine paths -->
+          <path d="M 200 380 Q 260 340 310 300" fill="none" stroke="#FFB830" stroke-width="0.5" stroke-opacity="0.22"/>
+          <path d="M 430 200 Q 470 260 520 300 Q 570 340 600 400" fill="none" stroke="#FFB830" stroke-width="0.6" stroke-opacity="0.20"/>
+          <path d="M 140 300 Q 220 280 310 300" fill="none" stroke="#FFD060" stroke-width="0.5" stroke-opacity="0.18"/>
+          <path d="M 680 180 Q 660 280 630 360 Q 600 440 580 510" fill="none" stroke="#FF8800" stroke-width="0.6" stroke-opacity="0.22"/>
+          <path d="M 100 200 Q 150 240 200 260 Q 250 280 310 300" fill="none" stroke="#FFB830" stroke-width="0.4" stroke-opacity="0.15"/>
+          <path d="M 360 520 Q 390 440 430 380 Q 470 320 520 300" fill="none" stroke="#FFB830" stroke-width="0.5" stroke-opacity="0.18"/>
+
+          <!-- Fine signal web -->
+          <path d="M 430 200 Q 400 300 380 400 Q 360 480 340 560" fill="none" stroke="#FFB830" stroke-width="0.4" stroke-opacity="0.14"/>
+          <path d="M 550 220 Q 520 300 500 380 Q 480 450 460 520" fill="none" stroke="#FFD060" stroke-width="0.4" stroke-opacity="0.12"/>
+          <path d="M 200 130 Q 280 180 310 300" fill="none" stroke="#FFB830" stroke-width="0.4" stroke-opacity="0.14"/>
+
+          <!-- Cascading dopamine impulse rings (stimulant signature) -->
+          <g filter="url(#glow-filter)">
+            <!-- Rings radiating from primary node -->
+            <circle cx="430" cy="200" r="18" fill="none" stroke="#FFD060" stroke-width="0.8" stroke-opacity="0.35"/>
+            <circle cx="430" cy="200" r="34" fill="none" stroke="#FFB830" stroke-width="0.6" stroke-opacity="0.20"/>
+            <circle cx="430" cy="200" r="52" fill="none" stroke="#FF8800" stroke-width="0.4" stroke-opacity="0.12"/>
+
+            <!-- Secondary node rings -->
+            <circle cx="310" cy="300" r="14" fill="none" stroke="#FFD060" stroke-width="0.7" stroke-opacity="0.30"/>
+            <circle cx="310" cy="300" r="28" fill="none" stroke="#FFB830" stroke-width="0.5" stroke-opacity="0.16"/>
+
+            <circle cx="550" cy="220" r="13" fill="none" stroke="#FFD060" stroke-width="0.7" stroke-opacity="0.28"/>
+            <circle cx="550" cy="220" r="26" fill="none" stroke="#FFB830" stroke-width="0.4" stroke-opacity="0.14"/>
+
+            <circle cx="680" cy="180" r="10" fill="none" stroke="#FFD060" stroke-width="0.6" stroke-opacity="0.26"/>
+          </g>
+
+          <!-- ── SYNAPTIC NODES ── -->
+          <!-- Primary node — strongest signal -->
+          <circle cx="430" cy="200" r="22" fill="url(#core-glow)" filter="url(#soft-blur)"/>
+          <circle cx="430" cy="200" r="7" fill="url(#node-grad)" filter="url(#glow-strong)"/>
+          <circle cx="430" cy="200" r="3.5" fill="#FFE080"/>
+
+          <!-- Secondary nodes -->
+          <circle cx="310" cy="300" r="16" fill="url(#core-glow)" filter="url(#soft-blur)"/>
+          <circle cx="310" cy="300" r="5" fill="url(#node-grad)" filter="url(#glow-filter)"/>
+          <circle cx="310" cy="300" r="2.5" fill="#FFD060"/>
+
+          <circle cx="550" cy="220" r="15" fill="url(#core-glow)" filter="url(#soft-blur)"/>
+          <circle cx="550" cy="220" r="5" fill="url(#node-grad)" filter="url(#glow-filter)"/>
+          <circle cx="550" cy="220" r="2.5" fill="#FFD060"/>
+
+          <circle cx="680" cy="180" r="12" fill="url(#core-glow)" filter="url(#soft-blur)"/>
+          <circle cx="680" cy="180" r="4" fill="url(#node-grad)" filter="url(#glow-filter)"/>
+          <circle cx="680" cy="180" r="2" fill="#FFD060"/>
+
+          <!-- Distal nodes -->
+          <circle cx="200" cy="130" r="3.5" fill="#FFB830" fill-opacity="0.55" filter="url(#glow-filter)"/>
+          <circle cx="360" cy="60"  r="2.5" fill="#FFB830" fill-opacity="0.40"/>
+          <circle cx="640" cy="100" r="3"   fill="#FFB830" fill-opacity="0.42" filter="url(#glow-filter)"/>
+          <circle cx="800" cy="100" r="2.5" fill="#FF8800" fill-opacity="0.36"/>
+          <circle cx="200" cy="380" r="3"   fill="#FFB830" fill-opacity="0.38"/>
+          <circle cx="600" cy="400" r="3"   fill="#FF8800" fill-opacity="0.35"/>
+          <circle cx="140" cy="300" r="2.5" fill="#FFD060" fill-opacity="0.32"/>
+          <circle cx="580" cy="510" r="2.5" fill="#FF8800" fill-opacity="0.30"/>
+
+          <!-- ── PLATE ANNOTATION LAYER ── -->
+          <!-- Cross-hair at primary node -->
+          <g stroke="#FFD060" stroke-width="0.6" stroke-opacity="0.30">
+            <line x1="430" y1="178" x2="430" y2="190"/>
+            <line x1="430" y1="210" x2="430" y2="222"/>
+            <line x1="408" y1="200" x2="420" y2="200"/>
+            <line x1="440" y1="200" x2="452" y2="200"/>
+          </g>
+
+          <!-- Annotation lines + labels -->
+          <line x1="437" y1="193" x2="500" y2="155" stroke="#FFB830" stroke-width="0.5" stroke-opacity="0.35"/>
+          <text x="504" y="152" font-family="IBM Plex Mono,monospace" font-size="7.5" fill="#FFB830" fill-opacity="0.65" letter-spacing="1.5">PRIMARY SIGNAL NODE</text>
+
+          <line x1="317" y1="293" x2="260" y2="255" stroke="#FFB830" stroke-width="0.5" stroke-opacity="0.28"/>
+          <text x="160" y="252" font-family="IBM Plex Mono,monospace" font-size="7" fill="#FFB830" fill-opacity="0.50" letter-spacing="1.2">DOPAMINE CASCADE</text>
+
+          <line x1="557" y1="213" x2="620" y2="190" stroke="#FFB830" stroke-width="0.5" stroke-opacity="0.25"/>
+          <text x="622" y="187" font-family="IBM Plex Mono,monospace" font-size="7" fill="#FFB830" fill-opacity="0.45" letter-spacing="1.2">SECONDARY RELAY</text>
+
+          <!-- ── PLATE IDENTITY WATERMARK ── -->
+          <text x="20" y="630" font-family="IBM Plex Mono,monospace" font-size="7" fill="#FFB830" fill-opacity="0.25" letter-spacing="2">ASA-PL-02 · STIMULANTS · ALTERED STATE ARCHIVE · VICELAB RESEARCH INTELLIGENCE · CANONICAL LOCK · 2026</text>
+
+          <!-- Top right classification mark -->
+          <text x="840" y="22" font-family="IBM Plex Mono,monospace" font-size="7" fill="#FFB830" fill-opacity="0.30" text-anchor="end" letter-spacing="1.5">CLASS PLATE</text>
+          <text x="840" y="33" font-family="IBM Plex Mono,monospace" font-size="7" fill="#FFB830" fill-opacity="0.20" text-anchor="end" letter-spacing="1.5">STIMULANTS</text>
+
+          <!-- Coordinate markers along edges -->
+          <text x="60" y="12"   font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.18)" letter-spacing="1">A1</text>
+          <text x="200" y="12"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.18)" letter-spacing="1">B1</text>
+          <text x="340" y="12"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.18)" letter-spacing="1">C1</text>
+          <text x="480" y="12"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.18)" letter-spacing="1">D1</text>
+          <text x="620" y="12"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.18)" letter-spacing="1">E1</text>
+          <text x="760" y="12"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.18)" letter-spacing="1">F1</text>
+
+          <text x="6" y="80"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.15)" letter-spacing="0">A2</text>
+          <text x="6" y="200" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.15)" letter-spacing="0">A3</text>
+          <text x="6" y="320" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.15)" letter-spacing="0">A4</text>
+          <text x="6" y="440" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.15)" letter-spacing="0">A5</text>
+          <text x="6" y="560" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(255,184,48,0.15)" letter-spacing="0">A6</text>
+
+          <!-- Subtle vignette -->
+          <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+            <stop offset="60%" stop-color="transparent"/>
+            <stop offset="100%" stop-color="rgba(4,6,13,0.60)"/>
+          </radialGradient>
+          <rect width="860" height="645" fill="url(#vignette)"/>
+
+        </svg>
+      </div>
+
+      <div class="plate-strip">
+        <div class="plate-strip-id">ASA-PL-02 · Stimulants · Class Plate · Altered State Archive · 2026</div>
+        <div class="plate-strip-status"><div class="plate-strip-dot"></div>Canonical Lock</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ INFORMATION PANEL ══════════ -->
+<section class="info-section">
+  <div class="container">
+    <div class="eyebrow reveal">Plate Intelligence</div>
+    <div class="info-grid reveal-stagger">
+
+      <div class="info-block">
+        <div class="info-block-label">Plate Classification</div>
+        <div class="info-block-title">Stimulant Class</div>
+        <div class="info-block-body">
+          Stimulants are substances that increase activity in the central nervous system, producing heightened arousal, energy, focus, and in some cases euphoria. The class includes compounds ranging from caffeine and MDMA to amphetamines and cocaine. <strong>Common examples in festival environments include MDMA, amphetamine, methamphetamine, cocaine, and 2C-B.</strong>
+          <br><br>
+          This plate represents the stimulant class as a network of cascading signals — neural pathways activated, amplified, and sustained beyond their ordinary duration.
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-label">Mechanism Snapshot</div>
+        <div class="info-block-title">How They Act</div>
+        <div class="info-block-body">
+          Most stimulants work by increasing the availability of monoamine neurotransmitters — primarily <strong>dopamine, serotonin, and norepinephrine</strong> — in the synaptic cleft. They do this through one or more mechanisms: blocking reuptake transporters, stimulating release, or inhibiting breakdown enzymes.
+          <br><br>
+          The result is sustained activation of reward, arousal, and motivation circuits — producing the characteristic heightening of energy, confidence, and sensory experience the class is known for.
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-label">Cultural Context</div>
+        <div class="info-block-title">Stimulants in Festival Culture</div>
+        <div class="info-block-body">
+          Stimulants have been entwined with dance culture for decades. MDMA emerged alongside early rave culture in the late 1980s. Amphetamines preceded it. The relationship reflects something specific about the environment: <strong>festival conditions — duration, heat, physical exertion, social intensity</strong> — are physiologically demanding, and stimulants interact with those demands in ways that create both the desired experience and the elevated risk.
+          <br><br>
+          Understanding this class means understanding why festival-specific harm reduction guidance differs from general clinical guidance.
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-label">Risk Awareness</div>
+        <div class="info-block-title">Key Safety Considerations</div>
+        <div class="info-block-body">
+          <strong>Hyperthermia</strong> is the leading cause of stimulant-related festival deaths. The combination of stimulant-induced thermogenesis, physical exertion, and ambient heat creates dangerous heat accumulation — particularly with MDMA.
+          <br><br>
+          <strong>Hyponatraemia</strong> (dangerously low sodium) occurs when people over-hydrate with water alone, often driven by misguided harm reduction advice. Sip fluids; do not chug.
+          <br><br>
+          <strong>Cardiovascular strain</strong> is a compounding risk for anyone with underlying cardiac conditions. <strong>Re-dosing</strong> significantly increases risk and extends the physiological burden.
+        </div>
+      </div>
+
+      <div class="info-block full">
+        <div class="info-block-label">Harm Reduction Notes</div>
+        <div class="info-block-title">Practical Intelligence for Safer Decisions</div>
+        <div class="info-block-body" style="columns:2;column-gap:48px">
+          <strong>Temperature.</strong> Take breaks from dancing. Seek shade or cool areas regularly. Overheating is the primary mechanism of stimulant-related harm in festival environments — not overdose in the traditional sense.
+          <br><br>
+          <strong>Hydration.</strong> For active dancing: approximately 500ml water per hour. Do not exceed this. Electrolyte drinks are preferable to plain water in extended situations.
+          <br><br>
+          <strong>Dosing.</strong> Start low. Avoid re-dosing entirely if possible. The second dose does not restore the first experience; it extends duration and compounds cardiovascular and thermal load.
+          <br><br>
+          <strong>Combinations.</strong> Stimulant combinations — particularly MDMA with cocaine or amphetamine — multiply cardiac and thermal risk nonlinearly. The Interaction Matrix provides specific guidance per combination.
+          <br><br>
+          <strong>Reagent testing.</strong> Press contamination with novel psychoactive substances (NPS) or fentanyl analogues is real. Reagent testing kits reduce — not eliminate — this risk. Testing services at events provide more reliable analysis.
+          <br><br>
+          <strong>Wingmate protocol.</strong> Check in. If someone stops dancing, becomes pale, stops sweating despite heat, or becomes confused — these are red-flag indicators. Seek the medical or harm reduction team immediately.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ ARCHIVE METADATA ══════════ -->
+<section class="meta-section">
+  <div class="container">
+    <div class="meta-strip reveal">
+      <div class="meta-field">
+        <div class="meta-field-key">Archive ID</div>
+        <div class="meta-field-val accent">ASA-PL-02</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-field-key">Plate Type</div>
+        <div class="meta-field-val">Class Plate</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-field-key">Edition Status</div>
+        <div class="meta-field-val">Canonical Lock</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-field-key">Research Context</div>
+        <div class="meta-field-val">Harm Reduction Intelligence</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-field-key">Last Revision</div>
+        <div class="meta-field-val">2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ RELATED PLATES ══════════ -->
+<section class="related-section">
+  <div class="container">
+    <div class="related-header reveal">
+      <div class="eyebrow">Altered State Archive</div>
+      <div class="related-header-title">Related Archive Plates</div>
+    </div>
+
+    <div class="related-grid reveal-stagger">
+
+      <!-- ASA-PL-01 MDMA -->
+      <a href="/archive/plates/asa-pl-01" class="plate-card c1">
+        <div class="pc-thumb">
+          <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="200" fill="#04060D"/>
+            <rect width="300" height="200" fill="url(#grid-sm)" opacity="0.6"/>
+            <defs>
+              <pattern id="grid-sm" width="30" height="30" patternUnits="userSpaceOnUse">
+                <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(228,60,255,0.06)" stroke-width="0.5"/>
+              </pattern>
+              <filter id="g1"><feGaussianBlur stdDeviation="3"/></filter>
+            </defs>
+            <ellipse cx="150" cy="95" rx="120" ry="80" fill="rgba(228,60,255,0.07)" filter="url(#g1)"/>
+            <!-- Entactogenic wave pattern — smooth, interconnected -->
+            <path d="M 30 130 Q 70 60 110 90 Q 150 120 190 70 Q 230 20 270 80" fill="none" stroke="#E43CFF" stroke-width="1" stroke-opacity="0.55"/>
+            <path d="M 30 150 Q 70 80 110 110 Q 150 140 190 90 Q 230 40 270 100" fill="none" stroke="#E43CFF" stroke-width="0.6" stroke-opacity="0.28"/>
+            <circle cx="150" cy="95" r="6" fill="#E43CFF" fill-opacity="0.80"/>
+            <circle cx="150" cy="95" r="12" fill="none" stroke="#E43CFF" stroke-width="0.8" stroke-opacity="0.30"/>
+            <circle cx="110" cy="90" r="3.5" fill="#E43CFF" fill-opacity="0.55"/>
+            <circle cx="190" cy="70" r="3.5" fill="#E43CFF" fill-opacity="0.55"/>
+            <text x="8" y="194" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#E43CFF" fill-opacity="0.28" letter-spacing="1.5">ASA-PL-01 · MDMA</text>
+          </svg>
+        </div>
+        <div class="pc-body">
+          <div class="pc-id">ASA-PL-01</div>
+          <div class="pc-title">MDMA</div>
+          <div class="pc-desc">Entactogen class plate. Serotonin, dopamine, and norepinephrine release dynamics.</div>
+          <div class="pc-link">View Plate <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- ASA-PL-03 PSYCHEDELICS -->
+      <a href="/archive/plates/asa-pl-03" class="plate-card c2">
+        <div class="pc-thumb">
+          <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="200" fill="#04060D"/>
+            <defs>
+              <filter id="g2"><feGaussianBlur stdDeviation="4"/></filter>
+              <pattern id="grid-sm2" width="30" height="30" patternUnits="userSpaceOnUse">
+                <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(0,255,198,0.06)" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="300" height="200" fill="url(#grid-sm2)"/>
+            <ellipse cx="150" cy="100" rx="100" ry="70" fill="rgba(0,255,198,0.06)" filter="url(#g2)"/>
+            <!-- Fractal-like recursive pattern suggesting perception alteration -->
+            <circle cx="150" cy="100" r="50" fill="none" stroke="#00FFC6" stroke-width="0.7" stroke-opacity="0.30"/>
+            <circle cx="150" cy="100" r="35" fill="none" stroke="#00FFC6" stroke-width="0.6" stroke-opacity="0.35"/>
+            <circle cx="150" cy="100" r="20" fill="none" stroke="#00FFC6" stroke-width="0.8" stroke-opacity="0.45"/>
+            <circle cx="150" cy="100" r="8"  fill="none" stroke="#00FFC6" stroke-width="1.0" stroke-opacity="0.60"/>
+            <circle cx="150" cy="100" r="3"  fill="#00FFC6" fill-opacity="0.80"/>
+            <!-- Radiating lines -->
+            <g stroke="#00FFC6" stroke-width="0.4" stroke-opacity="0.20">
+              <line x1="150" y1="50" x2="150" y2="10"/>
+              <line x1="150" y1="150" x2="150" y2="190"/>
+              <line x1="100" y1="100" x2="60" y2="100"/>
+              <line x1="200" y1="100" x2="240" y2="100"/>
+              <line x1="115" y1="65" x2="87" y2="37"/>
+              <line x1="185" y1="65" x2="213" y2="37"/>
+              <line x1="115" y1="135" x2="87" y2="163"/>
+              <line x1="185" y1="135" x2="213" y2="163"/>
+            </g>
+            <text x="8" y="194" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#00FFC6" fill-opacity="0.28" letter-spacing="1.5">ASA-PL-03 · PSYCHEDELICS</text>
+          </svg>
+        </div>
+        <div class="pc-body">
+          <div class="pc-id">ASA-PL-03</div>
+          <div class="pc-title">Psychedelics</div>
+          <div class="pc-desc">Serotonergic class plate. 5-HT2A agonism and perceptual modulation dynamics.</div>
+          <div class="pc-link">View Plate <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- ASA-PL-04 DISSOCIATIVES -->
+      <a href="/archive/plates/asa-pl-04" class="plate-card c3">
+        <div class="pc-thumb">
+          <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="200" fill="#04060D"/>
+            <defs>
+              <filter id="g3"><feGaussianBlur stdDeviation="4"/></filter>
+              <pattern id="grid-sm3" width="30" height="30" patternUnits="userSpaceOnUse">
+                <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(77,163,255,0.06)" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="300" height="200" fill="url(#grid-sm3)"/>
+            <ellipse cx="150" cy="100" rx="110" ry="75" fill="rgba(77,163,255,0.06)" filter="url(#g3)"/>
+            <!-- Fragmented / dissociated visual — broken paths -->
+            <path d="M 40 100 L 90 100" stroke="#4DA3FF" stroke-width="1" stroke-opacity="0.45"/>
+            <path d="M 100 100 L 140 100" stroke="#4DA3FF" stroke-width="1" stroke-opacity="0.30"/>
+            <path d="M 155 100 L 200 100" stroke="#4DA3FF" stroke-width="1" stroke-opacity="0.40"/>
+            <path d="M 212 100 L 260 100" stroke="#4DA3FF" stroke-width="1" stroke-opacity="0.28"/>
+            <!-- Floating disconnected nodes -->
+            <circle cx="90"  cy="100" r="5" fill="#4DA3FF" fill-opacity="0.60"/>
+            <circle cx="140" cy="100" r="4" fill="#4DA3FF" fill-opacity="0.45"/>
+            <circle cx="155" cy="100" r="3" fill="#4DA3FF" fill-opacity="0.35"/>
+            <circle cx="200" cy="100" r="4.5" fill="#4DA3FF" fill-opacity="0.55"/>
+            <!-- Orbit rings — K-hole geometry -->
+            <ellipse cx="150" cy="100" rx="80" ry="40" fill="none" stroke="#4DA3FF" stroke-width="0.6" stroke-opacity="0.18" stroke-dasharray="4 6"/>
+            <ellipse cx="150" cy="100" rx="55" ry="25" fill="none" stroke="#4DA3FF" stroke-width="0.5" stroke-opacity="0.22" stroke-dasharray="3 5"/>
+            <text x="8" y="194" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4DA3FF" fill-opacity="0.28" letter-spacing="1.5">ASA-PL-04 · DISSOCIATIVES</text>
+          </svg>
+        </div>
+        <div class="pc-body">
+          <div class="pc-id">ASA-PL-04</div>
+          <div class="pc-title">Dissociatives</div>
+          <div class="pc-desc">NMDA antagonist class plate. Ketamine, PCP, and DXM receptor dynamics.</div>
+          <div class="pc-link">View Plate <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- ASA-PL-05 DEPRESSANTS -->
+      <a href="/archive/plates/asa-pl-05" class="plate-card c4">
+        <div class="pc-thumb">
+          <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="200" fill="#04060D"/>
+            <defs>
+              <filter id="g4"><feGaussianBlur stdDeviation="4"/></filter>
+              <pattern id="grid-sm4" width="30" height="30" patternUnits="userSpaceOnUse">
+                <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(255,107,107,0.06)" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="300" height="200" fill="url(#grid-sm4)"/>
+            <ellipse cx="150" cy="110" rx="120" ry="70" fill="rgba(255,107,107,0.05)" filter="url(#g4)"/>
+            <!-- Slow rolling wave — depressant signature -->
+            <path d="M 20 80 Q 60 110 100 90 Q 140 70 180 110 Q 220 150 260 120 Q 280 108 300 115"
+              fill="none" stroke="#FF6B6B" stroke-width="1.2" stroke-opacity="0.45"/>
+            <path d="M 20 100 Q 60 130 100 110 Q 140 90 180 130 Q 220 170 260 140 Q 280 128 300 135"
+              fill="none" stroke="#FF6B6B" stroke-width="0.7" stroke-opacity="0.25"/>
+            <circle cx="100" cy="90"  r="4" fill="#FF6B6B" fill-opacity="0.55"/>
+            <circle cx="180" cy="110" r="4" fill="#FF6B6B" fill-opacity="0.55"/>
+            <circle cx="260" cy="120" r="3.5" fill="#FF6B6B" fill-opacity="0.45"/>
+            <text x="8" y="194" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#FF6B6B" fill-opacity="0.28" letter-spacing="1.5">ASA-PL-05 · DEPRESSANTS</text>
+          </svg>
+        </div>
+        <div class="pc-body">
+          <div class="pc-id">ASA-PL-05</div>
+          <div class="pc-title">Depressants</div>
+          <div class="pc-desc">CNS depressant class plate. Alcohol, GHB, benzodiazepines, and opioid dynamics.</div>
+          <div class="pc-link">View Plate <span>→</span></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ CLOSING STATEMENT ══════════ -->
+<section class="closing-section">
+  <div class="container">
+    <div class="closing-inner reveal">
+      <div class="closing-label">ASA · Altered State Archive · ViceLab Research Intelligence</div>
+      <h2 class="closing-text">
+        Knowledge translated into <em>form worth remembering.</em>
+      </h2>
+      <p class="closing-sub">
+        These plates translate complex substance intelligence into visual forms designed to be retained, shared, and understood. The Archive exists to preserve knowledge that helps people make safer decisions.
+      </p>
+      <div class="cta-row">
+        <a href="/archive" class="btn-arc"><span>Return to Archive</span></a>
+        <a href="/archive/plates" class="btn-ghost">Browse More Plates</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <a href="/" class="footer-brand">Vice<em>Lab</em></a>
+  <div class="footer-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive">Archive</a>
+  </div>
+  <div class="footer-note">ViceLab · Harm Reduction Infrastructure</div>
+</footer>
+
+</div><!-- /site -->
+
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DUST PARTICLES
+// ═══════════════════════════════════════════════════════
+(function() {
+  const cv = document.getElementById('c-dust');
+  const ctx = cv.getContext('2d');
+  let W, H, particles;
+  const N = 120;
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+
+  function makeParticles() {
+    particles = [];
+    for (let i = 0; i < N; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 0.8 + 0.15,
+        a: Math.random() * 0.20 + 0.03,
+        vx: (Math.random() - 0.5) * 0.08,
+        vy: (Math.random() - 0.5) * 0.06 - 0.025,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.008 + 0.003,
+        // hue shift — mostly near-magenta, occasional cyan
+        hue: Math.random() < 0.15 ? 'cyan' : 'magenta',
+      });
+    }
+  }
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.004;
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < -5) p.x = W + 5;
+      if (p.x > W + 5) p.x = -5;
+      if (p.y < -5) p.y = H + 5;
+
+      const flicker = p.a * (0.45 + 0.55 * Math.sin(t * p.speed * 90 + p.phase));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.hue === 'cyan'
+        ? `rgba(0,255,198,${flicker})`
+        : `rgba(228,60,255,${flicker * 0.6})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize(); makeParticles(); draw();
+  window.addEventListener('resize', () => { resize(); makeParticles(); });
+})();
+
+// ═══════════════════════════════════════════════════════
+//  FLOATING ARCHIVE REFERENCE TAGS
+// ═══════════════════════════════════════════════════════
+(function() {
+  const tags = [
+    'ASA-PL-01','MDMA','STIMULANTS','PSYCHEDELICS',
+    'ASA-PL-03','LSD','KETAMINE','AMPHETAMINE',
+    'DISSOCIATIVES','ASA-PL-02','COCAINE','2C-B',
+  ];
+  const layer = document.getElementById('tag-layer');
+  const positions = [
+    [5,10],[20,55],[80,8],[88,45],[55,80],[35,92],
+    [70,25],[12,72],[48,38],[92,70],[65,55],[28,20],
+  ];
+
+  positions.forEach((pos, i) => {
+    const el = document.createElement('div');
+    el.className = 'atag';
+    el.textContent = tags[i % tags.length];
+    el.style.left = pos[0] + '%';
+    el.style.top  = pos[1] + '%';
+    const dur = 34 + Math.random() * 28;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay   = -(Math.random() * dur) + 's';
+    layer.appendChild(el);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+//  SCROLL REVEAL
+// ═══════════════════════════════════════════════════════
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -36px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

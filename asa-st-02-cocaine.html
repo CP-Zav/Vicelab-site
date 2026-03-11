@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ASA-ST-02 · COCAINE — Altered State Archive · ViceLab                 ║
+║  Template: asa-plate-template-v2.html                                   ║
+║  Class: Stimulant · Accent: #4DA3FF (Electric Blue)                     ║
+╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="en"
+  data-cc-rgb="77,163,255"
+  data-plate-tags="ASA-ST-02,COCAINE,DAT,STIMULANT,DOPAMINE,REUPTAKE,BENZOYLMETHYLECGONINE,MONOAMINE,NOREPINEPHRINE,SERT,HARM REDUCTION,VICELAB,NET">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASA-ST-02 · Cocaine — Altered State Archive · ViceLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="asa-plate.css">
+<style>
+/* CONFIG ② — Stimulant class: electric blue */
+:root {
+  --cc:        #4DA3FF;
+  --cc-dim:    rgba(77, 163, 255, 0.06);
+  --cc-mid:    rgba(77, 163, 255, 0.13);
+  --cc-border: rgba(77, 163, 255, 0.26);
+  --cc-glow:   0 0 36px rgba(77,163,255,0.14), 0 0 80px rgba(77,163,255,0.06);
+  --cc-pulse:  rgba(77, 163, 255, 0.28);
+}
+</style>
+</head>
+
+<body>
+<canvas id="c-field"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="tag-layer" id="tag-layer"></div>
+
+<div class="site">
+
+<nav>
+  <a href="/" class="nav-logo">Vice<em>Lab</em></a>
+  <div class="nav-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive" class="nav-active">Archive</a>
+    <a href="/contact" class="nav-badge">Work with us</a>
+  </div>
+</nav>
+
+
+<!-- ① ARCHIVE HEADER -->
+<div class="arc-header">
+<div class="container">
+  <div class="breadcrumb reveal">
+    <a href="/archive">Archive</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/archive?filter=stimulant">Stimulants</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">ASA-ST-02</span>
+  </div>
+  <div class="arc-plate-label reveal">ARCHIVE PLATE</div>
+  <div class="arc-plate-id reveal">
+    <span class="arc-plate-id-dot"></span>
+    ASA-ST-02
+  </div>
+  <h1 class="arc-title reveal">
+    <span class="arc-title-accent">C</span>ocaine
+  </h1>
+  <div class="arc-system-strip reveal">
+    <span>CLASS:</span>
+    <span class="arc-strip-val accent">Stimulant</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>STATUS:</span>
+    <span class="arc-strip-val">Verified</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>RELEASE:</span>
+    <span class="arc-strip-val">2026</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>EDITION:</span>
+    <span class="arc-strip-val">Canonical Lock</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>SOURCE:</span>
+    <span class="arc-strip-val">ViceLab Research Intelligence</span>
+  </div>
+</div>
+</div>
+
+
+<!-- ② PLATE ARTIFACT DISPLAY -->
+<section class="plate-display-section">
+<div class="container">
+  <div class="plate-frame-wrap reveal">
+    <div class="corner-tr"></div>
+    <div class="corner-bl"></div>
+    <div class="plate-frame">
+      <div class="plate-visual">
+        <svg viewBox="0 0 900 675" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <!-- Deep space background -->
+            <radialGradient id="bg-g" cx="42%" cy="38%" r="70%">
+              <stop offset="0%"   stop-color="#06080F"/>
+              <stop offset="55%"  stop-color="#070B15"/>
+              <stop offset="100%" stop-color="#04060D"/>
+            </radialGradient>
+
+            <!-- Cocaine blue glow -->
+            <radialGradient id="core-g" cx="50%" cy="46%" r="50%">
+              <stop offset="0%"   stop-color="#4DA3FF" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#4DA3FF" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="outer-g" cx="50%" cy="46%" r="50%">
+              <stop offset="0%"   stop-color="#1A6EC4" stop-opacity="0.08"/>
+              <stop offset="100%" stop-color="#1A6EC4" stop-opacity="0"/>
+            </radialGradient>
+
+            <!-- Coordinate grid — scientific instrument overlay -->
+            <pattern id="coord-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(77,163,255,0.045)" stroke-width="0.5"/>
+            </pattern>
+
+            <!-- Fine graticule -->
+            <pattern id="fine-grid" width="15" height="15" patternUnits="userSpaceOnUse">
+              <path d="M 15 0 L 0 0 0 15" fill="none" stroke="rgba(77,163,255,0.018)" stroke-width="0.3"/>
+            </pattern>
+
+            <!-- Glow filters -->
+            <filter id="gf-soft">
+              <feGaussianBlur stdDeviation="2.2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="gf-med">
+              <feGaussianBlur stdDeviation="3.8" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="gf-haze">
+              <feGaussianBlur stdDeviation="10"/>
+            </filter>
+            <filter id="gf-haze-lg">
+              <feGaussianBlur stdDeviation="22"/>
+            </filter>
+
+            <!-- Dopamine transporter gradient — the molecular target -->
+            <linearGradient id="dat-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#4DA3FF" stop-opacity="0"/>
+              <stop offset="30%"  stop-color="#4DA3FF" stop-opacity="0.65"/>
+              <stop offset="70%"  stop-color="#80C4FF" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#4DA3FF" stop-opacity="0"/>
+            </linearGradient>
+
+            <!-- Reuptake block indicator -->
+            <radialGradient id="block-g" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#80C4FF" stop-opacity="0.90"/>
+              <stop offset="60%"  stop-color="#4DA3FF" stop-opacity="0.65"/>
+              <stop offset="100%" stop-color="#1A6EC4" stop-opacity="0.15"/>
+            </radialGradient>
+
+            <!-- Vignette -->
+            <radialGradient id="vignette-g" cx="50%" cy="50%" r="70%">
+              <stop offset="55%"  stop-color="transparent"/>
+              <stop offset="100%" stop-color="rgba(4,6,13,0.65)"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Base -->
+          <rect width="900" height="675" fill="url(#bg-g)"/>
+          <rect width="900" height="675" fill="url(#fine-grid)"/>
+          <rect width="900" height="675" fill="url(#coord-grid)"/>
+
+          <!-- Ambient blue atmosphere -->
+          <ellipse cx="450" cy="310" rx="440" ry="280" fill="url(#outer-g)" filter="url(#gf-haze-lg)"/>
+          <ellipse cx="450" cy="300" rx="260" ry="180" fill="url(#core-g)" filter="url(#gf-haze)"/>
+
+          <!-- ════════════════════════════════════════════════════
+               COCAINE PHARMACOLOGY DIAGRAM
+               Dopamine Transporter (DAT) Blockade Model
+               Central visual metaphor: the reuptake transporter
+               blocked by cocaine, flooding the synapse.
+          ════════════════════════════════════════════════════ -->
+
+          <!-- PRESYNAPTIC MEMBRANE — horizontal structural line -->
+          <rect x="100" y="220" width="700" height="1.5" fill="rgba(77,163,255,0.22)" filter="url(#gf-soft)"/>
+          <rect x="100" y="222" width="700" height="0.5" fill="rgba(77,163,255,0.10)"/>
+
+          <!-- POSTSYNAPTIC MEMBRANE -->
+          <rect x="100" y="450" width="700" height="1.5" fill="rgba(77,163,255,0.18)" filter="url(#gf-soft)"/>
+          <rect x="100" y="452" width="700" height="0.5" fill="rgba(77,163,255,0.08)"/>
+
+          <!-- Membrane annotation labels -->
+          <text x="96" y="218" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(77,163,255,0.35)" letter-spacing="1.2">PRESYNAPTIC</text>
+          <text x="96" y="454" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(77,163,255,0.28)" letter-spacing="1.2">POSTSYNAPTIC</text>
+
+          <!-- THE SYNAPTIC CLEFT region — highlight zone -->
+          <rect x="100" y="221" width="700" height="230" fill="rgba(77,163,255,0.014)"/>
+
+          <!-- ── DOPAMINE MOLECULES — drifting in cleft ── -->
+          <!-- Dopamine = filled circles with outer ring — elevated DA concentration -->
+          <!-- Large cluster near blocked transporter -->
+          <circle cx="320" cy="300" r="8"   fill="#4DA3FF" fill-opacity="0.72" filter="url(#gf-soft)"/>
+          <circle cx="320" cy="300" r="14"  fill="none" stroke="#4DA3FF" stroke-width="0.8" stroke-opacity="0.30"/>
+
+          <circle cx="370" cy="270" r="6.5" fill="#4DA3FF" fill-opacity="0.65" filter="url(#gf-soft)"/>
+          <circle cx="370" cy="270" r="11"  fill="none" stroke="#4DA3FF" stroke-width="0.6" stroke-opacity="0.26"/>
+
+          <circle cx="400" cy="330" r="7"   fill="#4DA3FF" fill-opacity="0.60"/>
+          <circle cx="400" cy="330" r="12"  fill="none" stroke="#4DA3FF" stroke-width="0.6" stroke-opacity="0.24"/>
+
+          <circle cx="280" cy="340" r="5.5" fill="#4DA3FF" fill-opacity="0.55" filter="url(#gf-soft)"/>
+          <circle cx="440" cy="290" r="5"   fill="#4DA3FF" fill-opacity="0.50"/>
+          <circle cx="350" cy="380" r="6"   fill="#4DA3FF" fill-opacity="0.48"/>
+          <circle cx="300" cy="260" r="4.5" fill="#80C4FF" fill-opacity="0.55" filter="url(#gf-soft)"/>
+          <circle cx="460" cy="360" r="4"   fill="#4DA3FF" fill-opacity="0.42"/>
+          <circle cx="250" cy="300" r="5"   fill="#4DA3FF" fill-opacity="0.45"/>
+
+          <!-- Sparse DA molecules further from block -->
+          <circle cx="180" cy="310" r="4"   fill="#4DA3FF" fill-opacity="0.30"/>
+          <circle cx="200" cy="360" r="3.5" fill="#4DA3FF" fill-opacity="0.25"/>
+          <circle cx="540" cy="290" r="4"   fill="#4DA3FF" fill-opacity="0.28"/>
+          <circle cx="580" cy="340" r="3.5" fill="#4DA3FF" fill-opacity="0.22"/>
+          <circle cx="620" cy="300" r="3"   fill="#4DA3FF" fill-opacity="0.18"/>
+          <circle cx="660" cy="360" r="3"   fill="#4DA3FF" fill-opacity="0.15"/>
+          <circle cx="700" cy="310" r="2.5" fill="#4DA3FF" fill-opacity="0.14"/>
+
+          <!-- Dopamine receptor sites on post-membrane — small squares -->
+          <rect x="195" y="448" width="7" height="6" rx="1" fill="#4DA3FF" fill-opacity="0.45"/>
+          <rect x="255" y="448" width="7" height="6" rx="1" fill="#4DA3FF" fill-opacity="0.50"/>
+          <rect x="315" y="448" width="7" height="6" rx="1" fill="#80C4FF" fill-opacity="0.60" filter="url(#gf-soft)"/>
+          <rect x="375" y="448" width="7" height="6" rx="1" fill="#4DA3FF" fill-opacity="0.55"/>
+          <rect x="435" y="448" width="7" height="6" rx="1" fill="#4DA3FF" fill-opacity="0.48"/>
+          <rect x="495" y="448" width="7" height="6" rx="1" fill="#4DA3FF" fill-opacity="0.35"/>
+          <rect x="555" y="448" width="7" height="6" rx="1" fill="#4DA3FF" fill-opacity="0.28"/>
+          <rect x="615" y="448" width="7" height="6" rx="1" fill="#4DA3FF" fill-opacity="0.22"/>
+          <rect x="675" y="448" width="7" height="6" rx="1" fill="#4DA3FF" fill-opacity="0.18"/>
+
+          <!-- ── THE DAT — Dopamine Transporter protein ── -->
+          <!-- The central structural element: a channel shown as a vertical
+               protein complex anchored in the presynaptic membrane.
+               The COCAINE MOLECULE blocks its mouth. -->
+
+          <!-- Transporter body — protein helix representation -->
+          <!-- Left helix arm -->
+          <path d="M 385 180 Q 378 195 387 210 Q 378 225 387 222"
+            fill="none" stroke="rgba(77,163,255,0.45)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Right helix arm -->
+          <path d="M 415 180 Q 422 195 413 210 Q 422 225 413 222"
+            fill="none" stroke="rgba(77,163,255,0.45)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Helix cross-bars -->
+          <line x1="387" y1="196" x2="413" y2="196" stroke="rgba(77,163,255,0.28)" stroke-width="1.2"/>
+          <line x1="387" y1="208" x2="413" y2="208" stroke="rgba(77,163,255,0.22)" stroke-width="1"/>
+
+          <!-- Transporter mouth — open channel -->
+          <path d="M 375 222 L 385 222 L 385 240 L 415 240 L 415 222 L 425 222"
+            fill="none" stroke="#4DA3FF" stroke-width="1.2" stroke-opacity="0.55"/>
+
+          <!-- ── COCAINE MOLECULE — blocking the transporter mouth ── -->
+          <!-- Tropane ring system — simplified structural motif -->
+          <!-- Outer boundary of cocaine blocking position -->
+          <ellipse cx="400" cy="228" rx="20" ry="9"
+            fill="rgba(77,163,255,0.14)" stroke="#80C4FF" stroke-width="1"
+            stroke-opacity="0.75" filter="url(#gf-soft)"/>
+          <!-- Cocaine core highlight -->
+          <ellipse cx="400" cy="228" rx="12" ry="5.5"
+            fill="rgba(128,196,255,0.25)" filter="url(#gf-soft)"/>
+          <ellipse cx="400" cy="228" rx="6" ry="3"
+            fill="url(#block-g)"/>
+
+          <!-- Methyl ester arm — structural detail -->
+          <line x1="412" y1="226" x2="426" y2="220" stroke="#80C4FF" stroke-width="0.9" stroke-opacity="0.60"/>
+          <circle cx="426" cy="220" r="2.5" fill="#80C4FF" fill-opacity="0.70"/>
+          <line x1="388" y1="226" x2="374" y2="220" stroke="#80C4FF" stroke-width="0.8" stroke-opacity="0.55"/>
+          <circle cx="374" cy="220" r="2"   fill="#80C4FF" fill-opacity="0.60"/>
+
+          <!-- X BLOCK MARKER — cocaine blocks reuptake -->
+          <line x1="395" y1="240" x2="405" y2="252" stroke="rgba(77,163,255,0.60)" stroke-width="1.5"/>
+          <line x1="405" y1="240" x2="395" y2="252" stroke="rgba(77,163,255,0.60)" stroke-width="1.5"/>
+          <!-- Block indicator circle -->
+          <circle cx="400" cy="246" r="8" fill="none" stroke="#4DA3FF" stroke-width="0.8" stroke-opacity="0.50"/>
+
+          <!-- ── VESICLE — DA storage at presynaptic terminal ── -->
+          <ellipse cx="520" cy="160" rx="45" ry="32"
+            fill="rgba(77,163,255,0.06)" stroke="rgba(77,163,255,0.22)" stroke-width="0.8"/>
+          <!-- DA molecules inside vesicle -->
+          <circle cx="508" cy="158" r="3.5" fill="#4DA3FF" fill-opacity="0.55"/>
+          <circle cx="524" cy="152" r="3"   fill="#4DA3FF" fill-opacity="0.50"/>
+          <circle cx="534" cy="163" r="3"   fill="#4DA3FF" fill-opacity="0.45"/>
+          <circle cx="516" cy="170" r="2.5" fill="#4DA3FF" fill-opacity="0.40"/>
+          <!-- Release pore -->
+          <path d="M 510 192 Q 520 195 530 192" fill="none" stroke="rgba(77,163,255,0.35)" stroke-width="0.8"/>
+
+          <!-- Release arrows — DA flooding out -->
+          <line x1="516" y1="194" x2="480" y2="228" stroke="rgba(77,163,255,0.30)" stroke-width="0.8" stroke-dasharray="3 3"/>
+          <line x1="524" y1="194" x2="500" y2="228" stroke="rgba(77,163,255,0.25)" stroke-width="0.7" stroke-dasharray="3 3"/>
+          <polygon points="476,230 484,232 478,222" fill="rgba(77,163,255,0.30)"/>
+
+          <!-- ── NOREPINEPHRINE TRANSPORTER — partial diagram right side ── -->
+          <!-- NET transporter — also blocked by cocaine -->
+          <path d="M 660 180 Q 653 195 662 210 Q 653 220 662 222"
+            fill="none" stroke="rgba(77,163,255,0.28)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 685 180 Q 692 195 683 210 Q 692 220 683 222"
+            fill="none" stroke="rgba(77,163,255,0.28)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 650 222 L 660 222 L 660 240 L 685 240 L 685 222 L 695 222"
+            fill="none" stroke="#4DA3FF" stroke-width="0.8" stroke-opacity="0.35"/>
+          <!-- Cocaine partial block on NET -->
+          <ellipse cx="672" cy="230" rx="15" ry="7"
+            fill="rgba(77,163,255,0.08)" stroke="#4DA3FF" stroke-width="0.7" stroke-opacity="0.45"/>
+
+          <!-- ── SEROTONIN TRANSPORTER — tertiary target, left side ── -->
+          <path d="M 148 185 Q 143 197 150 208 Q 143 216 150 220"
+            fill="none" stroke="rgba(77,163,255,0.20)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M 168 185 Q 173 197 166 208 Q 173 216 166 220"
+            fill="none" stroke="rgba(77,163,255,0.20)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M 138 220 L 148 220 L 148 235 L 168 235 L 168 220 L 178 220"
+            fill="none" stroke="#4DA3FF" stroke-width="0.7" stroke-opacity="0.28"/>
+          <ellipse cx="158" cy="227" rx="14" ry="6"
+            fill="rgba(77,163,255,0.06)" stroke="#4DA3FF" stroke-width="0.6" stroke-opacity="0.35"/>
+
+          <!-- ── ANNOTATION LAYER ── -->
+          <!-- Primary annotation: DAT block -->
+          <line x1="425" y1="228" x2="500" y2="200" stroke="rgba(77,163,255,0.30)" stroke-width="0.5"/>
+          <text x="503" y="197" font-family="IBM Plex Mono,monospace" font-size="7.5" fill="#4DA3FF" fill-opacity="0.70" letter-spacing="1.5">COCAINE · DAT BLOCKADE</text>
+          <line x1="400" y1="255" x2="440" y2="290" stroke="rgba(77,163,255,0.22)" stroke-width="0.5"/>
+          <text x="443" y="293" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4DA3FF" fill-opacity="0.52" letter-spacing="1.2">REUPTAKE INHIBITION</text>
+
+          <!-- DA overflow annotation -->
+          <line x1="310" y1="295" x2="240" y2="265" stroke="rgba(77,163,255,0.20)" stroke-width="0.5"/>
+          <text x="150" y="262" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4DA3FF" fill-opacity="0.48" letter-spacing="1.2">DOPAMINE OVERFLOW</text>
+
+          <!-- NET label -->
+          <line x1="695" y1="200" x2="730" y2="185" stroke="rgba(77,163,255,0.20)" stroke-width="0.5"/>
+          <text x="733" y="182" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4DA3FF" fill-opacity="0.42" letter-spacing="1.2">NET</text>
+
+          <!-- SERT label -->
+          <line x1="138" y1="202" x2="108" y2="190" stroke="rgba(77,163,255,0.18)" stroke-width="0.5"/>
+          <text x="60" y="187" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4DA3FF" fill-opacity="0.38" letter-spacing="1.2">SERT</text>
+
+          <!-- Vesicle label -->
+          <line x1="565" y1="148" x2="600" y2="128" stroke="rgba(77,163,255,0.18)" stroke-width="0.5"/>
+          <text x="603" y="125" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4DA3FF" fill-opacity="0.42" letter-spacing="1.2">VESICLE · DA STORE</text>
+
+          <!-- Crosshair at cocaine molecule -->
+          <g stroke="#80C4FF" stroke-width="0.5" stroke-opacity="0.35">
+            <line x1="400" y1="212" x2="400" y2="220"/>
+            <line x1="400" y1="236" x2="400" y2="244"/>
+            <line x1="380" y1="228" x2="388" y2="228"/>
+            <line x1="412" y1="228" x2="420" y2="228"/>
+          </g>
+
+          <!-- ── AXIS LABELS ── scientific coordinate system -->
+          <!-- Column headers -->
+          <text x="84"  y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.18)" letter-spacing="1">A1</text>
+          <text x="224" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.18)" letter-spacing="1">B1</text>
+          <text x="364" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.18)" letter-spacing="1">C1</text>
+          <text x="504" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.18)" letter-spacing="1">D1</text>
+          <text x="644" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.18)" letter-spacing="1">E1</text>
+          <text x="784" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.18)" letter-spacing="1">F1</text>
+          <!-- Row labels -->
+          <text x="6" y="90"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.14)" letter-spacing="0">A2</text>
+          <text x="6" y="200" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.14)" letter-spacing="0">A3</text>
+          <text x="6" y="310" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.14)" letter-spacing="0">A4</text>
+          <text x="6" y="420" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.14)" letter-spacing="0">A5</text>
+          <text x="6" y="560" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(77,163,255,0.14)" letter-spacing="0">A6</text>
+
+          <!-- ── IDENTITY WATERMARK ── -->
+          <text x="20" y="660" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4DA3FF" fill-opacity="0.22" letter-spacing="2">ASA-ST-02 · COCAINE · STIMULANT CLASS · ALTERED STATE ARCHIVE · VICELAB RESEARCH INTELLIGENCE · CANONICAL LOCK · 2026</text>
+
+          <!-- Top-right classification marks -->
+          <text x="880" y="22" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4DA3FF" fill-opacity="0.30" letter-spacing="1.5">SUBSTANCE PLATE</text>
+          <text x="880" y="33" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4DA3FF" fill-opacity="0.20" letter-spacing="1.5">COCAINE · STIMULANT</text>
+
+          <!-- Vignette -->
+          <rect width="900" height="675" fill="url(#vignette-g)"/>
+        </svg>
+      </div>
+      <div class="plate-strip">
+        <div class="plate-strip-id">ASA-ST-02 · Cocaine · Substance Plate · Altered State Archive · 2026</div>
+        <div class="plate-strip-status"><div class="plate-strip-dot"></div>Canonical Lock</div>
+      </div>
+    </div>
+  </div>
+  <p class="plate-caption reveal">
+    Research-informed visual pharmacology plate. DAT Blockade Model — Dopamine Reuptake Inhibition.
+  </p>
+</div>
+</section>
+
+
+<!-- ③ SCIENTIFIC METADATA PANEL -->
+<section class="sci-meta-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Scientific Record</div>
+  <h2 class="section-title reveal">Pharmacological Profile</h2>
+  <table class="meta-table reveal-stagger">
+    <tbody>
+
+      <tr>
+        <td class="meta-key">Class</td>
+        <td class="meta-val">
+          <strong>Stimulant</strong>
+          <span class="tag">Tropane alkaloid</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Scientific Name</td>
+        <td class="meta-val">
+          <strong>Benzoylmethylecgonine</strong>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Common Names</td>
+        <td class="meta-val">
+          Cocaine · Coke · Blow · Charlie · Snow · Benzoylmethylecgonine
+        </td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Primary Mechanism</td>
+        <td class="meta-val">
+          <strong>Monoamine reuptake inhibitor.</strong>
+          Blocks dopamine transporter (DAT), norepinephrine transporter (NET), and serotonin transporter (SERT) simultaneously.
+          Prevents reuptake of dopamine, norepinephrine, and serotonin into the presynaptic neuron.
+          Net effect: sustained and elevated monoamine concentration in the synaptic cleft.
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Local Anaesthetic</td>
+        <td class="meta-val">
+          Blocks voltage-gated sodium channels. Secondary mechanism distinct from CNS stimulation.
+        </td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Half-Life</td>
+        <td class="meta-val">
+          <strong>0.7 – 1.5 hours</strong> (plasma, intranasal route)
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Onset</td>
+        <td class="meta-val">
+          Insufflated: <strong>3–5 min</strong> ·
+          Smoked (freebase): <strong>8–15 sec</strong> ·
+          Intravenous: <strong>15–30 sec</strong>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Duration</td>
+        <td class="meta-val">
+          Insufflated: <strong>45–90 min</strong> ·
+          Smoked: <strong>20–40 min</strong>
+        </td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Primary Risks</td>
+        <td class="meta-val">
+          <span class="tag alert">Cardiovascular</span>
+          <span class="tag warn">Hyperthermia</span>
+          <span class="tag warn">Compulsive Re-dosing</span>
+          <span class="tag warn">Adulterants / Levamisole</span>
+          <span class="tag alert">Cardiac Arrhythmia</span>
+          <br>
+          Cocaine-induced myocardial infarction is documented in young, otherwise healthy individuals.
+          Levamisole contamination (commonly 70–80% of supply) causes agranulocytosis with chronic use.
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Interactions</td>
+        <td class="meta-val">
+          <span class="tag alert">Alcohol (Cocaethylene)</span>
+          <span class="tag alert">MAOIs</span>
+          <span class="tag warn">MDMA</span>
+          <span class="tag warn">Stimulants</span>
+          <br>
+          Concurrent alcohol use produces cocaethylene — a metabolite with greater cardiotoxicity and extended half-life than cocaine alone.
+        </td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Status</td>
+        <td class="meta-val status-verified">
+          <span class="status-dot"></span>
+          <strong>Verified</strong> · Canonical Lock · 2026
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+</section>
+
+
+<!-- ④ HARM REDUCTION NOTES -->
+<section class="hr-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Field Intelligence</div>
+  <div class="hr-panel reveal">
+    <div class="hr-panel-header">
+      <div class="hr-panel-title">
+        HARM REDUCTION NOTES
+        <span class="hr-panel-title-mark">ASA-ST-02</span>
+      </div>
+      <div class="hr-panel-meta">Evidence-first · Non-judgemental · Operational</div>
+    </div>
+    <div class="hr-grid reveal-stagger">
+
+      <div class="hr-note">
+        <div class="hr-note-key">Cardiovascular Load</div>
+        <div class="hr-note-body">
+          Cocaine significantly increases heart rate, blood pressure, and cardiac oxygen demand.
+          <strong>Anyone with a known cardiac condition should treat this as high-risk.</strong>
+          Exertion, heat, and concurrent stimulant use compound cardiac strain multiplicatively.
+          If experiencing chest pain, palpitations, or shortness of breath — stop, rest, seek medical attention.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Dosing Behaviour</div>
+        <div class="hr-note-body">
+          The short duration creates a compulsive re-dosing pattern.
+          Each additional dose escalates cardiovascular risk non-linearly.
+          <strong>There is no safe re-dosing ceiling — the body's warning signals are pharmacologically suppressed.</strong>
+          If a line feels different from usual — stop. This is an adulterant signal.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Test Before You Use</div>
+        <div class="hr-note-body">
+          Cocaine supply is routinely adulterated.
+          <strong>Levamisole</strong> (immunosuppressant) is present in approximately 70–80% of street cocaine.
+          <strong>Fentanyl</strong> cross-contamination has increased significantly since 2020 in some markets.
+          Reagent testing (Scott, Mecke) and fentanyl test strips are not infallible but materially reduce risk.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Nasal Care</div>
+        <div class="hr-note-body">
+          Insufflation damages nasal mucosa progressively. Use your own clean surface and equipment.
+          Rinse nasal passages with saline after use.
+          <strong>Do not share implements</strong> — blood-borne pathogen transmission risk.
+          Persistent nosebleeds, difficulty breathing, or structural nasal changes warrant medical review.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Alcohol Interaction</div>
+        <div class="hr-note-body">
+          Cocaine and alcohol are commonly combined.
+          The liver produces <strong>cocaethylene</strong> — a third psychoactive compound with greater cardiotoxicity than either substance alone, and a longer elimination half-life.
+          This combination meaningfully extends the cardiovascular risk window.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Overheating</div>
+        <div class="hr-note-body">
+          Cocaine is thermogenic — it raises core body temperature.
+          Combined with dancing, warm environments, and dehydration, this creates
+          real hyperthermia risk at festivals.
+          <strong>Take regular breaks. Get to a cool area. Sip water.</strong>
+          If someone is confused, stops sweating despite heat, or loses coordination — these are emergency signs.
+        </div>
+      </div>
+
+      <div class="hr-note full">
+        <div class="hr-note-key">Wingmate Protocol</div>
+        <div class="hr-note-body">
+          Watch your group. Cocaine can mask fatigue, dehydration, and physical distress — the person most at risk may not recognise it.
+          <strong>Red flags:</strong> chest pain, severe headache, irregular heartbeat, extreme agitation, confusion, very high temperature.
+          These require immediate access to the event medical or harm reduction team.
+          Do not wait to see if it passes.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ⑤ RESEARCH NOTE / CONTEXT BLOCK -->
+<section class="research-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Archive Context</div>
+  <div class="research-inner reveal">
+    <div class="research-sidebar">
+      <div class="research-sidebar-label">ARCHIVE<br>RECORD</div>
+      <div class="research-sidebar-id">ASA-ST-02</div>
+      <div class="research-sidebar-meta">
+        Type<br>Substance Plate<br><br>
+        Division<br>ViceLab Research<br>Intelligence<br><br>
+        Indexed<br>2026<br><br>
+        Status<br>Canonical Lock
+      </div>
+    </div>
+    <div class="research-body">
+      <h3 class="research-title">Why this plate exists in the archive.</h3>
+      <div class="research-text">
+        <p>
+          Cocaine occupies a specific position in harm reduction conversations that makes accurate information particularly important.
+          It is a substance widely encountered across class and cultural contexts, frequently combined with alcohol, and often used in conditions — extended dancing, heat, social intensity — that amplify its physiological risks substantially.
+        </p>
+        <p>
+          Much public discourse around cocaine operates at two extremes: moral condemnation or casual normalization.
+          Neither framing is pharmacologically useful.
+          This plate exists to provide a third register — <strong>precise, evidence-based, non-judgmental</strong> — for people who want to understand what the substance actually does, and what the real risk profile looks like under festival and nightlife conditions.
+        </p>
+        <p>
+          The DAT blockade model chosen for the visual plate reflects the primary and most clinically significant mechanism: the interruption of dopamine reuptake, and the downstream consequences of sustained monoamine elevation.
+          It is not a complete pharmacological account — it is a designed artifact that prioritises transferable understanding over clinical completeness.
+          The archive is an instrument of harm reduction, not a pharmacology textbook.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- RELATED PLATES -->
+<section class="related-section">
+<div class="container">
+  <div class="related-eyebrow reveal">Altered State Archive</div>
+  <div class="related-grid reveal-stagger">
+    <!-- ASA-PL-02 Stimulants class plate -->
+    <a href="/archive/plates/asa-pl-02" class="rel-card" data-accent="stimulant">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <defs>
+            <pattern id="rg1" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(255,184,48,0.06)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#rg1)"/>
+          <ellipse cx="150" cy="95" rx="130" ry="80" fill="rgba(255,184,48,0.05)" filter="url(#gf-haze)"/>
+          <path d="M 30 140 Q 80 60 130 90 Q 180 120 230 55 Q 260 25 290 70" fill="none" stroke="#FFB830" stroke-width="1.2" stroke-opacity="0.55"/>
+          <path d="M 30 155 Q 80 75 130 105 Q 180 135 230 70 Q 260 40 290 85" fill="none" stroke="#FFB830" stroke-width="0.6" stroke-opacity="0.25"/>
+          <circle cx="130" cy="90"  r="5" fill="#FFB830" fill-opacity="0.70"/>
+          <circle cx="230" cy="55"  r="4" fill="#FFB830" fill-opacity="0.60"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#FFB830" fill-opacity="0.30" letter-spacing="1.5">ASA-PL-02 · STIMULANTS</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-02</div>
+        <div class="rel-title">Stimulants</div>
+        <div class="rel-class">
+          Class Plate
+          <span class="rel-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ASA-PL-01 MDMA -->
+    <a href="/archive/plates/asa-pl-01" class="rel-card" data-accent="empathogen">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <defs>
+            <pattern id="rg2" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(228,60,255,0.06)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#rg2)"/>
+          <ellipse cx="150" cy="100" rx="120" ry="75" fill="rgba(228,60,255,0.06)" filter="url(#gf-haze)"/>
+          <path d="M 30 130 Q 70 60 110 95 Q 150 130 190 70 Q 230 20 275 85" fill="none" stroke="#E43CFF" stroke-width="1" stroke-opacity="0.55"/>
+          <path d="M 30 148 Q 70 78 110 113 Q 150 148 190 88 Q 230 38 275 103" fill="none" stroke="#E43CFF" stroke-width="0.6" stroke-opacity="0.28"/>
+          <circle cx="150" cy="100" r="6" fill="#E43CFF" fill-opacity="0.80"/>
+          <circle cx="150" cy="100" r="13" fill="none" stroke="#E43CFF" stroke-width="0.7" stroke-opacity="0.28"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#E43CFF" fill-opacity="0.30" letter-spacing="1.5">ASA-PL-01 · MDMA</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-01</div>
+        <div class="rel-title">MDMA</div>
+        <div class="rel-class">
+          Substance Plate
+          <span class="rel-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ASA-PL-04 Dissociatives -->
+    <a href="/archive/plates/asa-pl-04" class="rel-card" data-accent="dissociative">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <defs>
+            <pattern id="rg3" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(77,163,255,0.06)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#rg3)"/>
+          <path d="M 40 100 L 88 100" stroke="#4DA3FF" stroke-width="1.2" stroke-opacity="0.50"/>
+          <path d="M 100 100 L 142 100" stroke="#4DA3FF" stroke-width="1" stroke-opacity="0.35"/>
+          <path d="M 158 100 L 202 100" stroke="#4DA3FF" stroke-width="1.1" stroke-opacity="0.44"/>
+          <path d="M 215 100 L 262 100" stroke="#4DA3FF" stroke-width="0.9" stroke-opacity="0.30"/>
+          <circle cx="88" cy="100" r="5" fill="#4DA3FF" fill-opacity="0.65"/>
+          <circle cx="142" cy="100" r="4" fill="#4DA3FF" fill-opacity="0.48"/>
+          <circle cx="202" cy="100" r="4.5" fill="#4DA3FF" fill-opacity="0.58"/>
+          <ellipse cx="150" cy="100" rx="80" ry="40" fill="none" stroke="#4DA3FF" stroke-width="0.6" stroke-opacity="0.20" stroke-dasharray="4 6"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4DA3FF" fill-opacity="0.30" letter-spacing="1.5">ASA-PL-04 · DISSOCIATIVES</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-04</div>
+        <div class="rel-title">Dissociatives</div>
+        <div class="rel-class">
+          Class Plate
+          <span class="rel-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ASA-PL-05 Depressants -->
+    <a href="/archive/plates/asa-pl-05" class="rel-card" data-accent="opioid">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <defs>
+            <pattern id="rg4" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(255,107,107,0.06)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#rg4)"/>
+          <path d="M 20 80 Q 60 115 100 92 Q 140 70 180 112 Q 220 152 262 122 Q 282 108 300 116" fill="none" stroke="#FF6B6B" stroke-width="1.2" stroke-opacity="0.48"/>
+          <path d="M 20 98 Q 60 133 100 110 Q 140 88 180 130 Q 220 170 262 140" fill="none" stroke="#FF6B6B" stroke-width="0.7" stroke-opacity="0.24"/>
+          <circle cx="100" cy="92"  r="4" fill="#FF6B6B" fill-opacity="0.58"/>
+          <circle cx="180" cy="112" r="4" fill="#FF6B6B" fill-opacity="0.55"/>
+          <circle cx="262" cy="122" r="3.5" fill="#FF6B6B" fill-opacity="0.46"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#FF6B6B" fill-opacity="0.30" letter-spacing="1.5">ASA-PL-05 · DEPRESSANTS</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-05</div>
+        <div class="rel-title">Depressants</div>
+        <div class="rel-class">
+          Class Plate
+          <span class="rel-arrow">→</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+</section>
+
+
+<!-- ⑥ PLATE NAVIGATION -->
+<div class="plate-nav">
+<div class="container">
+  <div class="plate-nav-inner">
+    <a href="/archive/plates/asa-st-01" class="plate-nav-link prev">
+      <span>←</span>
+      <span>Previous Plate<span class="plate-nav-link-sub">ASA-ST-01 · Amphetamine</span></span>
+    </a>
+    <a href="/archive" class="plate-nav-back">Back to Archive</a>
+    <a href="/archive/plates/asa-st-03" class="plate-nav-link next">
+      <span>Next Plate<span class="plate-nav-link-sub">ASA-ST-03 · Methamphetamine</span></span>
+      <span>→</span>
+    </a>
+  </div>
+</div>
+</div>
+
+<footer>
+  <a href="/" class="footer-brand">Vice<em>Lab</em></a>
+  <div class="footer-sys">Altered State Archive · <em>ViceLab Research Division</em></div>
+  <div class="footer-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive">Archive</a>
+    <a href="/field-manual">Field Manual</a>
+  </div>
+</footer>
+
+</div><!-- /site -->
+<script src="asa-plate.js"></script>
+</body>
+</html>

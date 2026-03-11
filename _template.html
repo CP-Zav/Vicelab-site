@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ASA PLATE PAGE TEMPLATE  ·  Altered State Archive  ·  ViceLab          ║
+║  v2.0 · 2026                                                            ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║                                                                          ║
+║  REQUIRED SHARED FILES (same directory as this file)                    ║
+║  ─────────────────────────────────────────────────────────────────────  ║
+║    asa-plate.css   Shared layout, components, responsive rules          ║
+║    asa-plate.js    Starfield, floating tags, scroll reveal              ║
+║                                                                          ║
+║  HOW TO CREATE A NEW PLATE PAGE                                         ║
+║  ─────────────────────────────────────────────────────────────────────  ║
+║  1. Copy this file. Rename: asa-[substance].html                        ║
+║     e.g.  asa-ketamine.html  /  asa-lsd.html                           ║
+║                                                                          ║
+║  2. Fill in the 4 CONFIG values (marked ← CHANGE) at the top:          ║
+║     ① Page title                                                        ║
+║     ② Six --cc-* CSS colour tokens                                      ║
+║     ③ data-cc-rgb on <html>  (particle colour)                         ║
+║     ④ data-plate-tags on <html>  (floating tag terms)                  ║
+║                                                                          ║
+║  3. Fill every <!-- SLOT: … --> in the HTML body.                       ║
+║     Slots mark the only content that changes per plate.                 ║
+║                                                                          ║
+║  4. Replace the SVG inside <!-- SLOT: PLATE SVG ART -->.               ║
+║     Always keep viewBox="0 0 900 675".                                  ║
+║                                                                          ║
+║  5. Do NOT touch anything else. All layout lives in asa-plate.css.     ║
+║                                                                          ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║  CLASS COLOUR QUICK REFERENCE                                           ║
+║  ─────────────────────────────────────────────────────────────────────  ║
+║  Stimulants    #4DA3FF   rgb(77,163,255)    electric blue               ║
+║  Psychedelics  #A78BFA   rgb(167,139,250)   violet                      ║
+║  Opioids       #F0A030   rgb(240,160,48)    amber                       ║
+║  Dissociatives #00FFC6   rgb(0,255,198)     teal                        ║
+║  Empathogens   #E43CFF   rgb(228,60,255)    magenta                     ║
+║  Cannabinoids  #7EE482   rgb(126,228,130)   soft green                  ║
+║  Entactogens   #A78BFA   rgb(167,139,250)   violet                      ║
+╚══════════════════════════════════════════════════════════════════════════╝
+-->
+
+<!--
+  CONFIG ③ + ④ — set data attributes here.
+  data-cc-rgb:    R,G,B of class colour (no # no alpha — matches --cc below)
+  data-plate-tags: comma-separated archive terms for floating tag layer
+-->
+<html lang="en"
+  data-cc-rgb="77,163,255"
+  data-plate-tags="ASA-XX-00,[SUBSTANCE],[TERM],[TERM],[CLASS],HARM REDUCTION,VICELAB,ASA">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CONFIG ① — Page title ← CHANGE -->
+<title>ASA-XX-00 · [Substance] — Altered State Archive · ViceLab</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<!-- Shared layout stylesheet — DO NOT INLINE -->
+<link rel="stylesheet" href="asa-plate.css">
+
+<style>
+/*
+  CONFIG ② — Class accent colour tokens.
+  Change ONLY these six values. Every accent on the page inherits from them.
+  ─────────────────────────────────────────────────────────────────────────
+  --cc         Base class colour hex                       ← CHANGE
+  --cc-dim     rgba tint, opacity ≈ 0.06  (hover bg)      ← CHANGE
+  --cc-mid     rgba tint, opacity ≈ 0.13  (panel tint)    ← CHANGE
+  --cc-border  rgba tint, opacity ≈ 0.26  (frames/tags)   ← CHANGE
+  --cc-glow    box-shadow string          (plate frame)    ← CHANGE
+  --cc-pulse   rgba tint, opacity ≈ 0.28  (pulse ring)    ← CHANGE
+*/
+:root {
+  --cc:        #4DA3FF;
+  --cc-dim:    rgba(77, 163, 255, 0.06);
+  --cc-mid:    rgba(77, 163, 255, 0.13);
+  --cc-border: rgba(77, 163, 255, 0.26);
+  --cc-glow:   0 0 36px rgba(77,163,255,0.14), 0 0 80px rgba(77,163,255,0.06);
+  --cc-pulse:  rgba(77, 163, 255, 0.28);
+}
+</style>
+</head>
+
+<body>
+
+<!-- Atmosphere layers (static — do not edit) -->
+<canvas id="c-field"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="tag-layer" id="tag-layer"></div>
+
+<div class="site">
+
+<!-- Nav (static — do not edit) -->
+<nav>
+  <a href="/" class="nav-logo">Vice<em>Lab</em></a>
+  <div class="nav-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive" class="nav-active">Archive</a>
+    <a href="/contact" class="nav-badge">Work with us</a>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ①  ARCHIVE HEADER
+═══════════════════════════════════════════════════════════════════ -->
+<div class="arc-header">
+<div class="container">
+
+  <!--
+    SLOT: BREADCRUMB
+    Update: class filter slug + current plate ID.
+    Filter slugs: stimulant / psychedelic / opioid / dissociative /
+                  empathogen / cannabinoid / entactogen
+  -->
+  <div class="breadcrumb reveal">
+    <a href="/archive">Archive</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/archive?filter=stimulant">[Class plural]</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">ASA-XX-00</span>
+  </div>
+
+  <div class="arc-plate-label reveal">ARCHIVE PLATE</div>
+
+  <!--
+    SLOT: PLATE ID
+    Format: ASA-[CLASS CODE]-[NUMBER]
+    Class codes: ST Stimulant · PS Psychedelic · OP Opioid
+                 DS Dissociative · EM Empathogen · CN Cannabinoid
+  -->
+  <div class="arc-plate-id reveal">
+    <span class="arc-plate-id-dot"></span>
+    ASA-XX-00
+  </div>
+
+  <!--
+    SLOT: SUBSTANCE TITLE
+    Wrap ONLY the first letter in .arc-title-accent to apply class colour.
+    Remaining letters are plain text.
+  -->
+  <h1 class="arc-title reveal">
+    <span class="arc-title-accent">S</span>ubstance Name
+  </h1>
+
+  <!--
+    SLOT: SYSTEM METADATA STRIP
+    Keep STATUS "Verified" and EDITION "Canonical Lock" for published plates.
+    Update: CLASS name · RELEASE year if not 2026.
+    SOURCE is always "ViceLab Research Intelligence".
+  -->
+  <div class="arc-system-strip reveal">
+    <span>CLASS:</span>
+    <span class="arc-strip-val accent">[Class name]</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>STATUS:</span>
+    <span class="arc-strip-val">Verified</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>RELEASE:</span>
+    <span class="arc-strip-val">2026</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>EDITION:</span>
+    <span class="arc-strip-val">Canonical Lock</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>SOURCE:</span>
+    <span class="arc-strip-val">ViceLab Research Intelligence</span>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ②  PLATE ARTIFACT DISPLAY
+═══════════════════════════════════════════════════════════════════ -->
+<section class="plate-display-section">
+<div class="container">
+
+  <div class="plate-frame-wrap reveal">
+    <div class="corner-tr"></div>
+    <div class="corner-bl"></div>
+    <div class="plate-frame">
+      <div class="plate-visual">
+
+        <!--
+          SLOT: PLATE SVG ART
+          ──────────────────────────────────────────────────────────────
+          Replace this entire <svg>…</svg> block with the plate's
+          visual pharmacology diagram.
+
+          Always keep:
+            viewBox="0 0 900 675"
+            preserveAspectRatio="xMidYMid slice"
+
+          SVG conventions (maintain across all plates):
+          • Background:      url(#bg-g) — deep space radial gradient
+          • Coord grid:      url(#coord-grid) + url(#fine-grid)
+          • Primary colour:  match the plate's --cc hex value
+          • Annotation text: IBM Plex Mono, 7–8px, fill-opacity 0.35–0.65
+          • Watermark strip: bottom-left, 7px, fill-opacity 0.22
+            Format: [ID] · [SUBSTANCE] · [CLASS] · ALTERED STATE ARCHIVE
+                    · VICELAB RESEARCH INTELLIGENCE · CANONICAL LOCK · 2026
+          • Classification:  top-right, 7px, fill-opacity 0.20–0.30
+            Line 1: [PLATE TYPE]  (e.g. SUBSTANCE PLATE / CLASS PLATE)
+            Line 2: [ID] · [CLASS]
+          • Coord labels:    A1–F1 columns (x=84,224,364,504,644,784 y=12)
+                             A2–A6 rows    (x=6, y=90,200,310,420,560)
+          • Vignette:        url(#vignette-g) as last element
+          ──────────────────────────────────────────────────────────────
+        -->
+        <svg viewBox="0 0 900 675" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <!-- Standard base gradients — always include, adjust colours to match class -->
+            <radialGradient id="bg-g" cx="42%" cy="38%" r="70%">
+              <stop offset="0%"   stop-color="#06080F"/>
+              <stop offset="55%"  stop-color="#070B15"/>
+              <stop offset="100%" stop-color="#04060D"/>
+            </radialGradient>
+            <pattern id="coord-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(150,180,255,0.04)" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="fine-grid" width="15" height="15" patternUnits="userSpaceOnUse">
+              <path d="M 15 0 L 0 0 0 15" fill="none" stroke="rgba(150,180,255,0.015)" stroke-width="0.3"/>
+            </pattern>
+            <radialGradient id="vignette-g" cx="50%" cy="50%" r="70%">
+              <stop offset="55%"  stop-color="transparent"/>
+              <stop offset="100%" stop-color="rgba(4,6,13,0.65)"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Base layers — always include in this order -->
+          <rect width="900" height="675" fill="url(#bg-g)"/>
+          <rect width="900" height="675" fill="url(#fine-grid)"/>
+          <rect width="900" height="675" fill="url(#coord-grid)"/>
+
+          <!-- ╔═══════════════════════════════════════╗
+               ║  PLATE-SPECIFIC DIAGRAM CONTENT HERE  ║
+               ╚═══════════════════════════════════════╝ -->
+
+          <!-- Coord labels — update fill colour to match class -->
+          <text x="84"  y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.18)" letter-spacing="1">A1</text>
+          <text x="224" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.18)" letter-spacing="1">B1</text>
+          <text x="364" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.18)" letter-spacing="1">C1</text>
+          <text x="504" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.18)" letter-spacing="1">D1</text>
+          <text x="644" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.18)" letter-spacing="1">E1</text>
+          <text x="784" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.18)" letter-spacing="1">F1</text>
+          <text x="6" y="90"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.14)">A2</text>
+          <text x="6" y="200" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.14)">A3</text>
+          <text x="6" y="310" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.14)">A4</text>
+          <text x="6" y="420" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.14)">A5</text>
+          <text x="6" y="560" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(150,180,255,0.14)">A6</text>
+
+          <!-- Classification marks — update text to match plate -->
+          <text x="880" y="22" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(150,180,255,0.30)" letter-spacing="1.5">SUBSTANCE PLATE</text>
+          <text x="880" y="33" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(150,180,255,0.20)" letter-spacing="1.5">ASA-XX-00 · [CLASS]</text>
+
+          <!-- Identity watermark — update to match plate -->
+          <text x="20" y="660" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(150,180,255,0.22)" letter-spacing="2">ASA-XX-00 · [SUBSTANCE] · [CLASS] · ALTERED STATE ARCHIVE · VICELAB RESEARCH INTELLIGENCE · CANONICAL LOCK · 2026</text>
+
+          <!-- Vignette — always last -->
+          <rect width="900" height="675" fill="url(#vignette-g)"/>
+        </svg>
+
+      </div><!-- /plate-visual -->
+
+      <!--
+        SLOT: PLATE STRIP LABEL
+        Format: [ID] · [Substance] · [Plate Type] · Altered State Archive · [Year]
+        Plate types: Substance Plate / Class Plate / Special Plate
+      -->
+      <div class="plate-strip">
+        <div class="plate-strip-id">ASA-XX-00 · [Substance] · Substance Plate · Altered State Archive · 2026</div>
+        <div class="plate-strip-status">
+          <div class="plate-strip-dot"></div>
+          Canonical Lock
+        </div>
+      </div>
+
+    </div><!-- /plate-frame -->
+  </div><!-- /plate-frame-wrap -->
+
+  <!--
+    SLOT: PLATE CAPTION
+    One sentence: visual model name + what is depicted.
+    Format: Research-informed visual pharmacology plate. [Model] — [Description].
+  -->
+  <p class="plate-caption reveal">
+    Research-informed visual pharmacology plate. [Model Name] — [Brief description of mechanism depicted].
+  </p>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ③  SCIENTIFIC METADATA PANEL
+═══════════════════════════════════════════════════════════════════ -->
+<section class="sci-meta-section">
+<div class="container">
+
+  <div class="section-eyebrow reveal">Scientific Record</div>
+  <h2 class="section-title reveal">Pharmacological Profile</h2>
+
+  <!--
+    SLOT: METADATA TABLE
+    Required rows, in order:
+      CLASS · SCIENTIFIC NAME · COMMON NAMES
+      [meta-divider]
+      PRIMARY MECHANISM · [optional secondary mechanism row]
+      [meta-divider]
+      HALF-LIFE · ONSET · DURATION
+      [meta-divider]
+      PRIMARY RISKS · INTERACTIONS
+      [meta-divider]
+      STATUS (always: Verified · Canonical Lock · [year])
+
+    Tag severity classes:
+      .tag        class-colour (neutral pharmacological info)
+      .tag.warn   amber        (caution — documented risk)
+      .tag.alert  red          (critical — documented danger)
+      .tag.ok     green        (nominal / safe context)
+  -->
+  <table class="meta-table reveal-stagger">
+    <tbody>
+
+      <tr>
+        <td class="meta-key">Class</td>
+        <td class="meta-val">
+          <strong>[Class name]</strong>
+          <span class="tag">[Pharmacological family]</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Scientific Name</td>
+        <td class="meta-val"><strong>[IUPAC or accepted scientific name]</strong></td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Common Names</td>
+        <td class="meta-val">[Street names and aliases · separated · by · dots]</td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Primary Mechanism</td>
+        <td class="meta-val">
+          <strong>[Mechanism label.]</strong>
+          [1–3 sentences describing receptor/transporter-level action.]
+        </td>
+      </tr>
+
+      <!--
+        Optional secondary mechanism row — add when pharmacologically significant.
+        Remove if not needed.
+      -->
+      <tr>
+        <td class="meta-key">[Secondary Mechanism]</td>
+        <td class="meta-val">[Description.]</td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Half-Life</td>
+        <td class="meta-val"><strong>[X – X hours]</strong> ([route qualifier])</td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Onset</td>
+        <td class="meta-val">
+          [Route]: <strong>[X–X min]</strong> ·
+          [Route]: <strong>[X–X min]</strong>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Duration</td>
+        <td class="meta-val">
+          [Route]: <strong>[X–X hours]</strong> ·
+          After-effects: <strong>[X–X hours]</strong>
+        </td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Primary Risks</td>
+        <td class="meta-val">
+          <span class="tag alert">[Critical risk]</span>
+          <span class="tag warn">[Warning risk]</span>
+          <span class="tag warn">[Warning risk]</span>
+          <br>
+          [1–2 sentences on the dominant risk mechanism in festival context.]
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Interactions</td>
+        <td class="meta-val">
+          <span class="tag alert">[Dangerous combination]</span>
+          <span class="tag warn">[Caution combination]</span>
+          <br>
+          [1 sentence on the key interaction. Lead with the most dangerous.]
+        </td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Status</td>
+        <td class="meta-val status-verified">
+          <span class="status-dot"></span>
+          <strong>Verified</strong> · Canonical Lock · 2026
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ④  HARM REDUCTION NOTES
+═══════════════════════════════════════════════════════════════════ -->
+<section class="hr-section">
+<div class="container">
+
+  <div class="section-eyebrow reveal">Field Intelligence</div>
+
+  <div class="hr-panel reveal">
+
+    <!--
+      SLOT: HR PANEL ID BADGE — update to match plate ID
+    -->
+    <div class="hr-panel-header">
+      <div class="hr-panel-title">
+        HARM REDUCTION NOTES
+        <span class="hr-panel-title-mark">ASA-XX-00</span>
+      </div>
+      <div class="hr-panel-meta">Evidence-first · Non-judgemental · Operational</div>
+    </div>
+
+    <!--
+      SLOT: HR NOTES GRID
+      ──────────────────────────────────────────────────────────────────
+      Minimum 4 notes. Recommended: 5–7 paired notes + 1 full-width.
+
+      Grid layout: 2-column. Pairs automatically.
+      Last note should use class="hr-note full" — always the
+      Wingmate Protocol or equivalent safety summary.
+
+      Each note:
+        .hr-note-key  Short topic label (2–3 words max)
+        .hr-note-body 2–4 sentences. Evidence-first. Operational tone.
+                      Bold the single most critical fact or action.
+
+      Tone rules:
+        ✓ Factual, not moralising
+        ✓ Imperative where it saves lives: "Stop. Rest. Seek help."
+        ✓ Bold the most critical action or fact per note
+        ✗ No alarmism. No judgment. No lifestyle commentary.
+        ✗ Never use "you should" — use present tense statements.
+      ──────────────────────────────────────────────────────────────────
+    -->
+    <div class="hr-grid reveal-stagger">
+
+      <div class="hr-note">
+        <div class="hr-note-key">[Topic — 2–3 words]</div>
+        <div class="hr-note-body">
+          [Note body. 2–4 sentences. Evidence-based.
+          <strong>Bold the critical action or fact.</strong>
+          Operational and calm in tone.]
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">[Topic]</div>
+        <div class="hr-note-body">[Note body.]</div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">[Topic]</div>
+        <div class="hr-note-body">[Note body.]</div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">[Topic]</div>
+        <div class="hr-note-body">[Note body.]</div>
+      </div>
+
+      <!-- Add more .hr-note pairs as needed -->
+
+      <!-- REQUIRED: Full-width closing note — Wingmate Protocol -->
+      <div class="hr-note full">
+        <div class="hr-note-key">Wingmate Protocol</div>
+        <div class="hr-note-body">
+          Watch your group.
+          <strong>Red flags: [3–5 substance-specific observable warning signs].</strong>
+          These require immediate access to the event medical or harm reduction team.
+          Do not wait to see if it passes. Tell them what was taken.
+        </div>
+      </div>
+
+    </div><!-- /hr-grid -->
+  </div><!-- /hr-panel -->
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ⑤  RESEARCH NOTE / CONTEXT BLOCK
+═══════════════════════════════════════════════════════════════════ -->
+<section class="research-section">
+<div class="container">
+
+  <div class="section-eyebrow reveal">Archive Context</div>
+
+  <div class="research-inner reveal">
+
+    <div class="research-sidebar">
+      <div class="research-sidebar-label">ARCHIVE<br>RECORD</div>
+
+      <!-- SLOT: SIDEBAR PLATE ID -->
+      <div class="research-sidebar-id">ASA-XX-00</div>
+
+      <!--
+        SLOT: SIDEBAR METADATA
+        Update Type if this is a Class Plate (not Substance Plate).
+        Division and Status are always fixed.
+      -->
+      <div class="research-sidebar-meta">
+        Type<br>
+        Substance Plate<br>
+        <br>
+        Division<br>
+        ViceLab Research<br>
+        Intelligence<br>
+        <br>
+        Indexed<br>
+        2026<br>
+        <br>
+        Status<br>
+        Canonical Lock
+      </div>
+    </div>
+
+    <div class="research-body">
+
+      <!-- SLOT: RESEARCH TITLE — one sentence, why this plate exists -->
+      <h3 class="research-title">Why this plate exists in the archive.</h3>
+
+      <!--
+        SLOT: RESEARCH BODY TEXT
+        Three paragraphs. Each 80–120 words.
+
+        Para 1: Where this substance sits in public life and festival culture.
+                What contexts make accurate information important.
+                Why this substance belongs in the archive.
+
+        Para 2: The epistemic gap this plate addresses.
+                What existing framings (moral / casual / clinical) miss.
+                The third register: <strong>precise, evidence-based, non-judgmental.</strong>
+
+        Para 3: Why this specific visual model was chosen for the plate art.
+                What it shows. What it does not show by design.
+                What the archive prioritises over completeness.
+      -->
+      <div class="research-text">
+        <p>
+          [Paragraph 1.]
+        </p>
+        <p>
+          [Paragraph 2. Include: <strong>precise, evidence-based, non-judgmental.</strong>]
+        </p>
+        <p>
+          [Paragraph 3.]
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     RELATED PLATES  (always 4 cards)
+═══════════════════════════════════════════════════════════════════ -->
+<section class="related-section">
+<div class="container">
+
+  <div class="related-eyebrow reveal">Altered State Archive</div>
+
+  <!--
+    SLOT: RELATED PLATES GRID
+    Always 4 cards. Choose: same class, adjacent mechanism, or
+    high co-occurrence in festival context.
+
+    data-accent values drive the top-edge hover line colour:
+      stimulant / psychedelic / opioid / dissociative /
+      empathogen / cannabinoid / entactogen
+
+    Thumbnail SVG: viewBox="0 0 300 200"
+    Simplified — use 2–4 key visual elements from the full plate art.
+    Must visually distinguish at card size.
+  -->
+  <div class="related-grid reveal-stagger">
+
+    <a href="/archive/plates/asa-xx-01" class="rel-card" data-accent="stimulant">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <!-- Thumbnail art — replace with simplified plate motif -->
+          <circle cx="150" cy="100" r="45" fill="none" stroke="rgba(77,163,255,0.32)" stroke-width="1"/>
+          <circle cx="150" cy="100" r="5"  fill="#4DA3FF" fill-opacity="0.70"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="rgba(77,163,255,0.30)" letter-spacing="1.5">ASA-XX-01 · [SUBSTANCE]</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-XX-01</div>
+        <div class="rel-title">[Substance]</div>
+        <div class="rel-class">[Class] Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="/archive/plates/asa-xx-02" class="rel-card" data-accent="empathogen">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <circle cx="150" cy="100" r="45" fill="none" stroke="rgba(228,60,255,0.32)" stroke-width="1"/>
+          <circle cx="150" cy="100" r="5"  fill="#E43CFF" fill-opacity="0.70"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="rgba(228,60,255,0.30)" letter-spacing="1.5">ASA-XX-02 · [SUBSTANCE]</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-XX-02</div>
+        <div class="rel-title">[Substance]</div>
+        <div class="rel-class">[Class] Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="/archive/plates/asa-xx-03" class="rel-card" data-accent="psychedelic">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <circle cx="150" cy="100" r="45" fill="none" stroke="rgba(167,139,250,0.32)" stroke-width="1"/>
+          <circle cx="150" cy="100" r="5"  fill="#A78BFA" fill-opacity="0.70"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="rgba(167,139,250,0.30)" letter-spacing="1.5">ASA-XX-03 · [SUBSTANCE]</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-XX-03</div>
+        <div class="rel-title">[Substance]</div>
+        <div class="rel-class">[Class] Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="/archive/plates/asa-xx-04" class="rel-card" data-accent="dissociative">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <circle cx="150" cy="100" r="45" fill="none" stroke="rgba(0,255,198,0.32)" stroke-width="1"/>
+          <circle cx="150" cy="100" r="5"  fill="#00FFC6" fill-opacity="0.70"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="rgba(0,255,198,0.30)" letter-spacing="1.5">ASA-XX-04 · [SUBSTANCE]</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-XX-04</div>
+        <div class="rel-title">[Substance]</div>
+        <div class="rel-class">[Class] Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+  </div>
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ⑥  PLATE NAVIGATION + ARCHIVE FOOTER
+═══════════════════════════════════════════════════════════════════ -->
+<div class="plate-nav">
+<div class="container">
+  <div class="plate-nav-inner">
+
+    <!-- SLOT: PREV PLATE LINK — set href + sub-label text -->
+    <a href="/archive/plates/asa-xx-prev" class="plate-nav-link prev">
+      <span>←</span>
+      <span>
+        Previous Plate
+        <span class="plate-nav-link-sub">ASA-XX-prev · [Substance]</span>
+      </span>
+    </a>
+
+    <a href="/archive" class="plate-nav-back">Back to Archive</a>
+
+    <!-- SLOT: NEXT PLATE LINK — set href + sub-label text -->
+    <a href="/archive/plates/asa-xx-next" class="plate-nav-link next">
+      <span>
+        Next Plate
+        <span class="plate-nav-link-sub">ASA-XX-next · [Substance]</span>
+      </span>
+      <span>→</span>
+    </a>
+
+  </div>
+</div>
+</div>
+
+<footer>
+  <a href="/" class="footer-brand">Vice<em>Lab</em></a>
+  <div class="footer-sys">
+    Altered State Archive · <em>ViceLab Research Division</em>
+  </div>
+  <div class="footer-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive">Archive</a>
+    <a href="/field-manual">Field Manual</a>
+  </div>
+</footer>
+
+</div><!-- /site -->
+
+<!-- Shared script — DO NOT inline or duplicate -->
+<script src="asa-plate.js"></script>
+
+</body>
+</html>

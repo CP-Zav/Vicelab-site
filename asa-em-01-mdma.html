@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ASA-EM-01 · MDMA — Altered State Archive · ViceLab                    ║
+║  Template: asa-plate-template-v2.html                                   ║
+║  Class: Empathogen · Accent: #E43CFF (Magenta)                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="en"
+  data-cc-rgb="228,60,255"
+  data-plate-tags="ASA-EM-01,MDMA,SEROTONIN,EMPATHOGEN,ENTACTOGEN,SERT,5-HT,MOLLY,ECSTASY,HARM REDUCTION,VICELAB,OXYTOCIN">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASA-EM-01 · MDMA — Altered State Archive · ViceLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="asa-plate.css">
+<style>
+/* CONFIG ② — Empathogen class: magenta */
+:root {
+  --cc:        #E43CFF;
+  --cc-dim:    rgba(228, 60, 255, 0.06);
+  --cc-mid:    rgba(228, 60, 255, 0.13);
+  --cc-border: rgba(228, 60, 255, 0.26);
+  --cc-glow:   0 0 36px rgba(228,60,255,0.14), 0 0 80px rgba(228,60,255,0.06);
+  --cc-pulse:  rgba(228, 60, 255, 0.28);
+}
+</style>
+</head>
+
+<body>
+<canvas id="c-field"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="tag-layer" id="tag-layer"></div>
+
+<div class="site">
+
+<nav>
+  <a href="/" class="nav-logo">Vice<em>Lab</em></a>
+  <div class="nav-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive" class="nav-active">Archive</a>
+    <a href="/contact" class="nav-badge">Work with us</a>
+  </div>
+</nav>
+
+
+<!-- ① ARCHIVE HEADER -->
+<div class="arc-header">
+<div class="container">
+  <div class="breadcrumb reveal">
+    <a href="/archive">Archive</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/archive?filter=empathogen">Empathogens</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">ASA-EM-01</span>
+  </div>
+  <div class="arc-plate-label reveal">ARCHIVE PLATE</div>
+  <div class="arc-plate-id reveal">
+    <span class="arc-plate-id-dot"></span>
+    ASA-EM-01
+  </div>
+  <h1 class="arc-title reveal">
+    <span class="arc-title-accent">M</span>DMA
+  </h1>
+  <div class="arc-system-strip reveal">
+    <span>CLASS:</span>
+    <span class="arc-strip-val accent">Empathogen</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>STATUS:</span>
+    <span class="arc-strip-val">Verified</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>RELEASE:</span>
+    <span class="arc-strip-val">2026</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>EDITION:</span>
+    <span class="arc-strip-val">Canonical Lock</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>SOURCE:</span>
+    <span class="arc-strip-val">ViceLab Research Intelligence</span>
+  </div>
+</div>
+</div>
+
+
+<!-- ② PLATE ARTIFACT DISPLAY -->
+<section class="plate-display-section">
+<div class="container">
+  <div class="plate-frame-wrap reveal">
+    <div class="corner-tr"></div>
+    <div class="corner-bl"></div>
+    <div class="plate-frame">
+      <div class="plate-visual">
+        <svg viewBox="0 0 900 675" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bg-g" cx="50%" cy="42%" r="70%">
+              <stop offset="0%"   stop-color="#080410"/>
+              <stop offset="55%"  stop-color="#070B15"/>
+              <stop offset="100%" stop-color="#04060D"/>
+            </radialGradient>
+            <radialGradient id="core-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#E43CFF" stop-opacity="0.16"/>
+              <stop offset="100%" stop-color="#E43CFF" stop-opacity="0"/>
+            </radialGradient>
+            <pattern id="coord-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(228,60,255,0.040)" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="fine-grid" width="15" height="15" patternUnits="userSpaceOnUse">
+              <path d="M 15 0 L 0 0 0 15" fill="none" stroke="rgba(228,60,255,0.015)" stroke-width="0.3"/>
+            </pattern>
+            <filter id="gf-soft"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="gf-haze"><feGaussianBlur stdDeviation="12"/></filter>
+            <radialGradient id="vignette-g" cx="50%" cy="50%" r="70%">
+              <stop offset="55%"  stop-color="transparent"/>
+              <stop offset="100%" stop-color="rgba(4,6,13,0.65)"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="900" height="675" fill="url(#bg-g)"/>
+          <rect width="900" height="675" fill="url(#fine-grid)"/>
+          <rect width="900" height="675" fill="url(#coord-grid)"/>
+          <ellipse cx="450" cy="320" rx="350" ry="240" fill="url(#core-glow)" filter="url(#gf-haze)"/>
+
+          <!-- ── MDMA: Triple Monoamine Release Model ──
+               Visual concept: three interlocking wave systems
+               representing 5-HT (serotonin), DA (dopamine),
+               and NE (norepinephrine) release cascades —
+               the signature pharmacology of MDMA.
+               The serotonin wave is dominant (primary release).
+          -->
+
+          <!-- PRESYNAPTIC MEMBRANE -->
+          <rect x="80" y="185" width="740" height="1.5" fill="rgba(228,60,255,0.22)" filter="url(#gf-soft)"/>
+          <rect x="80" y="187" width="740" height="0.5" fill="rgba(228,60,255,0.10)"/>
+          <!-- POSTSYNAPTIC MEMBRANE -->
+          <rect x="80" y="470" width="740" height="1.5" fill="rgba(228,60,255,0.18)" filter="url(#gf-soft)"/>
+          <text x="76" y="183" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(228,60,255,0.35)" letter-spacing="1.2">PRESYNAPTIC</text>
+          <text x="76" y="468" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(228,60,255,0.28)" letter-spacing="1.2">POSTSYNAPTIC</text>
+
+          <!-- Synaptic cleft fill -->
+          <rect x="80" y="186" width="740" height="285" fill="rgba(228,60,255,0.010)"/>
+
+          <!-- SEROTONIN WAVE — primary, dominant, magenta -->
+          <!-- MDMA releases ~3x more serotonin than dopamine -->
+          <path d="M 80 310 Q 160 220 240 300 Q 320 380 400 290 Q 480 200 560 300 Q 640 400 720 300 Q 780 240 820 270"
+            fill="none" stroke="#E43CFF" stroke-width="1.6" stroke-opacity="0.60" filter="url(#gf-soft)"/>
+          <path d="M 80 330 Q 160 240 240 320 Q 320 400 400 310 Q 480 220 560 320 Q 640 420 720 320 Q 780 260 820 290"
+            fill="none" stroke="#E43CFF" stroke-width="0.8" stroke-opacity="0.28"/>
+
+          <!-- DOPAMINE WAVE — secondary, compressed, blue-tinted -->
+          <path d="M 80 340 Q 180 280 290 330 Q 400 380 510 320 Q 620 260 740 330 Q 790 355 820 340"
+            fill="none" stroke="#B060FF" stroke-width="1.0" stroke-opacity="0.38"/>
+          <path d="M 80 355 Q 180 295 290 345 Q 400 395 510 335 Q 620 275 740 345"
+            fill="none" stroke="#B060FF" stroke-width="0.6" stroke-opacity="0.18"/>
+
+          <!-- NOREPINEPHRINE WAVE — tertiary, fastest, narrower amplitude -->
+          <path d="M 80 360 Q 150 320 240 360 Q 330 400 420 355 Q 510 310 600 355 Q 690 400 780 360 Q 810 348 820 352"
+            fill="none" stroke="#C880FF" stroke-width="0.8" stroke-opacity="0.28"/>
+
+          <!-- SERT — serotonin transporter (primary MDMA target) -->
+          <!-- Three SERT proteins shown — all reversed/blocked by MDMA -->
+          <!-- SERT 1 — central, active reversal site -->
+          <path d="M 418 152 Q 411 167 420 180 Q 411 192 420 187" fill="none" stroke="rgba(228,60,255,0.50)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 442 152 Q 449 167 440 180 Q 449 192 440 187" fill="none" stroke="rgba(228,60,255,0.50)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="420" y1="168" x2="440" y2="168" stroke="rgba(228,60,255,0.30)" stroke-width="1.2"/>
+          <!-- SERT mouth — reversed arrow (MDMA triggers reversal of transport) -->
+          <path d="M 408 187 L 418 187 L 418 200 L 442 200 L 442 187 L 452 187"
+            fill="none" stroke="#E43CFF" stroke-width="1.2" stroke-opacity="0.55"/>
+          <!-- Reversal arrow pointing OUT (efflux, not reuptake) -->
+          <line x1="430" y1="200" x2="430" y2="175" stroke="rgba(228,60,255,0.60)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <defs>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M 0 0 L 6 3 L 0 6 Z" fill="rgba(228,60,255,0.60)"/>
+            </marker>
+          </defs>
+          <ellipse cx="430" cy="195" rx="18" ry="7" fill="rgba(228,60,255,0.12)" stroke="#E43CFF" stroke-width="0.9" stroke-opacity="0.65" filter="url(#gf-soft)"/>
+          <ellipse cx="430" cy="195" rx="9"  ry="3.5" fill="rgba(228,60,255,0.22)"/>
+
+          <!-- SERT 2 — left site -->
+          <path d="M 228 158 Q 222 170 230 182 Q 222 192 230 188" fill="none" stroke="rgba(228,60,255,0.32)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 248 158 Q 254 170 246 182 Q 254 192 246 188" fill="none" stroke="rgba(228,60,255,0.32)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 220 188 L 228 188 L 228 202 L 248 202 L 248 188 L 256 188" fill="none" stroke="#E43CFF" stroke-width="0.9" stroke-opacity="0.38"/>
+          <ellipse cx="238" cy="196" rx="14" ry="6" fill="rgba(228,60,255,0.08)" stroke="#E43CFF" stroke-width="0.7" stroke-opacity="0.42"/>
+
+          <!-- SERT 3 — right site -->
+          <path d="M 628 158 Q 622 170 630 182 Q 622 192 630 188" fill="none" stroke="rgba(228,60,255,0.28)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 648 158 Q 654 170 646 182 Q 654 192 646 188" fill="none" stroke="rgba(228,60,255,0.28)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 620 188 L 628 188 L 628 202 L 648 202 L 648 188 L 656 188" fill="none" stroke="#E43CFF" stroke-width="0.9" stroke-opacity="0.35"/>
+          <ellipse cx="638" cy="196" rx="14" ry="6" fill="rgba(228,60,255,0.06)" stroke="#E43CFF" stroke-width="0.7" stroke-opacity="0.38"/>
+
+          <!-- Serotonin molecules in cleft — abundant -->
+          <circle cx="350" cy="280" r="7"   fill="#E43CFF" fill-opacity="0.70" filter="url(#gf-soft)"/>
+          <circle cx="350" cy="280" r="13"  fill="none" stroke="#E43CFF" stroke-width="0.8" stroke-opacity="0.28"/>
+          <circle cx="410" cy="340" r="6"   fill="#E43CFF" fill-opacity="0.62" filter="url(#gf-soft)"/>
+          <circle cx="470" cy="260" r="7.5" fill="#E43CFF" fill-opacity="0.68" filter="url(#gf-soft)"/>
+          <circle cx="530" cy="310" r="5.5" fill="#E43CFF" fill-opacity="0.55"/>
+          <circle cx="300" cy="320" r="5"   fill="#E43CFF" fill-opacity="0.50"/>
+          <circle cx="580" cy="265" r="5"   fill="#E43CFF" fill-opacity="0.48"/>
+          <circle cx="250" cy="265" r="4.5" fill="#E43CFF" fill-opacity="0.42" filter="url(#gf-soft)"/>
+          <circle cx="630" cy="330" r="4"   fill="#E43CFF" fill-opacity="0.38"/>
+          <circle cx="200" cy="310" r="4"   fill="#E43CFF" fill-opacity="0.35"/>
+          <circle cx="700" cy="290" r="3.5" fill="#E43CFF" fill-opacity="0.30"/>
+          <circle cx="160" cy="350" r="3"   fill="#E43CFF" fill-opacity="0.25"/>
+          <circle cx="740" cy="350" r="3"   fill="#E43CFF" fill-opacity="0.22"/>
+
+          <!-- Post-synaptic 5-HT receptors -->
+          <rect x="155" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.45"/>
+          <rect x="220" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.52"/>
+          <rect x="285" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.58" filter="url(#gf-soft)"/>
+          <rect x="350" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.62" filter="url(#gf-soft)"/>
+          <rect x="415" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.65" filter="url(#gf-soft)"/>
+          <rect x="480" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.58"/>
+          <rect x="545" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.50"/>
+          <rect x="610" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.40"/>
+          <rect x="675" y="467" width="7" height="6" rx="1" fill="#E43CFF" fill-opacity="0.30"/>
+
+          <!-- Annotation lines + labels -->
+          <line x1="452" y1="192" x2="520" y2="162" stroke="rgba(228,60,255,0.28)" stroke-width="0.5"/>
+          <text x="523" y="159" font-family="IBM Plex Mono,monospace" font-size="7.5" fill="#E43CFF" fill-opacity="0.68" letter-spacing="1.5">MDMA · SERT REVERSAL</text>
+          <line x1="430" y1="210" x2="480" y2="255" stroke="rgba(228,60,255,0.20)" stroke-width="0.5"/>
+          <text x="483" y="258" font-family="IBM Plex Mono,monospace" font-size="7" fill="#E43CFF" fill-opacity="0.50" letter-spacing="1.2">SEROTONIN EFFLUX</text>
+          <line x1="340" y1="275" x2="270" y2="248" stroke="rgba(228,60,255,0.18)" stroke-width="0.5"/>
+          <text x="175" y="245" font-family="IBM Plex Mono,monospace" font-size="7" fill="#E43CFF" fill-opacity="0.46" letter-spacing="1.2">5-HT OVERFLOW</text>
+          <line x1="238" y1="208" x2="200" y2="230" stroke="rgba(228,60,255,0.18)" stroke-width="0.5"/>
+          <text x="118" y="227" font-family="IBM Plex Mono,monospace" font-size="7" fill="#E43CFF" fill-opacity="0.38" letter-spacing="1.2">SERT-L</text>
+          <line x1="638" y1="208" x2="680" y2="225" stroke="rgba(228,60,255,0.18)" stroke-width="0.5"/>
+          <text x="682" y="222" font-family="IBM Plex Mono,monospace" font-size="7" fill="#E43CFF" fill-opacity="0.36" letter-spacing="1.2">SERT-R</text>
+
+          <!-- Wave labels -->
+          <text x="830" y="268" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(228,60,255,0.50)" letter-spacing="1.2">5-HT</text>
+          <text x="830" y="338" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(176,96,255,0.40)" letter-spacing="1.2">DA</text>
+          <text x="830" y="350" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(200,128,255,0.30)" letter-spacing="1.2">NE</text>
+
+          <!-- Crosshair at primary SERT -->
+          <g stroke="#E43CFF" stroke-width="0.5" stroke-opacity="0.32">
+            <line x1="430" y1="176" x2="430" y2="185"/>
+            <line x1="430" y1="206" x2="430" y2="215"/>
+            <line x1="410" y1="196" x2="418" y2="196"/>
+            <line x1="442" y1="196" x2="450" y2="196"/>
+          </g>
+
+          <!-- Coordinate axis labels -->
+          <text x="84"  y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.18)" letter-spacing="1">A1</text>
+          <text x="224" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.18)" letter-spacing="1">B1</text>
+          <text x="364" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.18)" letter-spacing="1">C1</text>
+          <text x="504" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.18)" letter-spacing="1">D1</text>
+          <text x="644" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.18)" letter-spacing="1">E1</text>
+          <text x="784" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.18)" letter-spacing="1">F1</text>
+          <text x="6" y="90"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.14)" letter-spacing="0">A2</text>
+          <text x="6" y="200" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.14)" letter-spacing="0">A3</text>
+          <text x="6" y="310" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.14)" letter-spacing="0">A4</text>
+          <text x="6" y="420" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.14)" letter-spacing="0">A5</text>
+          <text x="6" y="560" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(228,60,255,0.14)" letter-spacing="0">A6</text>
+          <text x="880" y="22" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(228,60,255,0.30)" letter-spacing="1.5">SUBSTANCE PLATE</text>
+          <text x="880" y="33" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(228,60,255,0.20)" letter-spacing="1.5">MDMA · EMPATHOGEN</text>
+          <text x="20" y="660" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(228,60,255,0.22)" letter-spacing="2">ASA-EM-01 · MDMA · EMPATHOGEN CLASS · ALTERED STATE ARCHIVE · VICELAB RESEARCH INTELLIGENCE · CANONICAL LOCK · 2026</text>
+          <rect width="900" height="675" fill="url(#vignette-g)"/>
+        </svg>
+      </div>
+      <div class="plate-strip">
+        <div class="plate-strip-id">ASA-EM-01 · MDMA · Substance Plate · Altered State Archive · 2026</div>
+        <div class="plate-strip-status"><div class="plate-strip-dot"></div>Canonical Lock</div>
+      </div>
+    </div>
+  </div>
+  <p class="plate-caption reveal">
+    Research-informed visual pharmacology plate. Triple Monoamine Efflux Model — SERT-Mediated Serotonin Release Cascade.
+  </p>
+</div>
+</section>
+
+
+<!-- ③ SCIENTIFIC METADATA PANEL -->
+<section class="sci-meta-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Scientific Record</div>
+  <h2 class="section-title reveal">Pharmacological Profile</h2>
+  <table class="meta-table reveal-stagger">
+    <tbody>
+      <tr>
+        <td class="meta-key">Class</td>
+        <td class="meta-val"><strong>Empathogen / Entactogen</strong> <span class="tag">Phenethylamine</span> <span class="tag">Amphetamine</span></td>
+      </tr>
+      <tr>
+        <td class="meta-key">Scientific Name</td>
+        <td class="meta-val"><strong>3,4-Methylenedioxymethamphetamine</strong></td>
+      </tr>
+      <tr>
+        <td class="meta-key">Common Names</td>
+        <td class="meta-val">MDMA · Ecstasy · Molly · Mandy · XTC · Pingers · E</td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Primary Mechanism</td>
+        <td class="meta-val">
+          <strong>Monoamine transporter reversal.</strong>
+          MDMA enters neurons via monoamine transporters and triggers reverse transport — forcing serotonin, dopamine, and norepinephrine out of the cell. Unlike reuptake inhibitors, it actively drives release. Serotonin release predominates (~3:1 ratio over dopamine).
+        </td>
+      </tr>
+      <tr>
+        <td class="meta-key">Secondary Effects</td>
+        <td class="meta-val">Oxytocin and prolactin release. TAAR1 agonism. Direct 5-HT2A partial agonism. These underlie the prosocial and empathogenic effects distinct from other stimulants.</td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Half-Life</td>
+        <td class="meta-val"><strong>8 – 9 hours</strong> (plasma, oral route)</td>
+      </tr>
+      <tr>
+        <td class="meta-key">Onset</td>
+        <td class="meta-val">Oral: <strong>30–60 min</strong> · Insufflated: <strong>10–20 min</strong></td>
+      </tr>
+      <tr>
+        <td class="meta-key">Duration</td>
+        <td class="meta-val">Oral: <strong>3–5 hours</strong> (peak) · After-effects: <strong>2–12 hours</strong></td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Primary Risks</td>
+        <td class="meta-val">
+          <span class="tag alert">Hyperthermia</span>
+          <span class="tag alert">Hyponatraemia</span>
+          <span class="tag warn">Serotonin Syndrome</span>
+          <span class="tag warn">Cardiovascular Load</span>
+          <span class="tag warn">Press Contamination</span>
+          <br>Hyperthermia is the leading mechanism of MDMA-related festival fatalities. Hyponatraemia from over-hydration is the second most common. Both are preventable with correct information.
+        </td>
+      </tr>
+      <tr>
+        <td class="meta-key">Interactions</td>
+        <td class="meta-val">
+          <span class="tag alert">MAOIs (fatal)</span>
+          <span class="tag alert">Lithium</span>
+          <span class="tag warn">SSRIs / SNRIs</span>
+          <span class="tag warn">Cocaine</span>
+          <span class="tag warn">Tramadol</span>
+          <br>MAOI combination is potentially lethal via serotonin syndrome. SSRIs both blunt effects and increase serotonin syndrome risk.
+        </td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Status</td>
+        <td class="meta-val status-verified"><span class="status-dot"></span><strong>Verified</strong> · Canonical Lock · 2026</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+
+<!-- ④ HARM REDUCTION NOTES -->
+<section class="hr-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Field Intelligence</div>
+  <div class="hr-panel reveal">
+    <div class="hr-panel-header">
+      <div class="hr-panel-title">
+        HARM REDUCTION NOTES
+        <span class="hr-panel-title-mark">ASA-EM-01</span>
+      </div>
+      <div class="hr-panel-meta">Evidence-first · Non-judgemental · Operational</div>
+    </div>
+    <div class="hr-grid reveal-stagger">
+      <div class="hr-note">
+        <div class="hr-note-key">Temperature</div>
+        <div class="hr-note-body">MDMA is profoundly thermogenic. The combination of MDMA-driven heat production, physical exertion, and ambient festival temperature creates rapid core temperature elevation. <strong>Take a 10-minute break from dancing every hour. Find shade or a cool area.</strong> Stopping sweating despite being hot is a red flag requiring immediate assistance.</div>
+      </div>
+      <div class="hr-note">
+        <div class="hr-note-key">Hydration</div>
+        <div class="hr-note-body"><strong>Sip, do not chug.</strong> Approximately 500ml per hour when dancing. Electrolyte drinks are preferable to plain water for extended sessions. Hyponatraemia — dangerously low sodium — is caused by over-hydration with plain water. It has caused deaths that were entirely preventable. More water is not always safer.</div>
+      </div>
+      <div class="hr-note">
+        <div class="hr-note-key">Dosing</div>
+        <div class="hr-note-body">Start low: 75–100mg for an average adult. <strong>Avoid re-dosing entirely if possible.</strong> A redose does not recreate the first experience — it extends duration and multiplies cardiovascular, thermal, and neurotoxic load. The comedown is worse, and the next-day impact is substantially greater.</div>
+      </div>
+      <div class="hr-note">
+        <div class="hr-note-key">Test Your Press</div>
+        <div class="hr-note-body">Press contamination with methamphetamine, NBOMe compounds, and fentanyl analogues is documented. <strong>Reagent testing (Marquis, Simon's, Mecke) and fentanyl test strips reduce — not eliminate — this risk.</strong> Testing services at events provide more reliable analysis than field reagents alone. If a press behaves differently than expected — stop.</div>
+      </div>
+      <div class="hr-note">
+        <div class="hr-note-key">Frequency of Use</div>
+        <div class="hr-note-body">MDMA has a well-documented neurotoxic potential related to serotonergic depletion with frequent use. <strong>A minimum three-month gap between uses is widely cited in harm reduction guidance</strong>, not as a moral position but as the approximate time required for serotonin system recovery. Weekly use is high-risk.</div>
+      </div>
+      <div class="hr-note">
+        <div class="hr-note-key">Medication Interactions</div>
+        <div class="hr-note-body"><strong>MAOIs are contraindicated — this combination can be fatal via serotonin syndrome.</strong> SSRIs and SNRIs both reduce MDMA effects (leading to higher dosing) and increase serotonin syndrome risk. Tramadol, lithium, and stimulants carry their own interaction profiles. If you take any regular medications, check interactions before use.</div>
+      </div>
+      <div class="hr-note full">
+        <div class="hr-note-key">Wingmate Protocol</div>
+        <div class="hr-note-body">Watch your group. MDMA can mask exhaustion and dehydration — the person most at risk may feel fine. <strong>Red flags: person has stopped sweating despite heat, skin is hot and dry, they are confused or unresponsive, they have a rigid jaw or are clenching, they are pale or have a bluish tinge, their temperature feels extreme.</strong> Do not wait. Get to the medical or harm reduction team immediately. Tell them what was taken.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ⑤ RESEARCH NOTE / CONTEXT BLOCK -->
+<section class="research-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Archive Context</div>
+  <div class="research-inner reveal">
+    <div class="research-sidebar">
+      <div class="research-sidebar-label">ARCHIVE<br>RECORD</div>
+      <div class="research-sidebar-id">ASA-EM-01</div>
+      <div class="research-sidebar-meta">
+        Type<br>Substance Plate<br><br>
+        Division<br>ViceLab Research<br>Intelligence<br><br>
+        Indexed<br>2026<br><br>
+        Status<br>Canonical Lock
+      </div>
+    </div>
+    <div class="research-body">
+      <h3 class="research-title">Why this plate exists in the archive.</h3>
+      <div class="research-text">
+        <p>MDMA is the substance that most directly shaped the culture the Altered State Archive was built to serve. Its emergence in rave and festival environments from the late 1980s onward created both the scene and many of its safety challenges. Understanding MDMA specifically — not just stimulants as a class — requires understanding the pharmacology that makes it distinct: the serotonin-dominance of its mechanism, the prosocial effects that arise from oxytocin co-release, and the specific environmental interactions that elevate its risk profile beyond other stimulants.</p>
+        <p>Public discourse around MDMA is polarised. Medical research into therapeutic applications has generated one frame; moral and legal prohibition has generated another. Neither framing gives festival attendees what they need. <strong>The archive's purpose is a third register</strong> — precise, evidence-based, and operationally useful in the specific contexts where MDMA is actually encountered: hot, loud, physical environments with limited access to clinical support.</p>
+        <p>The Triple Monoamine Efflux Model chosen for this plate illustrates the transporter reversal mechanism — the fundamental difference between MDMA and a conventional reuptake inhibitor. The three wave systems represent 5-HT, DA, and NE release in approximate proportion. This model was chosen because it makes the most clinically consequential fact about MDMA visually clear: serotonin is the primary output, and the downstream effects of that — temperature dysregulation, fluid balance disruption, and the interaction profile with serotonergic medications — are the risks that kill people at festivals.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- RELATED PLATES -->
+<section class="related-section">
+<div class="container">
+  <div class="related-eyebrow reveal">Altered State Archive</div>
+  <div class="related-grid reveal-stagger">
+    <a href="/archive/plates/asa-st-02" class="rel-card" data-accent="dissociative">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <path d="M 30 100 L 88 100" stroke="#4DA3FF" stroke-width="1.2" stroke-opacity="0.50"/>
+          <path d="M 100 100 L 142 100" stroke="#4DA3FF" stroke-width="1" stroke-opacity="0.35"/>
+          <path d="M 158 100 L 202 100" stroke="#4DA3FF" stroke-width="1.1" stroke-opacity="0.44"/>
+          <circle cx="88"  cy="100" r="5" fill="#4DA3FF" fill-opacity="0.65"/>
+          <circle cx="142" cy="100" r="4" fill="#4DA3FF" fill-opacity="0.48"/>
+          <circle cx="202" cy="100" r="4.5" fill="#4DA3FF" fill-opacity="0.58"/>
+          <ellipse cx="150" cy="100" rx="80" ry="40" fill="none" stroke="#4DA3FF" stroke-width="0.6" stroke-opacity="0.20" stroke-dasharray="4 6"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4DA3FF" fill-opacity="0.30" letter-spacing="1.5">ASA-ST-02 · COCAINE</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-ST-02</div>
+        <div class="rel-title">Cocaine</div>
+        <div class="rel-class">Substance Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+    <a href="/archive/plates/asa-pl-02" class="rel-card" data-accent="stimulant">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <path d="M 30 140 Q 80 60 130 90 Q 180 120 230 55 Q 260 25 290 70" fill="none" stroke="#FFB830" stroke-width="1.2" stroke-opacity="0.55"/>
+          <circle cx="130" cy="90" r="5" fill="#FFB830" fill-opacity="0.70"/>
+          <circle cx="230" cy="55" r="4" fill="#FFB830" fill-opacity="0.60"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#FFB830" fill-opacity="0.30" letter-spacing="1.5">ASA-PL-02 · STIMULANTS</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-02</div>
+        <div class="rel-title">Stimulants</div>
+        <div class="rel-class">Class Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+    <a href="/archive/plates/asa-pl-03" class="rel-card" data-accent="psychedelic">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <circle cx="150" cy="100" r="50" fill="none" stroke="#00FFC6" stroke-width="0.7" stroke-opacity="0.30"/>
+          <circle cx="150" cy="100" r="35" fill="none" stroke="#00FFC6" stroke-width="0.6" stroke-opacity="0.35"/>
+          <circle cx="150" cy="100" r="20" fill="none" stroke="#00FFC6" stroke-width="0.8" stroke-opacity="0.45"/>
+          <circle cx="150" cy="100" r="8"  fill="none" stroke="#00FFC6" stroke-width="1.0" stroke-opacity="0.60"/>
+          <circle cx="150" cy="100" r="3"  fill="#00FFC6" fill-opacity="0.80"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#00FFC6" fill-opacity="0.28" letter-spacing="1.5">ASA-PL-03 · PSYCHEDELICS</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-03</div>
+        <div class="rel-title">Psychedelics</div>
+        <div class="rel-class">Class Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+    <a href="/archive/plates/asa-pl-05" class="rel-card" data-accent="opioid">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <path d="M 20 80 Q 60 115 100 92 Q 140 70 180 112 Q 220 152 262 122" fill="none" stroke="#FF6B6B" stroke-width="1.2" stroke-opacity="0.48"/>
+          <circle cx="100" cy="92"  r="4" fill="#FF6B6B" fill-opacity="0.58"/>
+          <circle cx="180" cy="112" r="4" fill="#FF6B6B" fill-opacity="0.55"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#FF6B6B" fill-opacity="0.30" letter-spacing="1.5">ASA-PL-05 · DEPRESSANTS</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-05</div>
+        <div class="rel-title">Depressants</div>
+        <div class="rel-class">Class Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+</section>
+
+
+<!-- ⑥ PLATE NAVIGATION -->
+<div class="plate-nav">
+<div class="container">
+  <div class="plate-nav-inner">
+    <a href="/archive" class="plate-nav-link prev">
+      <span>←</span>
+      <span>Back to Archive<span class="plate-nav-link-sub">Altered State Archive Index</span></span>
+    </a>
+    <a href="/archive" class="plate-nav-back">Back to Archive</a>
+    <a href="/archive/plates/asa-em-02" class="plate-nav-link next">
+      <span>Next Plate<span class="plate-nav-link-sub">ASA-EM-02 · MDA</span></span>
+      <span>→</span>
+    </a>
+  </div>
+</div>
+</div>
+
+<footer>
+  <a href="/" class="footer-brand">Vice<em>Lab</em></a>
+  <div class="footer-sys">Altered State Archive · <em>ViceLab Research Division</em></div>
+  <div class="footer-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive">Archive</a>
+    <a href="/field-manual">Field Manual</a>
+  </div>
+</footer>
+
+</div><!-- /site -->
+<script src="asa-plate.js"></script>
+</body>
+</html>
