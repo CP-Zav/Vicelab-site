@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeGuard — Event Safety &amp; Compliance Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════════════════
+   TOKENS — exact match to homepage baseline
+   ═══════════════════════════════════════════════════ */
+:root {
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  VICELAB GLOBAL COLOUR SYSTEM — single source of truth      ║
+   ║  Edit here to repaint the entire site.                      ║
+   ║  Do not hard-code colours outside this block.               ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+  /* ── Backgrounds ───────────────────────────────────────────── */
+  --bg-space:          #04060D;            /* page root / deep field    */
+  --bg-panel:          #070B15;            /* card / panel surface      */
+  --bg-telemetry:      #091723;            /* telemetry log strip       */
+
+  /* ── Text ──────────────────────────────────────────────────── */
+  --text-primary:      #f4f7ff;            /* console / log body text   */
+  --text-secondary:    #8fa3c3;            /* metadata, labels          */
+  --text-system:       #dce6ff;            /* system strips, orientation*/
+  --text-body:         #b8c2d4;            /* paragraph / prose text    */
+  --text-dim:          #7a91b0;            /* dimmed secondary labels   */
+  --text-muted:        #5e7a9a;            /* decorative / footnote     */
+  --text-white:        #eceff7;            /* near-white headings       */
+
+  /* ── Dividers ───────────────────────────────────────────────── */
+  --line-divider:      rgba(255,255,255,0.15);  /* structural dividers  */
+  --line-subtle:       rgba(255,255,255,0.12);  /* panel borders        */
+
+  /* ── Signal states (telemetry) ─────────────────────────────── */
+  --signal-ok:         #3cff9c;            /* nominal / pass            */
+  --signal-warn:       #ffcc66;            /* caution                   */
+  --signal-alert:      #ff5a5a;            /* critical / fail           */
+
+  /* ── Substance class accents ───────────────────────────────── */
+  --accent-stimulant:    #FFB830;          /* Stimulants — amber-gold   */
+  --accent-psychedelic:  #00FFC6;          /* Psychedelics — cyan       */
+  --accent-empathogen:   #E43CFF;          /* Empathogens — magenta     */
+  --accent-dissociative: #4DA3FF;          /* Dissociatives — blue      */
+  --accent-opioid:       #FF6B6B;          /* Depressants/Opioids — red */
+  --accent-cannabinoid:  #7EE482;          /* Cannabis — soft green     */
+  --accent-entactogen:   #A78BFA;          /* Entactogens — violet      */
+
+  /* ── Ecosystem entity accents ──────────────────────────────── */
+  --brand-cp:          #2BFF88;            /* Cooked Pilot — neon green */
+  --brand-vg:          #4DA3FF;            /* VibeGuard    — neon blue  */
+  --brand-vl:          #E43CFF;            /* ViceLab      — magenta    */
+
+  /* ── File-local tokens ──────────────── */
+  --bg:           var(--bg-space);
+  --bg-1:         #0d1017;
+  --bg-2:         #111520;
+  --border:       var(--line-subtle);
+  --border-2:     var(--line-subtle);
+
+  --text:         var(--text-body);
+  --text-dimmer:  var(--text-dim);
+  --white:        var(--text-white);
+
+  --green:        var(--brand-cp);
+  --green-dim:    rgba(61,232,158,0.08);
+  --green-mid:    rgba(61,232,158,0.18);
+  --green-glow:   0 0 40px rgba(61,232,158,0.12);
+
+  --blue:         var(--accent-dissociative);
+  --blue-dim:     rgba(90,176,255,0.08);
+
+  /* VibeGuard accent — amber, the vg brand token */
+  --amber:        var(--accent-stimulant);
+  --amber-dim:    rgba(240,160,48,0.08);
+  --amber-mid:    rgba(240,160,48,0.16);
+  --amber-border: rgba(240,160,48,0.25);
+
+  --mono:    'JetBrains Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body:    'Instrument Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 64px;
+  background: rgba(8,10,13,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--green); }
+.nav-links {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 0.80rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-active { color: var(--white) !important; }
+.nav-cta {
+  font-family: var(--mono);
+  font-size: 0.80rem;
+  padding: 8px 20px;
+  border: 1px solid rgba(61,232,158,0.4);
+  color: var(--green) !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.2s !important;
+}
+.nav-cta:hover {
+  background: var(--green-dim) !important;
+  color: var(--green) !important;
+  border-color: var(--green) !important;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding: 120px 48px 80px;
+  overflow: hidden;
+}
+/* VibeGuard grid — amber-tinted, larger cells — operational/infrastructure feel */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(240,160,48,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,160,48,0.018) 1px, transparent 1px);
+  background-size: 100px 100px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 15%, transparent 100%);
+}
+/* Amber glow — right-aligned, referencing a dashboard/readout aesthetic */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 1000px;
+  background:
+    radial-gradient(circle at 55% 45%, rgba(240,160,48,0.035) 0%, transparent 55%),
+    radial-gradient(circle at 25% 60%, rgba(61,232,158,0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.80rem;
+  color: var(--amber);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp 0.3s ease 0s forwards;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--amber);
+}
+.hero-eyebrow::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 6px 2px rgba(240,160,48,0.5);
+  animation: pulse-dot 2s ease-in-out infinite;
+  margin-left: 4px;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.7); }
+}
+.hero-headline {
+  font-family: var(--display);
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 800;
+  line-height: 1.0;
+  color: var(--white);
+  letter-spacing: -0.025em;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.35s ease 0.1s forwards;
+}
+.hero-headline em { font-style: normal; color: var(--amber); }
+.hero-sub {
+  font-size: 19px;
+  color: var(--text);
+  max-width: 580px;
+  line-height: 1.65;
+  margin-bottom: 52px;
+  font-weight: 400;
+  opacity: 0;
+  animation: fadeUp 0.3s ease 0.22s forwards;
+}
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.3s ease 0.32s forwards;
+}
+/* Operational readout — right side */
+.hero-stats {
+  position: absolute;
+  bottom: 60px;
+  right: 48px;
+  display: flex;
+  gap: 48px;
+  opacity: 0;
+  animation: fadeUp 0.3s ease 0.42s forwards;
+}
+.stat { text-align: right; }
+.stat-num {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── BUTTONS ─── */
+.btn-primary {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  background: var(--amber);
+  color: #110800;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-primary:hover {
+  background: #ffc060;
+  box-shadow: 0 0 30px rgba(240,160,48,0.3);
+}
+.btn-ghost {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 13px 28px;
+  border: 1px solid var(--border-2);
+  color: var(--text);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-ghost:hover {
+  border-color: var(--line-divider);
+  color: var(--white);
+}
+button:active, .btn-primary:active, .btn-ghost:active { transform: translateY(1px); }
+
+/* ─── TEXT LINK ─── */
+.text-link {
+  font-family: var(--mono);
+  font-size: 0.80rem;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap 0.2s;
+}
+.text-link:hover { gap: 14px; }
+
+/* ─── DIVIDER ─── */
+.divider-line { height: 1px; background: var(--border); margin: 0; }
+
+/* ─── SECTIONS COMMON ─── */
+section {
+  padding: 100px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  scroll-margin-top: 100px;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--text-dimmer);
+}
+.section-label.vg { color: var(--amber); }
+.section-label.vg::before { background: var(--amber); }
+
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.section-title em { font-style: normal; color: var(--amber); }
+.section-title em.green { color: var(--green); }
+
+.section-body {
+  font-size: 17px;
+  color: var(--text);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-stagger.in > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.05s; }
+.reveal-stagger.in > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.13s; }
+.reveal-stagger.in > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.21s; }
+.reveal-stagger.in > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.29s; }
+.reveal-stagger.in > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.37s; }
+.reveal-stagger.in > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.45s; }
+
+/* ──────────────────────────────────────────────────
+   WHAT VIBEGUARD IS
+   ────────────────────────────────────────────────── */
+.what-section { position: relative; }
+.what-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 60px;
+}
+.what-text p {
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.what-text p:last-child { margin-bottom: 0; }
+.what-text strong { color: var(--white); font-weight: 600; }
+
+/* Positioning stack — what this is, not what it isn't */
+.position-stack { display: flex; flex-direction: column; gap: 3px; }
+.position-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+.position-row.is-no  { background: var(--bg-1); }
+.position-row.is-yes { background: var(--bg-1); border-color: var(--amber-border); }
+.position-row:hover  { border-color: var(--border-2); }
+.position-row.is-yes:hover { border-color: rgba(240,160,48,0.45); }
+
+.pos-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+}
+.pos-badge-inner {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+.position-row.is-no  .pos-badge-inner { color: var(--text-dim); }
+.position-row.is-yes .pos-badge-inner { color: var(--amber); }
+
+.pos-text {
+  padding: 20px 22px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.position-row.is-no  .pos-text { color: var(--text-dim); text-decoration: line-through; }
+.position-row.is-yes .pos-text { color: var(--white); font-weight: 500; }
+
+/* ──────────────────────────────────────────────────
+   WHAT IT HELPS ORGANISERS DO
+   ────────────────────────────────────────────────── */
+.caps-wrap {
+  background: var(--bg-1);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 100px 48px;
+  scroll-margin-top: 100px;
+}
+.caps-inner { max-width: 1200px; margin: 0 auto; }
+.caps-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 64px;
+  align-items: end;
+}
+.caps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+.cap-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 36px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+.cap-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.cap-card:hover::before { transform: scaleX(1); }
+.cap-card:hover { background: var(--bg-2); border-color: var(--amber-border); }
+.cap-icon { margin-bottom: 24px; }
+.cap-index {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+.cap-name {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.cap-body { font-size: 13px; color: var(--text); line-height: 1.7; }
+
+/* ──────────────────────────────────────────────────
+   WHY THIS MATTERS
+   ────────────────────────────────────────────────── */
+.why-wrap {
+  padding: 100px 48px;
+  scroll-margin-top: 100px;
+  position: relative;
+  overflow: hidden;
+}
+.why-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 65% 60% at 70% 50%, rgba(240,160,48,0.025) 0%, transparent 70%);
+  pointer-events: none;
+}
+.why-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+.why-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 60px;
+}
+.why-quote {
+  font-size: 20px;
+  color: var(--white);
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  border-left: 2px solid var(--amber);
+  padding-left: 24px;
+  margin-bottom: 32px;
+}
+.why-text p {
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.why-text p:last-child { margin-bottom: 0; }
+.why-text strong { color: var(--white); font-weight: 600; }
+
+/* Pressure stack — organiser problem signals */
+.pressure-stack { display: flex; flex-direction: column; gap: 3px; }
+.pressure-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  transition: border-color 0.2s;
+}
+.pressure-row:hover { border-color: var(--amber-border); }
+.pressure-flag {
+  padding: 20px 12px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.pressure-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pressure-indicator.amber { background: var(--amber); }
+.pressure-indicator.red   { background: var(--signal-alert); }
+.pressure-indicator.green { background: var(--green); }
+.pressure-tag {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dimmer);
+  text-align: center;
+  line-height: 1.4;
+}
+.pressure-body {
+  padding: 20px 22px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.65;
+}
+.pressure-body strong { color: var(--white); font-weight: 600; }
+
+/* ──────────────────────────────────────────────────
+   HOW IT FITS INTO EXISTING SYSTEMS
+   ────────────────────────────────────────────────── */
+.fits-wrap {
+  background: var(--bg-1);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 100px 48px;
+  scroll-margin-top: 100px;
+}
+.fits-inner { max-width: 1200px; margin: 0 auto; }
+.fits-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 60px;
+}
+.fits-text p {
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.fits-text p:last-child { margin-bottom: 0; }
+.fits-text strong { color: var(--white); font-weight: 600; }
+
+/* Integration list */
+.integration-list { display: flex; flex-direction: column; gap: 3px; }
+.int-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  transition: all 0.2s;
+}
+.int-row:hover { border-color: var(--amber-border); background: var(--bg-2); }
+.int-mark {
+  font-family: var(--mono);
+  font-size: 0.80rem;
+  color: var(--amber);
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.int-body { font-size: 14px; color: var(--text); line-height: 1.65; }
+.int-body strong { color: var(--white); font-weight: 600; }
+
+/* ──────────────────────────────────────────────────
+   WHAT MAKES IT DIFFERENT
+   ────────────────────────────────────────────────── */
+.diff-section { position: relative; }
+.diff-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 60px;
+}
+.diff-text p {
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.diff-text p:last-child { margin-bottom: 0; }
+.diff-text strong { color: var(--white); font-weight: 600; }
+
+.diff-rows { display: flex; flex-direction: column; gap: 3px; }
+.diff-row {
+  display: grid;
+  grid-template-columns: 1fr 28px 1fr;
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  transition: border-color 0.2s;
+}
+.diff-row:hover { border-color: var(--border-2); }
+.diff-before {
+  padding: 18px 20px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.55;
+  text-decoration: line-through;
+  border-right: 1px solid var(--border);
+}
+.diff-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.80rem;
+  color: var(--amber);
+  border-right: 1px solid var(--border);
+}
+.diff-after {
+  padding: 18px 20px;
+  font-size: 13px;
+  color: var(--white);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+/* ──────────────────────────────────────────────────
+   ECOSYSTEM CONNECTION
+   ────────────────────────────────────────────────── */
+.eco-wrap {
+  background: var(--bg-1);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 100px 48px;
+  scroll-margin-top: 100px;
+}
+.eco-inner { max-width: 1200px; margin: 0 auto; }
+.eco-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 64px;
+  align-items: end;
+}
+
+.eco-diagram { display: flex; flex-direction: column; gap: 3px; }
+.eco-node {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  transition: all 0.25s;
+}
+.eco-node:hover { background: var(--bg-2); }
+.eco-node.vg-active {
+  border-color: var(--amber-border);
+  background: rgba(240,160,48,0.02);
+}
+.eco-node-label {
+  padding: 24px 20px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+.eco-node-tag {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.eco-node.vl  .eco-node-tag { color: var(--green); }
+.eco-node.cp  .eco-node-tag { color: var(--blue); }
+.eco-node.vg-active .eco-node-tag { color: var(--amber); }
+
+.eco-node-name {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--white);
+}
+.eco-node-body { padding: 24px 28px; }
+.eco-node-desc {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+.eco-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.eco-chip {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  color: var(--text-dimmer);
+}
+.eco-node.vg-active .eco-chip {
+  border-color: var(--amber-border);
+  color: var(--amber);
+}
+.eco-connector {
+  font-family: var(--mono);
+  font-size: 0.80rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.08em;
+  padding: 6px 0;
+  text-align: center;
+}
+
+/* ──────────────────────────────────────────────────
+   WHO IT IS FOR
+   ────────────────────────────────────────────────── */
+.for-wrap {
+  padding: 100px 48px;
+  scroll-margin-top: 100px;
+}
+.for-inner { max-width: 1200px; margin: 0 auto; }
+.for-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 64px;
+  align-items: end;
+}
+.for-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+.for-card {
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  background: var(--bg-1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+.for-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--amber);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s;
+}
+.for-card:hover::before { transform: scaleY(1); }
+.for-card:hover { background: var(--bg-2); border-color: var(--amber-border); }
+.for-role {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.for-title {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.for-body { font-size: 13px; color: var(--text); line-height: 1.7; }
+
+/* ──────────────────────────────────────────────────
+   TRUST / DESIGN PRINCIPLES
+   ────────────────────────────────────────────────── */
+.trust-wrap {
+  background: var(--bg-1);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 100px 48px;
+  scroll-margin-top: 100px;
+}
+.trust-inner { max-width: 1200px; margin: 0 auto; }
+.trust-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 64px;
+  align-items: end;
+}
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+.trust-card {
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  background: var(--bg);
+  transition: all 0.2s;
+}
+.trust-card:hover { background: var(--bg-2); border-color: var(--border-2); }
+.trust-num {
+  font-family: var(--mono);
+  font-size: 0.80rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+.trust-principle {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--amber);
+  margin-bottom: 12px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.trust-body { font-size: 13px; color: var(--text); line-height: 1.7; }
+
+/* ──────────────────────────────────────────────────
+   FINAL CTA
+   ────────────────────────────────────────────────── */
+.final-cta {
+  position: relative;
+  overflow: hidden;
+  padding: 100px 48px;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 100px;
+}
+.final-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 65% 80% at 25% 50%, rgba(240,160,48,0.04) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.cta-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+.cta-title em { font-style: normal; color: var(--amber); }
+.cta-body {
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 480px;
+}
+.cta-options { display: flex; flex-direction: column; gap: 3px; }
+.cta-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.cta-option:hover { background: var(--bg-2); border-color: var(--border-2); }
+.cta-option:first-child:hover { border-color: var(--amber-border); }
+.cta-option-left {}
+.cta-option-tag {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cta-option-label {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+}
+.cta-option-arrow {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text-dimmer);
+  transition: all 0.2s;
+}
+.cta-option:hover .cta-option-arrow { color: var(--amber); transform: translateX(4px); }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-logo {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+.footer-logo span { color: var(--green); }
+.footer-meta {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.1em;
+  text-align: right;
+  line-height: 1.9;
+}
+
+/* ─── KEYBOARD FOCUS ─── */
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════== */
+@media (max-width: 768px) {
+  nav {
+    padding: 0 24px;
+    height: auto;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .nav-links {
+    gap: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 14px; }
+  .nav-links a { font-size: 0.78rem; }
+  .nav-cta { font-size: 0.78rem; padding: 6px 14px; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 100px 24px 80px; }
+  .hero-headline { font-size: 42px; }
+  .hero-stats { display: none; }
+}
+
+@media (max-width: 768px) {
+  section { padding: 72px 24px; }
+  .caps-wrap, .fits-wrap, .eco-wrap, .trust-wrap { padding: 72px 24px; }
+  .why-wrap, .for-wrap { padding: 72px 24px; }
+  .final-cta { padding: 72px 24px; }
+  footer { padding: 32px 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
+  .footer-meta { text-align: left; }
+}
+
+@media (max-width: 768px) {
+  .what-layout { grid-template-columns: 1fr; gap: 48px; margin-top: 40px; }
+  .caps-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+  .caps-grid { grid-template-columns: 1fr; }
+  .why-layout { grid-template-columns: 1fr; gap: 48px; margin-top: 40px; }
+  .fits-layout { grid-template-columns: 1fr; gap: 48px; margin-top: 40px; }
+  .diff-layout { grid-template-columns: 1fr; gap: 48px; margin-top: 40px; }
+  .diff-row { grid-template-columns: 1fr; }
+  .diff-before { border-right: none; border-bottom: 1px solid var(--border); }
+  .diff-arrow { display: none; }
+  .eco-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+  .eco-node { grid-template-columns: 1fr; }
+  .eco-node-label { border-right: none; border-bottom: 1px solid var(--border); }
+  .for-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+  .for-grid { grid-template-columns: 1fr; }
+  .trust-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+  .trust-grid { grid-template-columns: 1fr; }
+  .cta-inner { grid-template-columns: 1fr; gap: 48px; }
+  .cta-body { max-width: 100%; }
+}
+@media (min-width: 520px) and (max-width: 768px) {
+  .caps-grid   { grid-template-columns: repeat(2, 1fr); }
+  .for-grid    { grid-template-columns: repeat(2, 1fr); }
+  .trust-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ─── REDUCED MOTION ─── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-stagger > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero * { animation: none !important; }
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   READABILITY PATCH — global contrast uplift 2026
+   Primary: var(--text-primary)  Secondary: var(--text-secondary)  System: var(--text-system)
+   Do not override without versioning.
+═══════════════════════════════════════════════════════ */
+
+/* Floor: no text below 0.75rem */
+* { min-font-size: 0; }  /* intentional no-op anchor */
+
+/* ── Telemetry / console log lines ── */
+.tel-line {
+  font-size: 0.85rem !important;
+  line-height: 1.9 !important;
+  letter-spacing: 0.03em !important;
+  color: var(--text-primary) !important;
+}
+.tel-msg  { color: var(--text-primary) !important; }
+.tel-ts   { color: var(--text-secondary) !important; }
+.tel-ok   .tel-msg { color: var(--signal-ok) !important; }
+.tel-warn .tel-msg { color: var(--signal-warn) !important; }
+.tel-info .tel-msg { color: var(--text-primary) !important; }
+
+/* ── Explicit target classes from brief ── */
+.system-label,
+.archive-meta,
+.console-strip,
+.metadata-text {
+  color: var(--text-system) !important;
+  font-size: 0.75rem !important;
+  line-height: 1.9 !important;
+  letter-spacing: 0.03em !important;
+}
+
+/* ── Dashboard ── */
+.sys-desc-line         { line-height: 1.9 !important; }
+.sys-desc-line.primary { color: var(--text-system) !important; }
+.sys-desc-line.secondary { color: var(--text-secondary) !important; }
+.sys-orient { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.sc-id   { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.sc-mode { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.03em !important; }
+.sl-mode { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+#tel-count { color: var(--text-secondary) !important; }
+#wave-sub, .wave-sub { color: var(--text-dim) !important; font-size: 0.75rem !important; }
+.sys-hd .sys-id, .panel-id, .panel-label {
+  color: var(--text-secondary) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* ── Signal v2 / map nodes ── */
+.node-tip { font-size: 0.75rem !important; line-height: 1.7 !important; }
+.node-tip-name { font-size: 0.80rem !important; }
+.rr { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.rr-val { color: var(--text-system) !important; }
+.hero-orient { color: var(--text-system) !important; font-size: 0.80rem !important; }
+.hero-cta-sub { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.tc-module-label { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.08em !important; }
+.tc-id { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.tc-status { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.tc-cta { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.mx-head-label { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.mx-foot { color: var(--text-secondary) !important; font-size: 0.75rem !important; line-height: 1.8 !important; }
+.mx-legend-item { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.sys-node-num { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.sys-node-path { color: var(--text-dim) !important; font-size: 0.75rem !important; }
+.why-stat-lbl { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+
+/* ── Archive index ── */
+.ah-eyebrow { color: var(--text-secondary) !important; }
+.ah-orient  { color: var(--text-system) !important; font-size: 0.80rem !important; letter-spacing: 0.06em !important; }
+.ah-stat-lbl { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.pc-id { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.08em !important; }
+.pc-classification { color: var(--text-dim) !important; font-size: 0.75rem !important; letter-spacing: 0.04em !important; }
+.pc-badge { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.pc-edition { font-size: 0.75rem !important; }
+.pc-edition.locked { color: rgba(228,60,255,0.75) !important; }
+.pc-edition.ed01   { color: rgba(0,255,198,0.75)  !important; }
+.pc-cta { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.filter-btn { font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.index-bar-right { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.eco-num  { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.eco-path { color: var(--text-dim) !important; font-size: 0.75rem !important; }
+.final-label { color: var(--text-dim) !important; font-size: 0.75rem !important; }
+.footer-note { color: var(--text-dim) !important; font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+
+/* ── Plate detail ── */
+.breadcrumb { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.breadcrumb-current { color: var(--text-system) !important; }
+.plate-code { font-size: 0.80rem !important; letter-spacing: 0.12em !important; }
+.plate-meta-row { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.04em !important; }
+.plate-strip-id { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.08em !important; }
+.plate-strip-status { font-size: 0.75rem !important; }
+.meta-field-key { color: var(--text-secondary) !important; font-size: 0.75rem !important; letter-spacing: 0.08em !important; }
+.meta-field-val { color: var(--text-system) !important; font-size: 0.80rem !important; }
+.info-block-label { font-size: 0.75rem !important; letter-spacing: 0.08em !important; line-height: 1.9 !important; }
+.vault-cell-tag { color: var(--text-dim) !important; font-size: 0.75rem !important; }
+.closing-label { color: var(--text-dim) !important; font-size: 0.75rem !important; }
+.pc-desc { font-size: 0.80rem !important; line-height: 1.75 !important; }
+
+/* ── Homepage / product pages (shared structure) ── */
+.nav-links a { font-size: 0.80rem !important; }
+.eyebrow { font-size: 0.75rem !important; letter-spacing: 0.08em !important; line-height: 1.8 !important; }
+.stat-label, .n-label, .div-tag, .eco-tag, .section-tag, .trust-num,
+.path-who, .action-tag, .entry-label, .footer-meta,
+.feat-label, .feat-index, .step-index, .step-num, .final-tag,
+.code-tag, .eco-chip, .use-mode, .trust-meta, .or-role, .ion-tag {
+  font-size: 0.75rem !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.8 !important;
+}
+.footer-meta { color: var(--text-secondary) !important; }
+.stat-label  { color: var(--text-secondary) !important; }
+
+/* ── Cooked Pilot specific ── */
+.phase-inner { font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.signal-tag  { font-size: 0.75rem !important; }
+
+/* ── VibeGuard specific ── */
+.feature-tag { font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+
+/* ── Signal page (older) ── */
+.hero-orient,
+.hero-cta-sub,
+.card-num, .tool-num, .tool-tagline, .tool-field,
+.cta-label, .stat-label-old, .atm-tag, .node-label,
+.sys-node-label { font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+.footer-note { color: var(--text-dim) !important; font-size: 0.75rem !important; }
+
+/* ── Nav elements ── */
+.nav-badge { font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ NAV -->
+<nav>
+  <a href="/" class="nav-logo">Vice<span>Lab</span></a>
+  <div class="nav-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive">Archive</a>
+    <a href="#contact" class="nav-cta">Work with us</a>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════ HERO -->
+<div class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-eyebrow">VibeGuard — Event Safety &amp; Compliance Layer</div>
+
+    <h1 class="hero-headline">
+      Safety readiness<br>
+      without the<br>
+      <em>surveillance tax.</em>
+    </h1>
+
+    <p class="hero-sub">
+      VibeGuard is the organiser-facing compliance and safety intelligence layer of the ecosystem. Structured visibility, operational coordination, and audit-ready frameworks — built for the complexity of live events, not adapted from generic enterprise software.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#capabilities" class="btn-primary">See capabilities</a>
+      <a href="#what" class="btn-ghost">What it is</a>
+    </div>
+
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">Non-</div>
+      <div class="stat-label">Punitive by design</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Anon</div>
+      <div class="stat-label">Crowd intelligence</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Audit</div>
+      <div class="stat-label">Ready outputs</div>
+    </div>
+  </div>
+</div>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ WHAT VIBEGUARD IS -->
+<section class="what-section" id="what">
+
+  <div class="reveal">
+    <div class="section-label vg">What VibeGuard is</div>
+    <h2 class="section-title">Safety infrastructure.<br><em>Not paperwork.</em></h2>
+  </div>
+
+  <div class="what-layout">
+
+    <div class="what-text reveal">
+      <p>
+        The compliance layer at most events is reactive, disconnected, and built around protecting the licence-holder after something goes wrong. Incident reports filed at 3am. Risk assessments that nobody reads. Welfare team briefings that assume everything is fine until it isn't.
+      </p>
+      <p>
+        VibeGuard is structured differently. It gives operations teams, welfare leads, and compliance stakeholders <strong>live visibility into safety conditions</strong> — aggregated from Cooked Pilot's anonymised crowd intelligence and enriched by ViceLab's research frameworks.
+      </p>
+      <p>
+        This is not surveillance of attendees. Nobody is tracked. VibeGuard surfaces patterns — substance activity, welfare escalation rates, environmental risk signals — that help the people running the event understand what's happening and make better operational decisions in real time.
+      </p>
+      <p>
+        Every output is designed to be auditable. VibeGuard documents the decisions made, the signals received, and the responses taken — creating a structured record that demonstrates active duty of care rather than passive compliance.
+      </p>
+    </div>
+
+    <div class="position-stack reveal-stagger">
+      <div class="position-row is-no">
+        <div class="pos-badge"><span class="pos-badge-inner">Not&nbsp;this</span></div>
+        <span class="pos-text">A surveillance system that monitors individual attendee behaviour</span>
+      </div>
+      <div class="position-row is-no">
+        <div class="pos-badge"><span class="pos-badge-inner">Not&nbsp;this</span></div>
+        <span class="pos-text">Post-incident reporting software that only activates after something goes wrong</span>
+      </div>
+      <div class="position-row is-no">
+        <div class="pos-badge"><span class="pos-badge-inner">Not&nbsp;this</span></div>
+        <span class="pos-text">A generic compliance dashboard not built for live event conditions</span>
+      </div>
+      <div class="position-row is-no">
+        <div class="pos-badge"><span class="pos-badge-inner">Not&nbsp;this</span></div>
+        <span class="pos-text">A tool that adds administrative load without operational value</span>
+      </div>
+      <div class="position-row is-yes">
+        <div class="pos-badge"><span class="pos-badge-inner">This</span></div>
+        <span class="pos-text">Live safety signal visibility — aggregated, anonymised, operationally structured</span>
+      </div>
+      <div class="position-row is-yes">
+        <div class="pos-badge"><span class="pos-badge-inner">This</span></div>
+        <span class="pos-text">Welfare and medical coordination support across the event footprint</span>
+      </div>
+      <div class="position-row is-yes">
+        <div class="pos-badge"><span class="pos-badge-inner">This</span></div>
+        <span class="pos-text">Audit-ready documentation that demonstrates active duty of care</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ WHAT IT HELPS ORGANISERS DO -->
+<div class="caps-wrap" id="capabilities">
+  <div class="caps-inner">
+
+    <div class="caps-header reveal">
+      <div>
+        <div class="section-label">What it helps you do</div>
+        <h2 class="section-title">Six capabilities.<br><em>One operational layer.</em></h2>
+      </div>
+      <p class="section-body">
+        VibeGuard is structured around the decisions that matter most during an event — and the documentation that matters most after it.
+      </p>
+    </div>
+
+    <div class="caps-grid reveal-stagger">
+
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="3" y="4" width="22" height="20" rx="1" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <line x1="3" y1="10" x2="25" y2="10" stroke="#f0a030" stroke-width="1" opacity="0.35"/>
+            <circle cx="8" cy="7" r="1.5" fill="#f0a030" opacity="0.5"/>
+            <circle cx="12" cy="7" r="1.5" fill="#f0a030" opacity="0.3"/>
+            <polyline points="7,16 10,14 13,17 17,12 21,15" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <circle cx="21" cy="15" r="2" fill="#f0a030"/>
+          </svg>
+        </div>
+        <div class="cap-index">01</div>
+        <div class="cap-name">Surface Safety Signals</div>
+        <p class="cap-body">Anonymised crowd intelligence from Cooked Pilot — substance activity patterns, welfare escalation rates, environmental risk factors — surfaced as operational indicators rather than individual-level data. Know what's happening before it becomes a problem.</p>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 3 L24 8 L24 18 C24 23 19 27 14 28 C9 27 4 23 4 18 L4 8 Z" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <circle cx="14" cy="14" r="5" stroke="#f0a030" stroke-width="1" fill="none" opacity="0.4"/>
+            <circle cx="14" cy="14" r="2" fill="#f0a030" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="cap-index">02</div>
+        <div class="cap-name">Risk Visibility</div>
+        <p class="cap-body">A structured picture of the event's risk profile — updated continuously rather than assessed once at planning stage and forgotten. Environmental conditions, operational pressure points, and welfare load distributed across the event footprint.</p>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="9" cy="9" r="5" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <circle cx="19" cy="9" r="5" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <path d="M4 24 C4 20 6.5 18 9 18 C12 18 16 18 19 18 C21.5 18 24 20 24 24" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <line x1="14" y1="13" x2="14" y2="22" stroke="#f0a030" stroke-width="1" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="cap-index">03</div>
+        <div class="cap-name">Welfare Coordination</div>
+        <p class="cap-body">Shared situational awareness across welfare leads, medical response coordinators, and operations teams. Consistent signal visibility regardless of which part of the event footprint a team member is operating from.</p>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="4" y="3" width="20" height="22" rx="1" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <line x1="8" y1="9" x2="20" y2="9" stroke="#f0a030" stroke-width="1.5" opacity="0.6"/>
+            <line x1="8" y1="13" x2="20" y2="13" stroke="#f0a030" stroke-width="1" opacity="0.4"/>
+            <line x1="8" y1="17" x2="14" y2="17" stroke="#f0a030" stroke-width="1" opacity="0.4"/>
+            <circle cx="19" cy="19" r="4" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <polyline points="17,19 18.5,20.5 21,17.5" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="cap-index">04</div>
+        <div class="cap-name">Audit-Ready Thinking</div>
+        <p class="cap-body">Structured logs of signals received, decisions made, and responses taken. Not retrospective paperwork — a continuous record that documents the event safety posture as it develops. Valuable to licensing bodies, insurers, and post-event review.</p>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="2" y="11" width="8" height="12" rx="1" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <rect x="10" y="7" width="8" height="16" rx="1" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <rect x="18" y="3" width="8" height="20" rx="1" stroke="#f0a030" stroke-width="1" fill="none" opacity="0.5"/>
+            <line x1="6" y1="11" x2="6" y2="6" stroke="#f0a030" stroke-width="1" opacity="0.4"/>
+            <line x1="14" y1="7" x2="14" y2="3" stroke="#f0a030" stroke-width="1" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="cap-index">05</div>
+        <div class="cap-name">Response Awareness</div>
+        <p class="cap-body">Track how the event safety picture is evolving across a shift — not just point-in-time snapshots. Welfare team response times, escalation patterns, and signal resolution rates visible as the event runs.</p>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="10" stroke="#f0a030" stroke-width="1.5" fill="none"/>
+            <circle cx="14" cy="14" r="5" stroke="#f0a030" stroke-width="1" fill="none" opacity="0.4"/>
+            <line x1="14" y1="4" x2="14" y2="9" stroke="#f0a030" stroke-width="1.5"/>
+            <line x1="14" y1="19" x2="14" y2="24" stroke="#f0a030" stroke-width="1.5"/>
+            <line x1="4" y1="14" x2="9" y2="14" stroke="#f0a030" stroke-width="1.5"/>
+            <line x1="19" y1="14" x2="24" y2="14" stroke="#f0a030" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="2" fill="#f0a030"/>
+          </svg>
+        </div>
+        <div class="cap-index">06</div>
+        <div class="cap-name">Safer Decision Environments</div>
+        <p class="cap-body">Real-time intelligence shared across teams reduces the information asymmetry that causes slow or inconsistent responses. Everyone working the event is operating from the same picture — not fragmented radio chatter and instinct.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ WHY THIS MATTERS -->
+<div class="why-wrap" id="why">
+  <div class="why-inner">
+
+    <div class="reveal">
+      <div class="section-label">Why this matters</div>
+      <h2 class="section-title">High attendance.<br><em>Fragmented information.</em></h2>
+    </div>
+
+    <div class="why-layout">
+
+      <div class="why-text reveal">
+        <p class="why-quote">
+          "Most event safety systems are built for the licence renewal, not the night itself."
+        </p>
+        <p>
+          Running a festival means managing thousands of people across a complex, shifting environment — with a welfare team that's stretched, communication systems that fragment under load, and compliance requirements that assume a level of documentation most operations teams don't have time to maintain.
+        </p>
+        <p>
+          The information that would make the difference — what substances are circulating, where welfare load is concentrating, which parts of the footprint are showing environmental stress — exists in fragments. It's in welfare team radios. In individual staff observations. In Cooked Pilot's aggregated attendee signals. But rarely brought together into a coherent operational picture.
+        </p>
+        <p>
+          <strong>VibeGuard's role is to close that gap.</strong> Not by replacing the humans running the event, but by giving them structured, timely intelligence that they can act on — and a documented record of how they responded.
+        </p>
+      </div>
+
+      <div class="pressure-stack reveal-stagger">
+        <div class="pressure-row">
+          <div class="pressure-flag">
+            <div class="pressure-indicator amber"></div>
+            <span class="pressure-tag">Comms</span>
+          </div>
+          <p class="pressure-body"><strong>Fragmented communication breaks situational awareness.</strong> Welfare teams, medical coordinators, and operations leads are often working from different information — creating gaps that delay response and complicate post-event documentation.</p>
+        </div>
+        <div class="pressure-row">
+          <div class="pressure-flag">
+            <div class="pressure-indicator red"></div>
+            <span class="pressure-tag">Delay</span>
+          </div>
+          <p class="pressure-body"><strong>Slow escalation is the most preventable risk factor.</strong> Without structured signal visibility, teams often don't recognise a developing pattern until it has already become harder to manage.</p>
+        </div>
+        <div class="pressure-row">
+          <div class="pressure-flag">
+            <div class="pressure-indicator amber"></div>
+            <span class="pressure-tag">Docs</span>
+          </div>
+          <p class="pressure-body"><strong>Post-incident documentation is often reconstructed rather than recorded.</strong> When licensing bodies, insurers, or lawyers want to understand what happened, the record is fragmented, inconsistent, or missing the operational context.</p>
+        </div>
+        <div class="pressure-row">
+          <div class="pressure-flag">
+            <div class="pressure-indicator red"></div>
+            <span class="pressure-tag">Load</span>
+          </div>
+          <p class="pressure-body"><strong>Welfare teams are consistently under-resourced relative to attendee numbers.</strong> Intelligence that helps them prioritise and coordinate is not a luxury — it's a multiplier on the capacity that already exists.</p>
+        </div>
+        <div class="pressure-row">
+          <div class="pressure-flag">
+            <div class="pressure-indicator green"></div>
+            <span class="pressure-tag">Risk</span>
+          </div>
+          <p class="pressure-body"><strong>Reputational and regulatory risk is increasing.</strong> Events that cannot demonstrate structured, active safety management are increasingly exposed — to licensing conditions, to media scrutiny, and to the operational consequences of an adverse event they didn't see coming.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ HOW IT FITS INTO EXISTING SYSTEMS -->
+<div class="fits-wrap" id="integration">
+  <div class="fits-inner">
+
+    <div class="reveal">
+      <div class="section-label">How it fits in</div>
+      <h2 class="section-title">Works with what<br><em>you already run.</em></h2>
+    </div>
+
+    <div class="fits-layout">
+
+      <div class="fits-text reveal">
+        <p>
+          VibeGuard is not a total replacement for existing event safety infrastructure. It is designed to <strong>sit alongside the systems you already use</strong> — radio comms, welfare team structure, on-site medical, existing incident logs — and add a structured intelligence layer that makes each of those components more effective.
+        </p>
+        <p>
+          Most event operations teams have good people and functional processes. The gap is usually in visibility — not knowing what's happening across the entire footprint simultaneously, and not having a shared picture that everyone is working from.
+        </p>
+        <p>
+          VibeGuard addresses that specific gap. It is not a welfare replacement, not a medical system, not a compliance framework imported from a different industry. It is a layer of operational intelligence built specifically for festival and nightlife environments — designed with the knowledge that real event operations are complex, fast-moving, and often under-resourced.
+        </p>
+      </div>
+
+      <div class="integration-list reveal-stagger">
+        <div class="int-row">
+          <span class="int-mark">→</span>
+          <p class="int-body"><strong>Welfare teams</strong> receive consistent signal visibility without needing to centralise every piece of information through a coordinator. Each team member sees the same operational picture.</p>
+        </div>
+        <div class="int-row">
+          <span class="int-mark">→</span>
+          <p class="int-body"><strong>Medical coordinators</strong> get early-warning patterns from aggregated Cooked Pilot intelligence — substance activity, escalation volumes, environmental stress signals — before they arrive at the medical tent.</p>
+        </div>
+        <div class="int-row">
+          <span class="int-mark">→</span>
+          <p class="int-body"><strong>Operations leads</strong> have a documented log of safety signals and responses that runs continuously through the event, reducing the burden of post-event reconstruction.</p>
+        </div>
+        <div class="int-row">
+          <span class="int-mark">→</span>
+          <p class="int-body"><strong>Promoters and organisers</strong> have a structured basis for licence applications, insurance submissions, and stakeholder reporting — not assembled under time pressure after an incident.</p>
+        </div>
+        <div class="int-row">
+          <span class="int-mark">→</span>
+          <p class="int-body"><strong>Compliance stakeholders</strong> receive exportable documentation that demonstrates active, evidence-informed safety management — not just a welfare tent and a first aid certificate.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ WHAT MAKES IT DIFFERENT -->
+<section class="diff-section" id="different">
+
+  <div class="reveal">
+    <div class="section-label">What makes it different</div>
+    <h2 class="section-title">Built for the event.<br><em>Not the spreadsheet.</em></h2>
+  </div>
+
+  <div class="diff-layout">
+
+    <div class="diff-text reveal">
+      <p>
+        The compliance software market for events is either too generic — built for corporate risk management and shoehorned into a festival context — or too punitive, treating safety as a documentation exercise rather than an operational capability.
+      </p>
+      <p>
+        VibeGuard is built from the ground up for the specific conditions of live events: fast-moving, distributed, high-stimulation environments where the people running the event are already operating at full load.
+      </p>
+      <p>
+        <strong>Every design decision prioritises operational usefulness over compliance aesthetics.</strong> The goal is not a dashboard that looks impressive to a licensing body. The goal is information that helps the person on the ground make a better decision, faster, with less cognitive load.
+      </p>
+    </div>
+
+    <div class="diff-rows reveal-stagger">
+      <div class="diff-row">
+        <span class="diff-before">Surveillance-first architecture</span>
+        <span class="diff-arrow">→</span>
+        <span class="diff-after">Anonymised crowd pattern intelligence</span>
+      </div>
+      <div class="diff-row">
+        <span class="diff-before">Post-incident reporting</span>
+        <span class="diff-arrow">→</span>
+        <span class="diff-after">Live, continuous signal visibility</span>
+      </div>
+      <div class="diff-row">
+        <span class="diff-before">Generic compliance dashboard</span>
+        <span class="diff-arrow">→</span>
+        <span class="diff-after">Event-specific operational intelligence</span>
+      </div>
+      <div class="diff-row">
+        <span class="diff-before">Disconnected safety paperwork</span>
+        <span class="diff-arrow">→</span>
+        <span class="diff-after">Continuous, exportable audit record</span>
+      </div>
+      <div class="diff-row">
+        <span class="diff-before">Siloed team communication</span>
+        <span class="diff-arrow">→</span>
+        <span class="diff-after">Shared operational picture across teams</span>
+      </div>
+      <div class="diff-row">
+        <span class="diff-before">Culture-deaf enterprise UX</span>
+        <span class="diff-arrow">→</span>
+        <span class="diff-after">Designed for festival operations realities</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ ECOSYSTEM CONNECTION -->
+<div class="eco-wrap" id="ecosystem">
+  <div class="eco-inner">
+
+    <div class="eco-header reveal">
+      <div>
+        <div class="section-label">How it connects</div>
+        <h2 class="section-title">The organiser layer<br><em>of the system.</em></h2>
+      </div>
+      <p class="section-body">
+        VibeGuard is the compliance and operations layer of a three-part ecosystem. It receives intelligence from Cooked Pilot and is grounded in ViceLab's research frameworks — giving organisers visibility that is both timely and evidence-informed.
+      </p>
+    </div>
+
+    <div class="eco-diagram reveal-stagger">
+
+      <div class="eco-node vl">
+        <div class="eco-node-label">
+          <span class="eco-node-tag">Foundation layer</span>
+          <span class="eco-node-name">ViceLab</span>
+        </div>
+        <div class="eco-node-body">
+          <p class="eco-node-desc">Research, substance intelligence, and evidence frameworks. ViceLab provides the analytical foundation — the harm reduction methodology, interaction data, and educational systems that VibeGuard uses to contextualise and interpret the signals it receives from the field.</p>
+          <div class="eco-chips">
+            <span class="eco-chip">Evidence frameworks</span>
+            <span class="eco-chip">Substance intelligence</span>
+            <span class="eco-chip">Risk methodology</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="eco-connector">↓ &nbsp; enriches signal context &nbsp; ↓</div>
+
+      <div class="eco-node cp">
+        <div class="eco-node-label">
+          <span class="eco-node-tag">Peer safety layer</span>
+          <span class="eco-node-name">Cooked Pilot</span>
+        </div>
+        <div class="eco-node-body">
+          <p class="eco-node-desc">The attendee-facing application generates anonymised, aggregated crowd intelligence — substance activity, welfare escalations, check-in patterns. This signal is the raw material that VibeGuard transforms into operational visibility for organisers. No individual data is passed through. Patterns only.</p>
+          <div class="eco-chips">
+            <span class="eco-chip">Anonymised crowd signal</span>
+            <span class="eco-chip">Escalation patterns</span>
+            <span class="eco-chip">Substance activity</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="eco-connector">↓ &nbsp; feeds into &nbsp; ↓</div>
+
+      <div class="eco-node vg-active">
+        <div class="eco-node-label">
+          <span class="eco-node-tag">Compliance layer</span>
+          <span class="eco-node-name">VibeGuard</span>
+        </div>
+        <div class="eco-node-body">
+          <p class="eco-node-desc">The organiser-facing intelligence and compliance infrastructure. Aggregated signals become an operational dashboard, welfare team briefing layer, and structured audit record — all in one continuous system, running from setup through pack-down. Exportable to licensing bodies, insurers, and stakeholder reports.</p>
+          <div class="eco-chips">
+            <span class="eco-chip">Ops dashboard</span>
+            <span class="eco-chip">Welfare coordination</span>
+            <span class="eco-chip">Audit export</span>
+            <span class="eco-chip">Risk visibility</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ WHO IT IS FOR -->
+<div class="for-wrap" id="for">
+  <div class="for-inner">
+
+    <div class="for-header reveal">
+      <div>
+        <div class="section-label">Who it is for</div>
+        <h2 class="section-title">Clear roles.<br><em>Different needs.</em></h2>
+      </div>
+      <p class="section-body">
+        VibeGuard serves the full range of stakeholders responsible for event safety — from the promoter signing the licence to the welfare worker responding at 2am.
+      </p>
+    </div>
+
+    <div class="for-grid reveal-stagger">
+
+      <div class="for-card">
+        <div class="for-role">Promoters &amp; organisers</div>
+        <div class="for-title">You sign the licence. You carry the risk.</div>
+        <p class="for-body">VibeGuard gives you structured, exportable evidence that your event operated with active safety management — not just the statutory minimum. Useful for licence renewal, insurance, and responding to stakeholder scrutiny.</p>
+      </div>
+
+      <div class="for-card">
+        <div class="for-role">Welfare teams</div>
+        <div class="for-title">You're working a complex, distributed environment at high load.</div>
+        <p class="for-body">Shared signal visibility means every team member has the same operational picture — without waiting for a coordinator to relay information. Escalation patterns surface earlier. Response is faster. Coverage is more consistent.</p>
+      </div>
+
+      <div class="for-card">
+        <div class="for-role">Medical coordinators</div>
+        <div class="for-title">You need early-warning intelligence, not just arrivals at the tent.</div>
+        <p class="for-body">Aggregated substance activity signals and welfare escalation patterns give medical teams a forward-looking picture of what's developing — not just reactive management of presentations that have already arrived.</p>
+      </div>
+
+      <div class="for-card">
+        <div class="for-role">Operations leads</div>
+        <div class="for-title">You need one consistent picture, across the whole footprint.</div>
+        <p class="for-body">VibeGuard centralises the signal visibility that's currently fragmented across radios, team observations, and instinct. Every operational decision is made with shared, documented context rather than partially-complete information.</p>
+      </div>
+
+      <div class="for-card">
+        <div class="for-role">Compliance stakeholders</div>
+        <div class="for-title">You need documentation that stands up.</div>
+        <p class="for-body">Exportable audit logs, structured incident context, and continuous safety records create the paper trail that licensing authorities and legal teams need. Documentation that's built during the event, not assembled afterwards under pressure.</p>
+      </div>
+
+      <div class="for-card">
+        <div class="for-role">Partners &amp; funders</div>
+        <div class="for-title">You want events that can demonstrate their safety posture.</div>
+        <p class="for-body">VibeGuard gives you something to point to — a documented, structured record that a festival took safety seriously, operated intelligently, and managed incidents proportionately. Useful for brand partners, insurers, and public funders alike.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ TRUST / DESIGN PRINCIPLES -->
+<div class="trust-wrap" id="principles">
+  <div class="trust-inner">
+
+    <div class="trust-header reveal">
+      <div>
+        <div class="section-label vg">Design principles</div>
+        <h2 class="section-title">What we operate on.</h2>
+      </div>
+      <p class="section-body">
+        These are not aspirational values. They are constraints that apply to every feature, every output, and every design decision VibeGuard makes.
+      </p>
+    </div>
+
+    <div class="trust-grid reveal-stagger">
+
+      <div class="trust-card">
+        <div class="trust-num">01</div>
+        <div class="trust-principle">Non-punitive</div>
+        <p class="trust-body">VibeGuard is designed to support safer events, not to create liability exposure or punish organisers for having complex events. Safety intelligence should make events better — not give licensing bodies more ammunition.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-num">02</div>
+        <div class="trust-principle">Evidence-aware</div>
+        <p class="trust-body">Every risk signal and recommended response is grounded in ViceLab's research and harm reduction methodology. Not invented thresholds and generic alerts — evidence-informed operational intelligence built for the specific conditions of live events.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-num">03</div>
+        <div class="trust-principle">Operationally practical</div>
+        <p class="trust-body">Designed for the real conditions of event operations — overloaded teams, fragmented communication, fast-moving environments. Every feature is evaluated on whether it helps someone on the ground do their job better, not whether it looks good on a compliance report.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-num">04</div>
+        <div class="trust-principle">Audit-conscious</div>
+        <p class="trust-body">Documentation is continuous, structured, and exportable — not assembled retrospectively. VibeGuard builds the compliance record during the event, so the paper trail that matters is already complete when it's needed.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-num">05</div>
+        <div class="trust-principle">Culturally literate</div>
+        <p class="trust-body">Built with an understanding of festival and nightlife culture, not in spite of it. Safety systems that treat events as inherently problematic don't work. VibeGuard is designed by people who understand what these environments actually are.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-num">06</div>
+        <div class="trust-principle">No surveillance theatre</div>
+        <p class="trust-body">Attendee anonymity is structural, not a policy. Cooked Pilot generates anonymised patterns. VibeGuard operates on those patterns. No individual is tracked, profiled, or identifiable in any VibeGuard output. Safety that requires surveilling your audience is not safety.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="divider-line"></div>
+
+
+<!-- ═══════════════════════════════════ FINAL CTA -->
+<div class="final-cta" id="contact">
+  <div class="cta-inner">
+
+    <div class="reveal">
+      <h2 class="cta-title">Ready to run a<br><em>safer event?</em></h2>
+      <p class="cta-body">
+        Whether you're an organiser building your next safety framework, a welfare lead looking for better operational tools, or a compliance stakeholder who needs documentation that holds — VibeGuard has a path in.
+      </p>
+      <a href="#contact" class="btn-primary">Start the conversation</a>
+    </div>
+
+    <div class="cta-options reveal-stagger">
+      <a href="#" class="cta-option">
+        <div class="cta-option-left">
+          <div class="cta-option-tag">Festival organisers</div>
+          <div class="cta-option-label">Pilot VibeGuard at your next event</div>
+        </div>
+        <div class="cta-option-arrow">→</div>
+      </a>
+      <a href="#" class="cta-option">
+        <div class="cta-option-left">
+          <div class="cta-option-tag">Welfare &amp; medical leads</div>
+          <div class="cta-option-label">Explore coordination and signal tools</div>
+        </div>
+        <div class="cta-option-arrow">→</div>
+      </a>
+      <a href="#" class="cta-option">
+        <div class="cta-option-left">
+          <div class="cta-option-tag">Compliance stakeholders</div>
+          <div class="cta-option-label">Discuss documentation and audit outputs</div>
+        </div>
+        <div class="cta-option-arrow">→</div>
+      </a>
+      <a href="#" class="cta-option">
+        <div class="cta-option-left">
+          <div class="cta-option-tag">Strategic partners</div>
+          <div class="cta-option-label">Explore ecosystem integration</div>
+        </div>
+        <div class="cta-option-arrow">→</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════ FOOTER -->
+<footer>
+  <div class="footer-logo">Vice<span>Lab</span></div>
+  <div class="footer-meta">
+    ViceLab · Cooked Pilot · VibeGuard<br>
+    Harm reduction infrastructure for live events<br>
+    Australia &amp; Europe
+  </div>
+</footer>
+
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('in'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal — Festival Safety Intelligence · ViceLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════════ */
+:root {
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  VICELAB GLOBAL COLOUR SYSTEM — single source of truth      ║
+   ║  Edit here to repaint the entire site.                      ║
+   ║  Do not hard-code colours outside this block.               ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+  /* ── Backgrounds ───────────────────────────────────────────── */
+  --bg-space:          #04060D;            /* page root / deep field    */
+  --bg-panel:          #070B15;            /* card / panel surface      */
+  --bg-telemetry:      #091723;            /* telemetry log strip       */
+
+  /* ── Text ──────────────────────────────────────────────────── */
+  --text-primary:      #f4f7ff;            /* console / log body text   */
+  --text-secondary:    #8fa3c3;            /* metadata, labels          */
+  --text-system:       #dce6ff;            /* system strips, orientation*/
+  --text-body:         #b8c2d4;            /* paragraph / prose text    */
+  --text-dim:          #7a91b0;            /* dimmed secondary labels   */
+  --text-muted:        #5e7a9a;            /* decorative / footnote     */
+  --text-white:        #eceff7;            /* near-white headings       */
+
+  /* ── Dividers ───────────────────────────────────────────────── */
+  --line-divider:      rgba(255,255,255,0.15);  /* structural dividers  */
+  --line-subtle:       rgba(255,255,255,0.12);  /* panel borders        */
+
+  /* ── Signal states (telemetry) ─────────────────────────────── */
+  --signal-ok:         #3cff9c;            /* nominal / pass            */
+  --signal-warn:       #ffcc66;            /* caution                   */
+  --signal-alert:      #ff5a5a;            /* critical / fail           */
+
+  /* ── Substance class accents ───────────────────────────────── */
+  --accent-stimulant:    #FFB830;          /* Stimulants — amber-gold   */
+  --accent-psychedelic:  #00FFC6;          /* Psychedelics — cyan       */
+  --accent-empathogen:   #E43CFF;          /* Empathogens — magenta     */
+  --accent-dissociative: #4DA3FF;          /* Dissociatives — blue      */
+  --accent-opioid:       #FF6B6B;          /* Depressants/Opioids — red */
+  --accent-cannabinoid:  #7EE482;          /* Cannabis — soft green     */
+  --accent-entactogen:   #A78BFA;          /* Entactogens — violet      */
+
+  /* ── Ecosystem entity accents ──────────────────────────────── */
+  --brand-cp:          #2BFF88;            /* Cooked Pilot — neon green */
+  --brand-vg:          #4DA3FF;            /* VibeGuard    — neon blue  */
+  --brand-vl:          #E43CFF;            /* ViceLab      — magenta    */
+
+  /* ── File-local tokens ──────────────── */
+  --bg:        var(--bg-space);
+  --bg-1:      #080B16;
+  --bg-2:      #0C1020;
+  --bg-card:   var(--bg-panel);
+
+  --border:    var(--line-subtle);
+  --border-2:  var(--line-subtle);
+
+  --text:      var(--text-body);
+  --text-dimmer: var(--text-muted);
+  --white:     var(--text-white);
+
+  --sig:       var(--accent-psychedelic);
+  --sig-dim:   rgba(0,255,198,0.06);
+  --sig-mid:   rgba(0,255,198,0.14);
+  --sig-border:rgba(0,255,198,0.30);
+  --sig-glow:  0 0 28px rgba(0,255,198,0.22);
+
+  --cp:        var(--brand-cp);   /* Cooked Pilot — neon green */
+  --vg:        var(--accent-dissociative);   /* VibeGuard — neon blue */
+  --vl:        var(--accent-empathogen);   /* ViceLab — neon magenta */
+
+  --vault:     var(--brand-cp);
+  --matrix:    var(--accent-stimulant);
+  --briefs:    var(--accent-dissociative);
+
+  --mono:    'IBM Plex Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body:    'Instrument Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.68;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CANVAS LAYERS — starfield + grid (behind everything)
+═══════════════════════════════════════════════════════ */
+#c-stars, #c-grid {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  width: 100%; height: 100%;
+}
+#c-stars { z-index: 0; }
+#c-grid  { z-index: 1; }
+
+/* ═══════════════════════════════════════════════════════
+   GRAIN OVERLAY
+═══════════════════════════════════════════════════════ */
+.grain {
+  position: fixed; inset: 0; z-index: 2;
+  pointer-events: none;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   FLOATING ARCHIVAL WORDS
+═══════════════════════════════════════════════════════ */
+.archival-layer {
+  position: fixed; inset: 0; z-index: 3;
+  pointer-events: none; overflow: hidden;
+}
+.archival-word {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: clamp(9px, 1.2vw, 13px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(0,255,198,0.045);
+  white-space: nowrap;
+  animation: word-drift linear infinite;
+}
+@keyframes word-drift {
+  0%   { transform: translateY(0px) translateX(0px); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-80px) translateX(20px); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SITE WRAPPER
+═══════════════════════════════════════════════════════ */
+.site { position: relative; z-index: 10; }
+
+/* ═══════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(5,7,15,0.82);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,255,198,0.08);
+}
+.nav-logo {
+  font-family: var(--display); font-size: 14px; font-weight: 800;
+  letter-spacing: 0.04em; color: var(--white); text-decoration: none;
+}
+.nav-logo em { font-style: normal; color: var(--cp); }
+.nav-links {
+  display: flex; align-items: center; gap: 32px;
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-active { color: var(--sig) !important; }
+.nav-badge {
+  font-family: var(--mono); font-size: 0.80rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--sig);
+  border: 1px solid rgba(0,255,198,0.28);
+  padding: 5px 14px; text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-badge:hover { background: rgba(0,255,198,0.08); }
+
+/* ═══════════════════════════════════════════════════════
+   SHARED UTILITIES
+═══════════════════════════════════════════════════════ */
+.container { max-width: 1140px; margin: 0 auto; padding: 0 48px; }
+.eyebrow {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--sig); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow::before {
+  content: ''; display: block;
+  width: 16px; height: 1px; background: var(--sig);
+}
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 800; line-height: 1.08;
+  letter-spacing: -0.02em; color: var(--white);
+  margin-bottom: 18px;
+}
+.section-title em { font-style: normal; color: var(--sig); }
+.section-body {
+  font-size: 15px; color: var(--text); line-height: 1.75; max-width: 540px;
+}
+
+/* Reveal animations */
+.reveal {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+.reveal-stagger > * {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal-stagger.in > *:nth-child(1) { opacity:1; transform:none; transition-delay:0.04s; }
+.reveal-stagger.in > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.12s; }
+.reveal-stagger.in > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.20s; }
+.reveal-stagger.in > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.28s; }
+
+/* ═══════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 120px 48px 80px;
+  position: relative; overflow: hidden;
+}
+
+/* hero radial ambient */
+.hero::after {
+  content: ''; position: absolute;
+  top: -160px; left: 50%; transform: translateX(-50%);
+  width: 1000px; height: 700px;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,255,198,0.055) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; width: 100%; }
+
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--sig); margin-bottom: 28px;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; animation: fadeUp 0.4s ease 0.1s forwards;
+}
+.hero-pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--sig);
+  animation: pulse 2.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,198,0)} 50%{opacity:.5;box-shadow:0 0 8px 3px rgba(0,255,198,0.3)} }
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(72px, 13vw, 152px);
+  font-weight: 800;
+  line-height: 0.90;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  margin-bottom: 28px;
+  position: relative;
+  opacity: 0; animation: fadeUp 0.45s ease 0.18s forwards;
+}
+/* Glitch ghost */
+.hero-title::before {
+  content: 'SIGNAL';
+  position: absolute; top: 0; left: 0;
+  color: var(--sig);
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  transform: translate(-2px, 0);
+  opacity: 0.12;
+  animation: glitch 8s infinite;
+}
+@keyframes glitch {
+  0%,89%,100% { transform: translate(-2px,0); opacity:0.10; }
+  90%  { transform: translate( 3px,-1px); opacity:0.20; clip-path: polygon(0 20%,100% 20%,100% 55%,0 55%); }
+  92%  { transform: translate(-3px, 1px); opacity:0.14; clip-path: polygon(0 60%,100% 60%,100% 80%,0 80%); }
+  94%  { transform: translate( 2px, 0px); opacity:0.10; clip-path: polygon(0 0,100% 0,100% 35%,0 35%); }
+}
+
+.hero-orient {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-system);
+  margin-bottom: 22px;
+  opacity: 0; animation: fadeUp 0.4s ease 0.28s forwards;
+}
+
+.hero-sub {
+  font-size: 16px; color: var(--text);
+  max-width: 480px; line-height: 1.78;
+  margin-bottom: 42px;
+  opacity: 0; animation: fadeUp 0.4s ease 0.38s forwards;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.4s ease 0.48s forwards;
+}
+
+.btn-vault {
+  font-family: var(--mono); font-size: 0.80rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 14px 36px;
+  background: transparent;
+  color: var(--sig);
+  border: 1px solid var(--sig-border);
+  text-decoration: none; display: inline-block;
+  transition: all 0.25s; position: relative; overflow: hidden;
+}
+.btn-vault::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--sig-mid);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.btn-vault:hover { box-shadow: var(--sig-glow), 0 0 60px rgba(0,255,198,0.10); }
+.btn-vault:hover::before { transform: scaleX(1); }
+.btn-vault span { position: relative; z-index: 1; }
+
+.btn-ghost-sm {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 12px 24px;
+  border: 1px solid var(--border-2); color: var(--text-dim);
+  background: transparent; text-decoration: none; display: inline-block;
+  transition: all 0.2s;
+}
+.btn-ghost-sm:hover { border-color: var(--line-divider); color: var(--white); }
+
+.hero-cta-sub {
+  margin-top: 12px;
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+
+/* Readout strip — right side */
+.hero-readout {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 2px;
+  opacity: 0; animation: fadeUp 0.4s ease 0.62s forwards;
+}
+.rr {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px;
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dimmer);
+  border: 1px solid rgba(0,255,198,0.06);
+  background: rgba(0,255,198,0.02);
+}
+.rr-dot {
+  width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0;
+  background: var(--sig); animation: pulse 3s ease-in-out infinite;
+}
+.rr-val { color: var(--sig); font-weight: 500; margin-left: auto; padding-left: 12px; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SIGNAL MAP — ecosystem node diagram
+═══════════════════════════════════════════════════════ */
+.map-section {
+  padding: 100px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.map-header { text-align: center; margin-bottom: 64px; }
+.map-canvas-wrap {
+  position: relative;
+  max-width: 720px; margin: 0 auto;
+  height: 280px;
+}
+#c-map { width: 100%; height: 100%; }
+
+/* Node tooltip */
+.node-tip {
+  position: absolute;
+  pointer-events: none;
+  padding: 10px 14px;
+  background: rgba(5,7,15,0.92);
+  border: 1px solid var(--sig-border);
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--sig);
+  white-space: nowrap;
+  opacity: 0; transition: opacity 0.18s;
+  z-index: 10;
+}
+.node-tip.show { opacity: 1; }
+.node-tip-name { color: var(--white); font-size: 0.78rem; margin-bottom: 4px; }
+
+/* ═══════════════════════════════════════════════════════
+   TOOL MODULES
+═══════════════════════════════════════════════════════ */
+.tools-section { padding: 120px 0; }
+.tools-header { margin-bottom: 56px; }
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.tool-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  position: relative; overflow: hidden;
+}
+.tool-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.tool-card.vault::before  { background: var(--vault); }
+.tool-card.matrix::before { background: var(--matrix); }
+.tool-card.briefs::before { background: var(--briefs); }
+.tool-card:hover { border-color: rgba(0,255,198,0.35); box-shadow: 0 0 40px rgba(0,255,198,0.06); }
+.tool-card:hover::before  { transform: scaleX(1); }
+
+/* Card corner brackets */
+.tool-card::after {
+  content: ''; position: absolute;
+  bottom: -1px; right: -1px;
+  width: 12px; height: 12px;
+  border-right: 1px solid rgba(0,255,198,0.18);
+  border-bottom: 1px solid rgba(0,255,198,0.18);
+}
+
+.tc-head {
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.20);
+}
+.tc-module-label {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dimmer); margin-bottom: 10px;
+}
+.tc-id {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dimmer); margin-bottom: 8px;
+}
+.tc-name {
+  font-family: var(--display);
+  font-size: 22px; font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.tool-card.vault  .tc-name { color: var(--vault); }
+.tool-card.matrix .tc-name { color: var(--matrix); }
+.tool-card.briefs .tc-name { color: var(--briefs); }
+
+.tc-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.tc-desc {
+  font-size: 13px; color: var(--text);
+  line-height: 1.72; flex: 1;
+  margin-bottom: 20px;
+}
+.tc-tags {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-bottom: 20px;
+}
+.tc-tag {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  color: var(--text-dimmer);
+}
+.tool-card.vault  .tc-tag { border-color: rgba(43,255,136,0.14); color: rgba(43,255,136,0.50); }
+.tool-card.matrix .tc-tag { border-color: rgba(240,160,48,0.14); color: rgba(240,160,48,0.50); }
+.tool-card.briefs .tc-tag { border-color: rgba(77,163,255,0.14); color: rgba(77,163,255,0.50); }
+
+.tc-foot {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(0,0,0,0.15);
+}
+.tc-status {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.tc-status-dot {
+  display: inline-block;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--vault); margin-right: 6px;
+  vertical-align: middle;
+  animation: pulse 2.8s ease-in-out infinite;
+}
+.tool-card.matrix .tc-status-dot { background: var(--matrix); }
+.tool-card.briefs  .tc-status-dot { background: var(--briefs); }
+
+.tc-cta {
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dim); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.tc-cta:hover { color: var(--white); }
+.tc-arrow { transition: transform 0.2s; }
+.tc-cta:hover .tc-arrow { transform: translateX(3px); }
+
+/* ═══════════════════════════════════════════════════════
+   VAULT IDENTITY
+═══════════════════════════════════════════════════════ */
+.vault-section {
+  padding: 100px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-1);
+  position: relative; overflow: hidden;
+  text-align: center;
+}
+.vault-section::before {
+  content: ''; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(0,255,198,0.042) 0%, transparent 65%);
+  pointer-events: none;
+}
+.vault-inner { position: relative; z-index: 1; }
+.vault-tag {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(0,255,198,0.45); margin-bottom: 24px;
+}
+.vault-headline {
+  font-family: var(--display);
+  font-size: clamp(26px, 4vw, 48px);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.025em; color: var(--white);
+  max-width: 640px; margin: 0 auto 24px;
+}
+.vault-headline em { font-style: normal; color: var(--sig); }
+.vault-body {
+  font-size: 15px; color: var(--text);
+  max-width: 520px; margin: 0 auto 56px; line-height: 1.78;
+}
+
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin-top: 0;
+}
+.vault-cell {
+  padding: 20px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.vault-cell-tag {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(0,255,198,0.38); margin-bottom: 8px;
+}
+.vault-cell-text {
+  font-size: 13px; color: var(--text); line-height: 1.65;
+}
+.vault-cell-text strong { color: var(--white); }
+
+/* ═══════════════════════════════════════════════════════
+   INTERACTION MATRIX PREVIEW
+═══════════════════════════════════════════════════════ */
+.matrix-section { padding: 120px 0; }
+.matrix-header { margin-bottom: 48px; }
+
+.matrix-instrument {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+/* scanner line */
+.matrix-instrument::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--sig), transparent);
+  opacity: 0.4;
+  animation: scan-line 4s ease-in-out infinite;
+}
+@keyframes scan-line {
+  0%,100% { transform: translateX(-100%); opacity:0; }
+  10%     { opacity:0.4; }
+  50%     { transform: translateX(0); opacity: 0.4; }
+  90%     { opacity:0.4; }
+}
+
+.mx-head {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(0,0,0,0.22);
+}
+.mx-head-label {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.mx-head-status {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--matrix); display: flex; align-items: center; gap: 6px;
+}
+.mx-dot { width:5px; height:5px; border-radius:50%; background:var(--matrix); animation:pulse 2.5s ease-in-out infinite; }
+
+.mx-body { padding: 28px; overflow-x: auto; }
+
+.mx-table {
+  width: 100%; border-collapse: collapse;
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.mx-table th, .mx-table td {
+  padding: 10px 16px; text-align: center;
+  border: 1px solid var(--border);
+}
+.mx-table th {
+  color: var(--text-dim); background: rgba(0,0,0,0.18);
+  font-weight: 500;
+}
+.mx-table td { font-weight: 400; }
+.mx-row-label {
+  text-align: left !important; color: var(--text-dim);
+  background: rgba(0,0,0,0.12);
+}
+.mx-self { color: var(--text-dimmer); }
+.mx-avoid {
+  color: var(--signal-alert);
+  background: rgba(255,77,106,0.06);
+  border-color: rgba(255,77,106,0.14) !important;
+}
+.mx-caution {
+  color: var(--accent-stimulant);
+  background: rgba(240,160,48,0.06);
+  border-color: rgba(240,160,48,0.14) !important;
+}
+.mx-low {
+  color: var(--brand-cp);
+  background: rgba(43,255,136,0.05);
+  border-color: rgba(43,255,136,0.12) !important;
+}
+
+.mx-foot {
+  padding: 10px 20px;
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.18);
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.mx-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.mx-legend-dot {
+  width: 6px; height: 6px; border-radius: 1px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   WHY SIGNAL EXISTS
+═══════════════════════════════════════════════════════ */
+.why-section {
+  padding: 120px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.why-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+}
+.why-stats { display: flex; flex-direction: column; gap: 3px; }
+.why-stat {
+  padding: 20px 22px;
+  background: var(--bg-card); border: 1px solid var(--border);
+}
+.why-stat-fig {
+  font-family: var(--display);
+  font-size: 34px; font-weight: 800;
+  letter-spacing: -0.03em; color: var(--sig); margin-bottom: 5px;
+}
+.why-stat-lbl {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.why-statement {
+  font-family: var(--display);
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 700; line-height: 1.38;
+  color: var(--white); margin-top: 14px;
+  letter-spacing: -0.01em;
+}
+.why-statement em { font-style: normal; color: var(--sig); }
+
+/* ═══════════════════════════════════════════════════════
+   SYSTEM RELATIONSHIP
+═══════════════════════════════════════════════════════ */
+.system-section { padding: 100px 0; }
+.system-header { margin-bottom: 48px; }
+.system-nodes {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;
+}
+.sys-node {
+  padding: 24px 20px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+.sys-node.active {
+  border-color: var(--sig-border);
+  background: rgba(0,255,198,0.03);
+}
+.sys-node.active::before {
+  content: ''; display: block; margin-bottom: 14px;
+  height: 1px; background: var(--sig);
+}
+.sys-node-num {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-dimmer); margin-bottom: 10px;
+}
+.sys-node.active .sys-node-num { color: var(--sig); }
+.sys-node-name {
+  font-family: var(--display); font-size: 17px; font-weight: 800;
+  color: var(--white); margin-bottom: 10px; letter-spacing: -0.01em;
+}
+.sys-node.active .sys-node-name { color: var(--sig); }
+.sys-node-desc { font-size: 12px; color: var(--text); line-height: 1.65; }
+.sys-node-path {
+  margin-top: 12px;
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+
+/* ═══════════════════════════════════════════════════════
+   FINAL CTA
+═══════════════════════════════════════════════════════ */
+.final-section {
+  padding: 140px 0 120px;
+  position: relative; overflow: hidden;
+}
+.final-section::before {
+  content: ''; position: absolute;
+  bottom: -80px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(0,255,198,0.060) 0%, transparent 65%);
+  pointer-events: none;
+}
+.final-inner {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.final-options { display: flex; flex-direction: column; gap: 3px; }
+.final-option {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dim); text-decoration: none;
+  transition: all 0.2s;
+}
+.final-option:hover {
+  border-color: var(--sig-border); color: var(--sig);
+  background: rgba(0,255,198,0.03);
+}
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+  position: relative; z-index: 10;
+}
+.footer-brand {
+  font-family: var(--display); font-size: 13px; font-weight: 800;
+  color: var(--white); text-decoration: none;
+}
+.footer-brand em { font-style: normal; color: var(--cp); }
+.footer-links {
+  display: flex; gap: 28px;
+  font-family: var(--mono); font-size: 0.80rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.footer-links a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--white); }
+.footer-note {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dimmer);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .tool-grid { grid-template-columns: 1fr; }
+  .system-nodes { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 900px) {
+  .why-grid, .final-inner { grid-template-columns: 1fr; gap: 48px; }
+  .hero-readout { display: none; }
+  .vault-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links a:not(.nav-active):not(.nav-badge) { display: none; }
+  .container { padding: 0 20px; }
+  .hero { padding: 100px 20px 72px; }
+  .tools-section, .map-section, .vault-section,
+  .matrix-section, .why-section, .system-section,
+  .final-section { padding: 72px 0; }
+  .system-nodes { grid-template-columns: 1fr; }
+  footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal, .reveal-stagger > * { opacity: 1; transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   GLOBAL READABILITY PATCH — contrast uplift
+   Applied: 2026. Do not override without versioning.
+═══════════════════════════════════════════════════════ */
+
+/* Telemetry / console text */
+.tel-line { font-size: 0.85rem !important; line-height: 1.9 !important; }
+.tel-msg  { color: var(--text-primary) !important; }
+.tel-ts   { color: var(--text-secondary) !important; }
+.tel-ok   .tel-msg { color: var(--signal-ok) !important; }
+.tel-warn .tel-msg { color: var(--signal-warn) !important; }
+.tel-info .tel-msg { color: var(--text-primary) !important; }
+
+/* System labels, archive metadata, console strips */
+.system-label,
+.archive-meta,
+.console-strip,
+.metadata-text,
+.sys-desc-line,
+.sys-orient,
+.plate-meta-row,
+.meta-field-key,
+.pc-id,
+.pc-classification,
+.info-block-label,
+.vault-cell-tag,
+.tc-module-label,
+.tc-id,
+.tc-status,
+.mx-head-label,
+.eco-num,
+.eco-path,
+.ah-stat-lbl,
+.rr,
+.footer-note,
+.closing-label,
+.final-label,
+.vault-tag {
+  color: var(--text-secondary) !important;
+  font-size: max(0.75rem, 1em) !important;
+  line-height: 1.9 !important;
+}
+
+/* Primary console / plate ID text */
+.meta-field-val,
+.plate-code,
+.plate-strip-id,
+.breadcrumb,
+.ah-orient,
+.hero-orient,
+.hero-cta-sub,
+.tc-foot,
+.pc-foot,
+.mx-foot,
+.plate-meta-row span {
+  color: var(--text-system) !important;
+}
+
+/* Metadata values get full brightness */
+.meta-field-val.accent { color: var(--stim, var(--accent-stimulant)) !important; }
+
+/* Minimum sizes — hard floor */
+.eyebrow,
+.nav-links a,
+.filter-btn,
+.tc-module-label,
+.tc-id,
+.pc-id,
+.pc-classification,
+.meta-field-key,
+.plate-strip-id,
+.plate-meta-row,
+.ah-stat-lbl,
+.footer-note,
+.eco-num,
+.eco-path {
+  font-size: max(0.75rem, 1em) !important;
+}
+
+/* Dashboard specific — sc-id / sl labels */
+.sc-id  { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.sc-mode { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.sl-mode { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+
+/* sys-desc orientation lines */
+.sys-desc-line.primary   { color: var(--text-system) !important; }
+.sys-desc-line.secondary { color: var(--text-secondary) !important; }
+
+/* Archive card metadata */
+.pc-badge, .pc-edition { font-size: 0.75rem !important; color: var(--text-secondary) !important; }
+.pc-edition.locked { color: rgba(228,60,255,0.70) !important; }
+.pc-edition.ed01   { color: rgba(0,255,198,0.70) !important; }
+
+/* Waveform subtitle */
+#wave-sub, .wave-sub { color: var(--text-muted) !important; font-size: 0.75rem !important; }
+
+/* Info block labels */
+.info-block-label { color: rgba(255,184,48,0.65) !important; }
+.info-block-label::before { opacity: 0.55 !important; }
+
+</style>
+</head>
+<body>
+
+<!-- Canvas layers -->
+<canvas id="c-stars"></canvas>
+<canvas id="c-grid"></canvas>
+<div class="grain"></div>
+
+<!-- Archival floating words -->
+<div class="archival-layer" id="archival-layer"></div>
+
+<div class="site">
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <a href="/" class="nav-logo">Vice<em>Lab</em></a>
+  <div class="nav-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal" class="nav-active">Signal</a>
+    <a href="/archive">Archive</a>
+    <a href="/contact" class="nav-badge">Work with us</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-eyebrow">
+      <div class="hero-pulse"></div>
+      SIG–01 · Intelligence Layer · Access Granted
+    </div>
+
+    <h1 class="hero-title">SIGNAL</h1>
+
+    <div class="hero-orient">Festival safety intelligence for the ViceLab network.</div>
+
+    <p class="hero-sub">
+      Signal is ViceLab's intelligence layer — a structured vault of substance knowledge, interaction analysis, and concise safety briefs. Research-sourced. Non-judgmental. Built for festival reality.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#tools" class="btn-vault"><span>Access the Vault</span></a>
+      <a href="#why" class="btn-ghost-sm">Why this exists</a>
+    </div>
+    <div class="hero-cta-sub">Festival safety intelligence</div>
+
+    <!-- Readout strip -->
+    <div class="hero-readout">
+      <div class="rr"><div class="rr-dot"></div><span>Substance Vault</span><span class="rr-val">LIVE</span></div>
+      <div class="rr"><div class="rr-dot"></div><span>Interaction Matrix</span><span class="rr-val">LIVE</span></div>
+      <div class="rr"><div class="rr-dot"></div><span>Substance Briefs</span><span class="rr-val">LIVE</span></div>
+      <div class="rr" style="--rr-dot-bg:#2e3847"><div class="rr-dot" style="background:var(--text-dimmer);animation:none"></div><span>Data retention</span><span class="rr-val" style="color:var(--text-dimmer)">ZERO</span></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════ ECOSYSTEM MAP ══════════════ -->
+<section class="map-section">
+  <div class="container">
+    <div class="map-header reveal">
+      <div class="eyebrow">Ecosystem</div>
+      <h2 class="section-title">The ViceLab <em>network.</em></h2>
+    </div>
+    <div class="map-canvas-wrap reveal">
+      <canvas id="c-map"></canvas>
+      <div class="node-tip" id="node-tip">
+        <div class="node-tip-name" id="tip-name"></div>
+        <div id="tip-desc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ TOOL MODULES ══════════════ -->
+<section class="tools-section" id="tools">
+  <div class="container">
+    <div class="tools-header reveal">
+      <div class="eyebrow">Signal contains</div>
+      <h2 class="section-title">Three instruments.<br>One <em>intelligence system.</em></h2>
+    </div>
+
+    <div class="tool-grid reveal-stagger">
+
+      <!-- SUBSTANCE VAULT -->
+      <div class="tool-card vault">
+        <div class="tc-head">
+          <div class="tc-module-label">Intelligence Module</div>
+          <div class="tc-id">SIG–01</div>
+          <div class="tc-name">Substance Vault</div>
+        </div>
+        <div class="tc-body">
+          <p class="tc-desc">
+            A structured intelligence library containing substance profiles, mechanisms, timelines, effects, and harm-reduction notes. Designed for clarity, not sensationalism.
+          </p>
+          <div class="tc-tags">
+            <div class="tc-tag">Drug class</div>
+            <div class="tc-tag">Mechanism</div>
+            <div class="tc-tag">Effects</div>
+            <div class="tc-tag">Half-life</div>
+            <div class="tc-tag">HR notes</div>
+          </div>
+        </div>
+        <div class="tc-foot">
+          <div class="tc-status"><span class="tc-status-dot"></span>Status: Active</div>
+          <a href="/signal/substance-vault" class="tc-cta">Open Vault <span class="tc-arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- INTERACTION MATRIX -->
+      <div class="tool-card matrix">
+        <div class="tc-head">
+          <div class="tc-module-label">Intelligence Module</div>
+          <div class="tc-id">SIG–02</div>
+          <div class="tc-name">Interaction Matrix</div>
+        </div>
+        <div class="tc-body">
+          <p class="tc-desc">
+            A tool for analyzing potential interactions between substances, highlighting interaction type, severity, explanation, and recommended caution level.
+          </p>
+          <div class="tc-tags">
+            <div class="tc-tag">Interaction type</div>
+            <div class="tc-tag">Severity</div>
+            <div class="tc-tag">Explanation</div>
+            <div class="tc-tag">Caution level</div>
+          </div>
+        </div>
+        <div class="tc-foot">
+          <div class="tc-status"><span class="tc-status-dot"></span>Status: Active</div>
+          <a href="/signal/interaction-matrix" class="tc-cta">Open Matrix <span class="tc-arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- SUBSTANCE BRIEFS -->
+      <div class="tool-card briefs">
+        <div class="tc-head">
+          <div class="tc-module-label">Intelligence Module</div>
+          <div class="tc-id">SIG–03</div>
+          <div class="tc-name">Substance Briefs</div>
+        </div>
+        <div class="tc-body">
+          <p class="tc-desc">
+            Concise intelligence sheets summarizing individual substances with mechanism, effects, timeline, risk profile, and practical harm-reduction insights.
+          </p>
+          <div class="tc-tags">
+            <div class="tc-tag">Mechanism</div>
+            <div class="tc-tag">Onset</div>
+            <div class="tc-tag">Peak</div>
+            <div class="tc-tag">Risks</div>
+            <div class="tc-tag">Festival context</div>
+          </div>
+        </div>
+        <div class="tc-foot">
+          <div class="tc-status"><span class="tc-status-dot"></span>Status: Active</div>
+          <a href="/signal/substance-briefs" class="tc-cta">Read Briefs <span class="tc-arrow">→</span></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ VAULT IDENTITY ══════════════ -->
+<section class="vault-section">
+  <div class="container">
+    <div class="vault-inner reveal">
+      <div class="vault-tag">SIG–ARCH · Protected intelligence · Curated reference</div>
+      <h2 class="vault-headline">
+        Stored knowledge.<br><em>Activated on demand.</em>
+      </h2>
+      <p class="vault-body">
+        Every entry in Signal is structured, verified, and maintained — not assembled from search results, not derived from anecdote. A curated archive built for precision, designed to be accurate at 3am in a field.
+      </p>
+      <div class="vault-grid reveal-stagger">
+        <div class="vault-cell">
+          <div class="vault-cell-tag">[ field-grade ]</div>
+          <div class="vault-cell-text"><strong>Written for real conditions.</strong> Not a hospital pamphlet. Calibrated for heat, noise, exhaustion, and poly-drug reality.</div>
+        </div>
+        <div class="vault-cell">
+          <div class="vault-cell-tag">[ signal / noise ]</div>
+          <div class="vault-cell-text"><strong>High-signal only.</strong> Signal does not publish speculation. Contested evidence is flagged explicitly.</div>
+        </div>
+        <div class="vault-cell">
+          <div class="vault-cell-tag">[ open access ]</div>
+          <div class="vault-cell-text"><strong>No gatekeeping.</strong> No accounts. No tracking. The only barrier to this information was finding it — Signal removes that barrier.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ MATRIX PREVIEW ══════════════ -->
+<section class="matrix-section">
+  <div class="container">
+    <div class="matrix-header reveal">
+      <div class="eyebrow">Interaction Matrix</div>
+      <h2 class="section-title">Combination risk<br><em>at a glance.</em></h2>
+      <p class="section-body" style="margin-top:8px">
+        The Matrix maps known interactions between substances — severity, type, and recommended caution — in a single instrument view.
+      </p>
+    </div>
+    <div class="matrix-instrument reveal">
+      <div class="mx-head">
+        <div class="mx-head-label">Interaction Matrix — Preview Display — SIG–02</div>
+        <div class="mx-head-status"><div class="mx-dot"></div>Active</div>
+      </div>
+      <div class="mx-body">
+        <table class="mx-table">
+          <thead>
+            <tr>
+              <th style="text-align:left;color:var(--text-dimmer)">Substance</th>
+              <th>MDMA</th>
+              <th>LSD</th>
+              <th>Alcohol</th>
+              <th>Cocaine</th>
+              <th>Cannabis</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mx-row-label">MDMA</td>
+              <td class="mx-self">—</td>
+              <td class="mx-caution">Caution</td>
+              <td class="mx-avoid">Avoid</td>
+              <td class="mx-avoid">Avoid</td>
+              <td class="mx-caution">Caution</td>
+            </tr>
+            <tr>
+              <td class="mx-row-label">LSD</td>
+              <td class="mx-caution">Caution</td>
+              <td class="mx-self">—</td>
+              <td class="mx-caution">Caution</td>
+              <td class="mx-avoid">Avoid</td>
+              <td class="mx-caution">Caution</td>
+            </tr>
+            <tr>
+              <td class="mx-row-label">Alcohol</td>
+              <td class="mx-avoid">Avoid</td>
+              <td class="mx-caution">Caution</td>
+              <td class="mx-self">—</td>
+              <td class="mx-avoid">Avoid</td>
+              <td class="mx-low">Low Risk</td>
+            </tr>
+            <tr>
+              <td class="mx-row-label">Cocaine</td>
+              <td class="mx-avoid">Avoid</td>
+              <td class="mx-avoid">Avoid</td>
+              <td class="mx-avoid">Avoid</td>
+              <td class="mx-self">—</td>
+              <td class="mx-caution">Caution</td>
+            </tr>
+            <tr>
+              <td class="mx-row-label">Cannabis</td>
+              <td class="mx-caution">Caution</td>
+              <td class="mx-caution">Caution</td>
+              <td class="mx-low">Low Risk</td>
+              <td class="mx-caution">Caution</td>
+              <td class="mx-self">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mx-foot">
+        <div class="mx-legend-item"><div class="mx-legend-dot" style="background:#FF4D6A"></div>Avoid — significant risk</div>
+        <div class="mx-legend-item"><div class="mx-legend-dot" style="background:#F0A030"></div>Caution — monitor closely</div>
+        <div class="mx-legend-item"><div class="mx-legend-dot" style="background:#2BFF88"></div>Low risk — exercise care</div>
+        <div class="mx-legend-item" style="margin-left:auto"><div class="mx-legend-dot" style="background:var(--text-dimmer)"></div>Preview only — open Matrix for full analysis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ WHY SIGNAL ══════════════ -->
+<section class="why-section" id="why">
+  <div class="container">
+    <div class="why-grid">
+      <div class="reveal">
+        <div class="eyebrow">Why this exists</div>
+        <h2 class="section-title">The information gap<br>was <em>the danger.</em></h2>
+        <p class="section-body">Festival culture runs on myth, hearsay, and half-remembered threads. The information circulating in these environments is often wrong, incomplete, or built to scare rather than inform.</p>
+        <p class="section-body" style="margin-top:16px">Signal exists to replace guesswork with structured knowledge — so that whatever someone decides, they decide it informed. This is harm reduction, not endorsement. Knowledge does not promote use. It promotes safety.</p>
+        <p class="section-body" style="margin-top:16px">The goal is not safer drugs. The goal is safer decisions.</p>
+      </div>
+      <div class="why-stats reveal-stagger">
+        <div class="why-stat"><div class="why-stat-fig">Zero</div><div class="why-stat-lbl">Tolerance for moralizing</div></div>
+        <div class="why-stat"><div class="why-stat-fig">100%</div><div class="why-stat-lbl">Research-sourced content</div></div>
+        <div class="why-stat"><div class="why-stat-fig">0 / 0</div><div class="why-stat-lbl">Data collected / retained</div></div>
+        <div class="why-statement">People deserve <em>accurate information</em> — not abstinence lectures dressed up as harm reduction.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ SYSTEM RELATIONSHIP ══════════════ -->
+<section class="system-section">
+  <div class="container">
+    <div class="system-header reveal">
+      <div class="eyebrow">ViceLab ecosystem</div>
+      <h2 class="section-title">Where Signal sits<br>in the <em>system.</em></h2>
+    </div>
+    <div class="system-nodes reveal-stagger">
+      <div class="sys-node">
+        <div class="sys-node-num">Layer 01</div>
+        <div class="sys-node-name">Dashboard</div>
+        <div class="sys-node-desc">Live operational overview — ecosystem status, division telemetry, system events.</div>
+        <div class="sys-node-path">/dashboard</div>
+      </div>
+      <div class="sys-node">
+        <div class="sys-node-num">Layer 02</div>
+        <div class="sys-node-name">Field Manual</div>
+        <div class="sys-node-desc">Practical safety guidance — peer protocols, escalation frameworks, festival procedures.</div>
+        <div class="sys-node-path">/field-manual</div>
+      </div>
+      <div class="sys-node active">
+        <div class="sys-node-num">Layer 03 — You are here</div>
+        <div class="sys-node-name">Signal</div>
+        <div class="sys-node-desc">Intelligence and analysis tools — substance knowledge, interaction data, research briefs.</div>
+        <div class="sys-node-path">/signal</div>
+      </div>
+      <div class="sys-node">
+        <div class="sys-node-num">Layer 04</div>
+        <div class="sys-node-name">Archive</div>
+        <div class="sys-node-desc">Altered State Archive — visual research plates and educational artifacts.</div>
+        <div class="sys-node-path">/archive</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ FINAL CTA ══════════════ -->
+<section class="final-section">
+  <div class="container">
+    <div class="final-inner">
+      <div class="reveal">
+        <div class="eyebrow">Access Signal</div>
+        <h2 class="section-title">The vault is open.<br><em>Enter when ready.</em></h2>
+        <p class="section-body">Explore the intelligence layer of the ViceLab network. No accounts, no tracking, no judgment.</p>
+        <div style="margin-top:36px;display:flex;gap:14px;flex-wrap:wrap">
+          <a href="/signal/substance-vault" class="btn-vault"><span>Access the Vault</span></a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="final-options">
+          <a href="/signal/substance-vault"    class="final-option"><span>Open the Vault</span><span>→</span></a>
+          <a href="/signal/interaction-matrix" class="final-option"><span>Access the Matrix</span><span>→</span></a>
+          <a href="/signal/substance-briefs"   class="final-option"><span>Read Substance Briefs</span><span>→</span></a>
+          <a href="/archive" class="final-option" style="border-color:rgba(77,163,255,0.12);color:rgba(77,163,255,0.40)"><span>Explore the Archive</span><span>→</span></a>
+        </div>
+        <div style="margin-top:10px;font-family:var(--mono);font-size: 0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dimmer);padding-left:4px">
+          No account required · Zero data retained
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <a href="/" class="footer-brand">Vice<em>Lab</em></a>
+  <div class="footer-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive">Archive</a>
+  </div>
+  <div class="footer-note">ViceLab · Harm Reduction Infrastructure</div>
+</footer>
+
+</div><!-- /site -->
+
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  STARFIELD
+// ═══════════════════════════════════════════════════════
+(function() {
+  const cv = document.getElementById('c-stars');
+  const ctx = cv.getContext('2d');
+  let W, H, stars;
+  const N = 180;
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+
+  function makeStars() {
+    stars = [];
+    for (let i = 0; i < N; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 0.9 + 0.2,
+        a: Math.random() * 0.35 + 0.05,
+        speed: Math.random() * 0.012 + 0.004,
+        phase: Math.random() * Math.PI * 2,
+        drift: (Math.random() - 0.5) * 0.06,
+      });
+    }
+  }
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.006;
+    stars.forEach(s => {
+      s.x += s.drift;
+      if (s.x < 0) s.x = W;
+      if (s.x > W) s.x = 0;
+      const flicker = s.a * (0.55 + 0.45 * Math.sin(t * s.speed * 80 + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(180,220,255,${flicker})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  makeStars();
+  draw();
+  window.addEventListener('resize', () => { resize(); makeStars(); });
+})();
+
+// ═══════════════════════════════════════════════════════
+//  COORDINATE GRID — slow drift
+// ═══════════════════════════════════════════════════════
+(function() {
+  const cv = document.getElementById('c-grid');
+  const ctx = cv.getContext('2d');
+  let W, H;
+  const SIZE = 72;
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+
+  let offset = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    offset = (offset + 0.12) % SIZE;
+    ctx.strokeStyle = 'rgba(0,255,198,0.028)';
+    ctx.lineWidth = 0.5;
+
+    for (let x = -SIZE + offset; x < W + SIZE; x += SIZE) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    const voff = (offset * 0.6) % SIZE;
+    for (let y = -SIZE + voff; y < H + SIZE; y += SIZE) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  window.addEventListener('resize', resize);
+})();
+
+// ═══════════════════════════════════════════════════════
+//  ARCHIVAL FLOATING WORDS
+// ═══════════════════════════════════════════════════════
+(function() {
+  const words = [
+    'MDMA','Psilocybin','Ketamine','LSD','Amphetamine',
+    'GHB','Cocaine','Cannabis','MDMA','2C-B',
+    'DMT','MDA','Methamphetamine','Alcohol','Caffeine',
+  ];
+  const layer = document.getElementById('archival-layer');
+  const positions = [
+    [8,15],[18,62],[72,8],[85,40],[55,75],[30,88],
+    [92,22],[45,50],[65,30],[12,80],[38,18],[78,68],
+  ];
+
+  positions.forEach((pos, i) => {
+    const el = document.createElement('div');
+    el.className = 'archival-word';
+    el.textContent = words[i % words.length];
+    el.style.left = pos[0] + '%';
+    el.style.top  = pos[1] + '%';
+    const dur = 28 + Math.random() * 24;
+    const delay = Math.random() * -dur;
+    el.style.animationDuration  = dur + 's';
+    el.style.animationDelay     = delay + 's';
+    layer.appendChild(el);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+//  ECOSYSTEM NODE MAP
+// ═══════════════════════════════════════════════════════
+(function() {
+  const cv  = document.getElementById('c-map');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const tip = document.getElementById('node-tip');
+  const tipName = document.getElementById('tip-name');
+  const tipDesc = document.getElementById('tip-desc');
+
+  const NODES = [
+    {
+      id: 'cp', label: 'Cooked Pilot', sub: 'Attendee Safety Layer',
+      desc: 'Festival safety & peer support app',
+      color: '#2BFF88', cx: 0.22, cy: 0.52,
+    },
+    {
+      id: 'vl', label: 'ViceLab', sub: 'Research Engine',
+      desc: 'Safety ecosystem & research studio',
+      color: '#E43CFF', cx: 0.50, cy: 0.35,
+    },
+    {
+      id: 'vg', label: 'VibeGuard', sub: 'Compliance Layer',
+      desc: 'Festival organiser compliance tools',
+      color: '#4DA3FF', cx: 0.78, cy: 0.52,
+    },
+  ];
+
+  const EDGES = [
+    ['cp','vl'], ['vl','vg'], ['cp','vg'],
+  ];
+
+  let W, H, t = 0, hoveredNode = null;
+
+  function resize() {
+    const wrap = cv.parentElement;
+    W = cv.width  = wrap.clientWidth;
+    H = cv.height = wrap.clientHeight;
+  }
+
+  function nodePos(n) {
+    return { x: n.cx * W, y: n.cy * H };
+  }
+
+  function drawEdge(a, b, pulse) {
+    const pa = nodePos(a), pb = nodePos(b);
+    const grad = ctx.createLinearGradient(pa.x, pa.y, pb.x, pb.y);
+    const alpha = 0.12 + 0.08 * Math.sin(pulse);
+    grad.addColorStop(0,   hexA(a.color, alpha));
+    grad.addColorStop(0.5, hexA('#00FFC6', alpha * 1.5));
+    grad.addColorStop(1,   hexA(b.color, alpha));
+    ctx.beginPath();
+    ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // travelling dot
+    const f = ((t * 0.28 + pulse) % (Math.PI * 2)) / (Math.PI * 2);
+    const tx = pa.x + (pb.x - pa.x) * f;
+    const ty = pa.y + (pb.y - pa.y) * f;
+    ctx.beginPath();
+    ctx.arc(tx, ty, 2, 0, Math.PI * 2);
+    ctx.fillStyle = '#00FFC6';
+    ctx.globalAlpha = 0.6;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  function drawNode(n, isHovered) {
+    const {x, y} = nodePos(n);
+    const pulse = 0.35 + 0.15 * Math.sin(t * 1.2 + NODES.indexOf(n));
+    const r = isHovered ? 9 : 7;
+
+    // outer glow
+    const grd = ctx.createRadialGradient(x,y,0,x,y,isHovered?50:34);
+    grd.addColorStop(0, hexA(n.color, 0.14));
+    grd.addColorStop(1, hexA(n.color, 0));
+    ctx.beginPath();
+    ctx.arc(x, y, isHovered ? 50 : 34, 0, Math.PI * 2);
+    ctx.fillStyle = grd; ctx.fill();
+
+    // ring
+    ctx.beginPath();
+    ctx.arc(x, y, r + 4, 0, Math.PI * 2);
+    ctx.strokeStyle = hexA(n.color, 0.22 + pulse * 0.1);
+    ctx.lineWidth = 1; ctx.stroke();
+
+    // core
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = hexA(n.color, 0.85 + pulse * 0.15);
+    ctx.fill();
+    ctx.strokeStyle = n.color;
+    ctx.lineWidth = 1.5; ctx.stroke();
+
+    // label
+    ctx.font = `500 10px 'IBM Plex Mono', monospace`;
+    ctx.letterSpacing = '0.1em';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = isHovered ? '#ffffff' : 'rgba(187,196,212,0.85)';
+    ctx.fillText(n.label.toUpperCase(), x, y + 22);
+    ctx.font = `300 8px 'IBM Plex Mono', monospace`;
+    ctx.fillStyle = hexA(n.color, 0.55);
+    ctx.fillText(n.sub.toUpperCase(), x, y + 34);
+  }
+
+  function hexA(hex, a) {
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.012;
+
+    EDGES.forEach((e, i) => {
+      const a = NODES.find(n=>n.id===e[0]);
+      const b = NODES.find(n=>n.id===e[1]);
+      drawEdge(a, b, i * 1.2);
+    });
+
+    NODES.forEach(n => drawNode(n, n === hoveredNode));
+    requestAnimationFrame(draw);
+  }
+
+  // Hover detection
+  cv.addEventListener('mousemove', e => {
+    const rect = cv.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    hoveredNode = null;
+    NODES.forEach(n => {
+      const {x,y} = nodePos(n);
+      if (Math.hypot(mx-x, my-y) < 22) {
+        hoveredNode = n;
+        tip.style.left = (x + 20) + 'px';
+        tip.style.top  = (y - 30) + 'px';
+        tipName.textContent = n.label;
+        tipDesc.textContent = n.desc;
+        tip.classList.add('show');
+      }
+    });
+    if (!hoveredNode) tip.classList.remove('show');
+    cv.style.cursor = hoveredNode ? 'pointer' : 'default';
+  });
+  cv.addEventListener('mouseleave', () => {
+    hoveredNode = null;
+    tip.classList.remove('show');
+  });
+
+  resize();
+  draw();
+  window.addEventListener('resize', resize);
+})();
+
+// ═══════════════════════════════════════════════════════
+//  SCROLL REVEAL
+// ═══════════════════════════════════════════════════════
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

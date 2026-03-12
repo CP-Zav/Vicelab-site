@@ -1,0 +1,856 @@
+<!--
+VICE LAB DASHBOARD — CANONICAL VERSION
+File: vicelab-dashboard-final.html
+Status: LOCKED
+
+Purpose:
+Live operational overview of the ViceLab festival safety intelligence system.
+
+Key orientation line:
+"Live safety intelligence across the ViceLab festival network."
+
+Do not modify layout, telemetry structure, or signal monitor without versioning.
+
+If updates are required, create:
+vicelab-dashboard-v2.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViceLab — Telemetry Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>:root {
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  VICELAB GLOBAL COLOUR SYSTEM — single source of truth      ║
+   ║  Edit here to repaint the entire site.                      ║
+   ║  Do not hard-code colours outside this block.               ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+  /* ── Backgrounds ───────────────────────────────────────────── */
+  --bg-space:          #04060D;            /* page root / deep field    */
+  --bg-panel:          #070B15;            /* card / panel surface      */
+  --bg-telemetry:      #091723;            /* telemetry log strip       */
+
+  /* ── Text ──────────────────────────────────────────────────── */
+  --text-primary:      #f4f7ff;            /* console / log body text   */
+  --text-secondary:    #8fa3c3;            /* metadata, labels          */
+  --text-system:       #dce6ff;            /* system strips, orientation*/
+  --text-body:         #b8c2d4;            /* paragraph / prose text    */
+  --text-dim:          #7a91b0;            /* dimmed secondary labels   */
+  --text-muted:        #5e7a9a;            /* decorative / footnote     */
+  --text-white:        #eceff7;            /* near-white headings       */
+
+  /* ── Dividers ───────────────────────────────────────────────── */
+  --line-divider:      rgba(255,255,255,0.15);  /* structural dividers  */
+  --line-subtle:       rgba(255,255,255,0.12);  /* panel borders        */
+
+  /* ── Signal states (telemetry) ─────────────────────────────── */
+  --signal-ok:         #3cff9c;            /* nominal / pass            */
+  --signal-warn:       #ffcc66;            /* caution                   */
+  --signal-alert:      #ff5a5a;            /* critical / fail           */
+
+  /* ── Substance class accents ───────────────────────────────── */
+  --accent-stimulant:    #FFB830;          /* Stimulants — amber-gold   */
+  --accent-psychedelic:  #00FFC6;          /* Psychedelics — cyan       */
+  --accent-empathogen:   #E43CFF;          /* Empathogens — magenta     */
+  --accent-dissociative: #4DA3FF;          /* Dissociatives — blue      */
+  --accent-opioid:       #FF6B6B;          /* Depressants/Opioids — red */
+  --accent-cannabinoid:  #7EE482;          /* Cannabis — soft green     */
+  --accent-entactogen:   #A78BFA;          /* Entactogens — violet      */
+
+  /* ── Ecosystem entity accents ──────────────────────────────── */
+  --brand-cp:          #2BFF88;            /* Cooked Pilot — neon green */
+  --brand-vg:          #4DA3FF;            /* VibeGuard    — neon blue  */
+  --brand-vl:          #E43CFF;            /* ViceLab      — magenta    */
+
+}
+
+
+/* ─────────────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────────────── */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; min-height: 100%;
+  background: var(--bg-space);
+  font-family: "DM Mono","Courier New",monospace;
+  display: flex; justify-content: center;
+}
+
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,255,200,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,200,0.08) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* ─────────────────────────────────────────────────────
+   DASHBOARD WRAPPER
+───────────────────────────────────────────────────── */
+.dash {
+  position: relative; z-index: 1;
+  width: min(720px, calc(100% - 32px));
+  display: flex; flex-direction: column;
+  gap: 3px;
+  padding: 20px 0;
+}
+
+@media (max-width: 399px) {
+  .dash { padding: 0; gap: 2px; }
+}
+
+/* ─────────────────────────────────────────────────────
+   SHARED CHROME
+───────────────────────────────────────────────────── */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid rgba(0,255,200,0.15);
+  position: relative;
+}
+.panel.br::before, .panel.br::after {
+  content: ''; position: absolute;
+  width: 13px; height: 13px;
+  border-color: rgba(0,255,200,0.18); border-style: solid;
+  pointer-events: none;
+}
+.panel.br::before { top:-1px; right:-1px; border-width: 1px 1px 0 0; }
+.panel.br::after  { bottom:-1px; left:-1px; border-width: 0 0 1px 1px; }
+
+/* Panel header row */
+.ph {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; height: 26px;
+  border-bottom: 1px solid var(--line-divider);
+  background: rgba(0,0,0,0.28);
+  font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap; overflow: hidden;
+}
+.ph-r { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+
+/* Panel footer row */
+.pf {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; height: 24px;
+  border-top: 1px solid var(--line-divider);
+  background: rgba(0,0,0,0.22);
+  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dim);
+}
+.pf-r { display: flex; gap: 14px; }
+
+/* LED dot */
+.led {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+  animation: led-p 2.8s ease-in-out infinite;
+}
+.led.g { background: rgba(0,238,102,.90); box-shadow: 0 0 5px 2px rgba(0,238,102,.38); }
+.led.t { background: rgba(0,210,200,.90); box-shadow: 0 0 5px 2px rgba(0,210,200,.38); }
+.led.m { background: rgba(215,35,225,.90); box-shadow: 0 0 5px 2px rgba(215,35,225,.38); }
+@keyframes led-p { 0%,100%{opacity:1} 50%{opacity:.38} }
+
+/* ─────────────────────────────────────────────────────
+   SYSTEM HEADER
+───────────────────────────────────────────────────── */
+.sys-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; height: 26px;
+  background: rgba(0,0,0,0.30);
+  border: 1px solid rgba(0,255,200,0.15);
+  font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-secondary);
+  gap: 8px;
+  /* overflow on the container alone won't ellipsize flex children —
+     individual span handles its own overflow below               */
+}
+.sys-hd-r { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+
+/* ── 375px / <400px: sys-hd readability ──────────────
+   Left label shrinks + ellipsizes. Badge (LED + text)
+   is flex-shrink:0 so it never gets clipped first.    */
+@media (max-width: 399px) {
+  .sys-hd {
+    font-size: 0.75rem;
+    letter-spacing: 0.13em;   /* tighter tracking saves ~3px at 7px */
+    gap: 6px;
+  }
+  .sys-hd > span:first-child {
+    flex: 1 1 0;               /* allow shrink below content width */
+    min-width: 0;              /* override browser min-width:auto  */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .sys-hd-r {
+    flex-shrink: 0;            /* badge never shrinks */
+    gap: 5px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────
+   SYSTEM DESCRIPTION BLOCK  (beneath main header)
+───────────────────────────────────────────────────── */
+.sys-desc {
+  padding: 10px 14px 11px;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(0,255,200,0.12);
+  display: flex; flex-direction: column; gap: 5px;
+}
+.sys-desc-line {
+  font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+  display: flex; align-items: baseline; gap: 9px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sys-desc-line.primary   { color: var(--text-system); }
+.sys-desc-line.secondary { color: var(--text-secondary); }
+.sys-desc-bullet {
+  font-size: 0.75rem; color: rgba(0,255,200,0.45);
+  flex-shrink: 0; letter-spacing: 0;
+}
+
+/* Orientation line — between main header and description block */
+.sys-orient {
+  display: flex; align-items: center;
+  padding: 0 14px; height: 24px;
+  background: rgba(0,0,0,0.26);
+  border: 1px solid rgba(0,255,200,0.12);
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-system);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Scope subtitle — sits beneath ph header inside scope-panel */
+.scope-sub {
+  padding: 5px 14px 4px;
+  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--line-divider);
+}
+
+/* ─────────────────────────────────────────────────────
+   STATUS GRID  (≥400px — 3 columns)
+───────────────────────────────────────────────────── */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.sc {
+  padding: 11px 12px 10px;
+  background: var(--bg-panel);
+  border: 1px solid rgba(0,255,200,0.15);
+  display: flex; flex-direction: column; gap: 4px;
+  position: relative; overflow: hidden; min-width: 0;
+}
+.sc::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  width: auto;   /* explicit — overridden to 2px on mobile */
+}
+.sc-cp::before { background: rgba(0,238,102,.90); }
+.sc-vg::before { background: rgba(0,210,200,.90); }
+.sc-vl::before { background: linear-gradient(90deg, rgba(215,35,225,1), rgba(120,38,248,1)); }
+
+.sc-id   { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); }
+.sc-name { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc-cp .sc-name { color: rgba(0,238,102,.90); }
+.sc-vg .sc-name { color: rgba(0,210,200,.90); }
+.sc-vl .sc-name { color: rgba(215,35,225,.90); }
+.sc-mode { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.sc-bar      { height: 2px; background: rgba(0,255,200,0.08); overflow: hidden; margin-top: 3px; }
+.sc-bar-fill { height: 100%; animation: bar-b 3s ease-in-out infinite; }
+.sc-cp .sc-bar-fill { background: rgba(0,238,102,.65); width: 62%; animation-delay: 0s; }
+.sc-vg .sc-bar-fill { background: rgba(0,210,200,.65); width: 40%; animation-delay: .9s; }
+.sc-vl .sc-bar-fill { background: rgba(215,35,225,.65); width: 76%; animation-delay: 1.7s; }
+@keyframes bar-b {
+  0%,100% { opacity:.50; transform: scaleX(1);   transform-origin: left; }
+  50%     { opacity:1;   transform: scaleX(.80);  transform-origin: left; }
+}
+
+/* ── 400–600px: compress grid into single-row strip ──
+   Each card becomes a horizontal pill: LED · name · mode
+   in one line. No vertical stacking of metadata.        */
+@media (max-width: 600px) {
+  .status-grid {
+    grid-template-columns: 1fr;   /* single column — cards stack */
+    gap: 2px;
+  }
+  .sc {
+    /* Switch to horizontal layout */
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 0;
+  }
+  /* Left colour accent becomes a vertical bar instead of top line */
+  .sc::before {
+    top: 0; bottom: 0; left: 0; right: auto;   /* explicit left:0 — vertical bar */
+    width: 2px; height: auto;
+    transform: none;                             /* remove scaleX if any */
+  }
+  .sc-id   { display: none; }          /* hide in compressed mode */
+  .sc-name {
+    font-size: 0.80rem;
+    flex: 1;
+    padding-left: 26px;               /* clear accent bar (2px) + gap + LED dot (4px) + margin */
+  }
+  .sc-mode {
+    font-size: 0.75rem;
+    text-align: right;
+    padding-left: 8px;
+    opacity: 1;
+  }
+  .sc-bar  { display: none; }          /* remove activity bar in row mode */
+
+  /* LED dot — show inline left of name */
+  .sc::after {
+    content: '';
+    position: absolute;
+    left: 14px;                        /* clear the 2px accent bar with breathing room */
+    top: 50%; transform: translateY(-50%);
+    width: 4px; height: 4px; border-radius: 50%;
+  }
+  .sc-cp::after { background: rgba(0,238,102,.90); box-shadow: 0 0 4px rgba(0,238,102,.5); }
+  .sc-vg::after { background: rgba(0,210,200,.90); box-shadow: 0 0 4px rgba(0,210,200,.5); }
+  .sc-vl::after { background: rgba(215,35,225,.90); box-shadow: 0 0 4px rgba(215,35,225,.5); }
+}
+
+/* Hidden below 400px */
+@media (max-width: 399px) {
+  .status-grid { display: none; }
+}
+
+/* ─────────────────────────────────────────────────────
+   STATUS LIST  (<400px — compact vertical)
+───────────────────────────────────────────────────── */
+.status-list {
+  display: none;
+  flex-direction: column;
+  background: var(--bg-panel);
+  border: 1px solid rgba(0,255,200,0.15);
+}
+.sl-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; height: 26px;
+  border-bottom: 1px solid var(--line-divider);
+  background: rgba(0,0,0,0.28);
+  font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.sl-hd-r { display: flex; align-items: center; gap: 7px; }
+.sl-row {
+  display: flex; align-items: center;
+  padding: 9px 14px; gap: 10px;
+  border-bottom: 1px solid var(--line-divider);
+  font-size: 0.78rem; letter-spacing: 0.13em; text-transform: uppercase;
+}
+.sl-row:last-child { border-bottom: 0; }
+.sl-name { flex: 1; font-weight: 500; }
+.sl-cp .sl-name { color: rgba(0,238,102,.90); }
+.sl-vg .sl-name { color: rgba(0,210,200,.90); }
+.sl-vl .sl-name { color: rgba(215,35,225,.90); }
+.sl-mode { color: var(--text-dim); font-size: 0.75rem; }
+
+@media (max-width: 399px) {
+  .status-list { display: flex; }
+  .sl-hd { display: none; }           /* system header above already provides context */
+}
+
+/* ─────────────────────────────────────────────────────
+   SIGNAL MONITOR  (hidden <400px)
+───────────────────────────────────────────────────── */
+@media (max-width: 399px) {
+  .scope-panel { display: none; }
+}
+
+.scope-wrap { padding: 14px 16px 10px; background: var(--bg-panel); }
+canvas { display: block; width: 100%; }
+
+/* Narrower waveform height on mobile */
+@media (max-width: 600px) {
+  .scope-wrap { padding: 10px 12px 8px; }
+}
+
+#f-amp  { color: rgba(0,238,102,.65); }
+#f-time { font-variant-numeric: tabular-nums; }
+
+/* ─────────────────────────────────────────────────────
+   COLOUR LEGEND
+───────────────────────────────────────────────────── */
+.legend {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; height: 22px;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(0,255,200,0.10);
+  gap: 4px; flex-wrap: nowrap; overflow: hidden;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.75rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--text-secondary); white-space: nowrap;
+  flex-shrink: 0;
+}
+.legend-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+}
+.legend-dot.g { background: rgba(0,238,102,.85); box-shadow: 0 0 4px rgba(0,238,102,.35); }
+.legend-dot.m { background: rgba(215,35,225,.85); box-shadow: 0 0 4px rgba(215,35,225,.35); }
+.legend-dot.t { background: rgba(0,210,200,.85); box-shadow: 0 0 4px rgba(0,210,200,.35); }
+.legend-sep {
+  color: var(--text-muted); font-size: 0.75rem;
+  flex-shrink: 0; flex: 1; text-align: center;
+  overflow: hidden;
+}
+@media (max-width: 399px) { .legend { display: none; } }
+
+/* ─────────────────────────────────────────────────────
+   TELEMETRY FEED  (always visible)
+   ─────────────────────────────────────────────────────
+   HARDENED — DO NOT WEAKEN THESE RULES.
+   Telemetry is the primary information layer of the
+   dashboard. All colour rules use !important to prevent
+   compound selectors or later declarations from
+   suppressing readability. The JS DOM structure is:
+     <div class="tel-line tel-ok|tel-info|tel-warn">
+       <span class="tel-ts">HH:MM:SS</span>
+       <span class="tel-msg">EVENT TEXT</span>
+     </div>
+   CSS selectors are matched to this structure exactly.
+───────────────────────────────────────────────────── */
+.tel-body {
+  padding: 8px 14px 10px;
+  display: flex; flex-direction: column; gap: 3px;
+  background: var(--bg-telemetry);
+  border-top: 1px solid rgba(0,255,200,0.32);
+  max-height: 160px; overflow: hidden;
+}
+.tel-line {
+  display: flex; gap: 10px;
+  font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--text-primary) !important; opacity: 1 !important; line-height: 2.1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  animation: tel-in 250ms ease both;
+}
+@keyframes tel-in { from{opacity:0;transform:translateX(-5px)} to{opacity:1;transform:none} }
+/* Timestamps — secondary but clearly readable */
+.tel-ts  { color: var(--text-secondary) !important; flex-shrink: 0; }
+/* Message text — primary information layer, full brightness */
+.tel-msg { flex: 1; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary) !important; text-shadow: 0 0 8px rgba(0,255,200,0.18); }
+/* Status variants */
+.tel-ok   .tel-msg { color: var(--signal-ok) !important; }
+.tel-warn .tel-msg { color: var(--signal-warn) !important; }
+.tel-info .tel-msg { color: var(--text-primary) !important; }
+#tel-count { color: var(--text-secondary); }
+
+/* ═══════════════════════════════════════════════════════
+   GLOBAL READABILITY PATCH — contrast uplift
+   Applied: 2026. Do not override without versioning.
+═══════════════════════════════════════════════════════ */
+
+/* Telemetry / console text */
+.tel-line { font-size: 0.85rem !important; line-height: 1.9 !important; }
+.tel-msg  { color: var(--text-primary) !important; }
+.tel-ts   { color: var(--text-secondary) !important; }
+.tel-ok   .tel-msg { color: var(--signal-ok) !important; }
+.tel-warn .tel-msg { color: var(--signal-warn) !important; }
+.tel-info .tel-msg { color: var(--text-primary) !important; }
+
+/* System labels, archive metadata, console strips */
+.system-label,
+.archive-meta,
+.console-strip,
+.metadata-text,
+.sys-desc-line,
+.sys-orient,
+.plate-meta-row,
+.meta-field-key,
+.pc-id,
+.pc-classification,
+.info-block-label,
+.vault-cell-tag,
+.tc-module-label,
+.tc-id,
+.tc-status,
+.mx-head-label,
+.eco-num,
+.eco-path,
+.ah-stat-lbl,
+.rr,
+.footer-note,
+.closing-label,
+.final-label,
+.vault-tag {
+  color: var(--text-secondary) !important;
+  font-size: max(0.75rem, 1em) !important;
+  line-height: 1.9 !important;
+}
+
+/* Primary console / plate ID text */
+.meta-field-val,
+.plate-code,
+.plate-strip-id,
+.breadcrumb,
+.ah-orient,
+.hero-orient,
+.hero-cta-sub,
+.tc-foot,
+.pc-foot,
+.mx-foot,
+.plate-meta-row span {
+  color: var(--text-system) !important;
+}
+
+/* Metadata values get full brightness */
+.meta-field-val.accent { color: var(--stim, var(--accent-stimulant)) !important; }
+
+/* Minimum sizes — hard floor */
+.eyebrow,
+.nav-links a,
+.filter-btn,
+.tc-module-label,
+.tc-id,
+.pc-id,
+.pc-classification,
+.meta-field-key,
+.plate-strip-id,
+.plate-meta-row,
+.ah-stat-lbl,
+.footer-note,
+.eco-num,
+.eco-path {
+  font-size: max(0.75rem, 1em) !important;
+}
+
+/* Dashboard specific — sc-id / sl labels */
+.sc-id  { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.sc-mode { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+.sl-mode { color: var(--text-secondary) !important; font-size: 0.75rem !important; }
+
+/* sys-desc orientation lines */
+.sys-desc-line.primary   { color: var(--text-system) !important; }
+.sys-desc-line.secondary { color: var(--text-secondary) !important; }
+
+/* Archive card metadata */
+.pc-badge, .pc-edition { font-size: 0.75rem !important; color: var(--text-secondary) !important; }
+.pc-edition.locked { color: rgba(228,60,255,0.70) !important; }
+.pc-edition.ed01   { color: rgba(0,255,198,0.70) !important; }
+
+/* Waveform subtitle */
+#wave-sub, .wave-sub { color: var(--text-muted) !important; font-size: 0.75rem !important; }
+
+/* Info block labels */
+.info-block-label { color: rgba(255,184,48,0.65) !important; }
+.info-block-label::before { opacity: 0.55 !important; }
+
+</style>
+</head>
+<body>
+<div class="dash">
+
+  <!-- ① System header ─────────────── -->
+  <div class="sys-hd">
+    <span>VL–DASH–01 · System Telemetry</span>
+    <span class="sys-hd-r">
+      <span class="led g"></span>
+      <span>SYS NOMINAL</span>
+    </span>
+  </div>
+  <!-- Orientation line -->
+  <div class="sys-orient">Live safety intelligence across the ViceLab festival network.</div>
+  <!-- System description block -->
+  <div class="sys-desc">
+    <div class="sys-desc-line primary">
+      <span class="sys-desc-bullet">◆</span>
+      Live operational overview of the ViceLab safety ecosystem.
+    </div>
+    <div class="sys-desc-line secondary">
+      <span class="sys-desc-bullet">·</span>
+      Status indicators show the active state of each system layer.
+    </div>
+    <div class="sys-desc-line secondary">
+      <span class="sys-desc-bullet">·</span>
+      The activity monitor represents real-time system activity across the network.
+    </div>
+  </div>
+
+  <!-- ② Status grid (≥400px) ──────── -->
+  <div class="status-grid">
+    <div class="sc sc-cp">
+      <span class="sc-id">Attendee Safety Layer</span>
+      <span class="sc-name">Cooked Pilot</span>
+      <span class="sc-mode">CRUISE · LIVE</span>
+      <div class="sc-bar"><div class="sc-bar-fill"></div></div>
+    </div>
+    <div class="sc sc-vl">
+      <span class="sc-id">Research Engine</span>
+      <span class="sc-name">ViceLab</span>
+      <span class="sc-mode">R&amp;D ACTIVE</span>
+      <div class="sc-bar"><div class="sc-bar-fill"></div></div>
+    </div>
+    <div class="sc sc-vg">
+      <span class="sc-id">Festival Compliance Layer</span>
+      <span class="sc-name">VibeGuard</span>
+      <span class="sc-mode">STANDBY</span>
+      <div class="sc-bar"><div class="sc-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ③ Status list (<400px) ──────── -->
+  <div class="status-list">
+    <div class="sl-hd">
+      <span>Division Status</span>
+      <span class="sl-hd-r"><span class="led g"></span><span>3 / 3 ONLINE</span></span>
+    </div>
+    <div class="sl-row sl-cp">
+      <span class="led g"></span><span class="sl-name">Cooked Pilot</span><span class="sl-mode">LIVE</span>
+    </div>
+    <div class="sl-row sl-vl">
+      <span class="led m"></span><span class="sl-name">ViceLab</span><span class="sl-mode">ACTIVE</span>
+    </div>
+    <div class="sl-row sl-vg">
+      <span class="led t"></span><span class="sl-name">VibeGuard</span><span class="sl-mode">STANDBY</span>
+    </div>
+  </div>
+
+  <!-- ③b Colour legend ───────────── -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot g"></div><span>Cooked Pilot — Attendee Safety Layer</span></div>
+    <div class="legend-sep">·</div>
+    <div class="legend-item"><div class="legend-dot m"></div><span>ViceLab — Research Engine</span></div>
+    <div class="legend-sep">·</div>
+    <div class="legend-item"><div class="legend-dot t"></div><span>VibeGuard — Festival Compliance Layer</span></div>
+  </div>
+
+  <!-- ④ Waveform (hidden <400px) ──── -->
+  <div class="panel br scope-panel">
+    <div class="ph">
+      <span>Ecosystem Activity Monitor</span>
+      <span class="ph-r"><span class="led g" style="animation-delay:1.4s"></span><span>LIVE</span></span>
+    </div>
+    <div class="scope-sub">Simulated operational signal · Represents overall platform activity across the ViceLab network · Not a literal scientific measurement</div>
+    <div class="scope-wrap"><canvas id="scope"></canvas></div>
+    <div class="pf">
+      <span>Signal Monitor</span>
+      <span class="pf-r">
+        <span>AMP <span id="f-amp">0.00</span></span>
+        <span id="f-time">--:--:--</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ⑤ Telemetry feed (always) ───── -->
+  <div class="panel">
+    <div class="ph">
+      <span>System Event Log</span>
+      <span class="ph-r"><span id="tel-count">—</span></span>
+    </div>
+    <div class="tel-body" id="tel-body"></div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  Breakpoints (match CSS exactly)
+const BREAK_SCOPE = 400;   // below: hide waveform, cancel RAF
+const BREAK_MOB   = 600;   // below: reduce animation complexity
+
+const scopeVisible = () => window.innerWidth >= BREAK_SCOPE;
+const isMob        = ()  => window.innerWidth <  BREAK_MOB;
+
+// ═══════════════════════════════════════════════════
+//  WAVEFORM
+// ═══════════════════════════════════════════════════
+const cv  = document.getElementById('scope');
+const ctx = cv.getContext('2d');
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+let W, H, CY, rafId = null;
+
+const CLR = {
+  line: [0,238,102],
+  grid: 'rgba(0,255,200,0.08)',
+  bg:   'rgba(6,10,18,0.55)',
+};
+const rg = a => `rgba(${CLR.line[0]},${CLR.line[1]},${CLR.line[2]},${a})`;
+
+function resizeScope() {
+  if (!scopeVisible()) return;
+  const raw = Math.round(cv.parentElement.clientWidth - 24);
+  if (!raw || raw <= 0) {
+    // Layout not yet complete — defer one frame and retry
+    requestAnimationFrame(resizeScope);
+    return;
+  }
+  W = raw;
+  H = Math.round(W * (isMob() ? 0.20 : 0.26));   // shallower on mobile
+  cv.width = W * DPR; cv.height = H * DPR;
+  cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  CY = H / 2;
+}
+
+// Waveform: 1 base + 4 noise layers + amplitude modulation
+const WAVE = {
+  base:  {amp:0.08, freq:0.28},
+  noise: [
+    {amp:0.055, freq:1.13,  phase:0.00},
+    {amp:0.038, freq:2.71,  phase:1.14},
+    {amp:0.022, freq:5.05,  phase:2.72},
+    {amp:0.012, freq:11.31, phase:0.88},
+  ],
+  mod: {freq:0.041, depth:0.30},
+};
+
+// Spike transients
+let spikes = [], nextSpike = 0;
+function scheduleSpike() {
+  nextSpike = performance.now() + (isMob() ? 3000 : 1500) + Math.random() * (isMob() ? 5000 : 3500);
+}
+function maybeSpike(now) {
+  if (now < nextSpike || !scopeVisible()) return;
+  spikes.push({ cx: W*(0.15+Math.random()*0.70), amp:0.30+Math.random()*0.35,
+                sig:3+Math.random()*5, born:now, life:180+Math.random()*120 });
+  scheduleSpike();
+}
+function spikeAt(x, sp) {
+  const dx = x - sp.cx;
+  return sp.amp * Math.exp(-(dx*dx)/(2*sp.sig*sp.sig));
+}
+
+function sample(xPx, t) {
+  const st = t - (xPx/W)*8;
+  const b  = WAVE.base.amp * Math.sin(st * WAVE.base.freq);
+  let   n  = 0;
+  WAVE.noise.forEach(l => n += l.amp * Math.sin(st*l.freq + l.phase));
+  const mod = 1 + WAVE.mod.depth * Math.sin(t * WAVE.mod.freq);
+  let   spk = 0;
+  const now = performance.now();
+  spikes.forEach(sp => {
+    const f = (now - sp.born)/sp.life; if(f>=1) return;
+    const e = f<0.10 ? f/0.10 : Math.pow(1-(f-0.10)/0.90, 2);
+    spk += spikeAt(xPx, sp)*e;
+  });
+  return (b+n)*mod + spk;
+}
+
+function drawGraticule() {
+  const hD = isMob() ? 4 : 6, vD = isMob() ? 6 : 10;
+  ctx.strokeStyle = CLR.grid; ctx.lineWidth = 0.5;
+  for(let i=1;i<hD;i++){const y=Math.round(H/hD*i)+.5; ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  for(let i=1;i<vD;i++){const x=Math.round(W/vD*i)+.5; ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  ctx.strokeStyle=rg(0.07); ctx.lineWidth=0.7;
+  ctx.beginPath();ctx.moveTo(0,CY+.5);ctx.lineTo(W,CY+.5);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W/2+.5,0);ctx.lineTo(W/2+.5,H);ctx.stroke();
+}
+
+function drawWave(t) {
+  const STEP = isMob() ? 4 : 2;
+  const pts  = [];
+  for(let x=0;x<=W;x+=STEP) pts.push([x, CY - sample(x,t)*CY*0.82]);
+
+  function path(lw, a) {
+    ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+    for(let i=1;i<pts.length;i++){
+      const mx=(pts[i-1][0]+pts[i][0])/2, my=(pts[i-1][1]+pts[i][1])/2;
+      ctx.quadraticCurveTo(pts[i-1][0],pts[i-1][1],mx,my);
+    }
+    ctx.strokeStyle=rg(a); ctx.lineWidth=lw; ctx.stroke();
+  }
+  ctx.lineCap='round'; ctx.lineJoin='round';
+  if (isMob()) { path(6,.042); path(1.5,.90); }
+  else         { path(8,.040); path(4,.068); path(2,.10); path(1.5,.90); }
+}
+
+let elapsed=0, lastT=null;
+const $amp   = document.getElementById('f-amp');
+const $ftime = document.getElementById('f-time');
+
+function updateFooter(a) {
+  $amp.textContent = (Math.abs(a)*9.99).toFixed(2);
+  const n=new Date(), p=v=>String(v).padStart(2,'0');
+  $ftime.textContent = `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+}
+
+function frame(ts) {
+  if(!lastT) lastT=ts;
+  const dt=Math.min((ts-lastT)/1000,.05); elapsed+=dt; lastT=ts;
+  if(!scopeVisible()){ rafId=null; return; }   // self-stop on resize
+
+  const now=performance.now();
+  spikes=spikes.filter(sp=>(now-sp.born)<sp.life);
+  maybeSpike(now);
+
+  ctx.fillStyle=CLR.bg; ctx.fillRect(0,0,W,H);
+  drawGraticule();
+  drawWave(elapsed);
+  updateFooter(sample(W/2, elapsed));
+  rafId=requestAnimationFrame(frame);
+}
+
+function startScope() { if(rafId) return; resizeScope(); rafId=requestAnimationFrame(frame); }
+function stopScope()  { if(rafId){ cancelAnimationFrame(rafId); rafId=null; } }
+
+window.addEventListener('resize', () => {
+  if(scopeVisible()){ resizeScope(); startScope(); }
+  else stopScope();
+});
+
+// ═══════════════════════════════════════════════════
+//  TELEMETRY FEED
+// ═══════════════════════════════════════════════════
+const MSGS = [
+  ['ok',   'Cooked Pilot  —  Heartbeat OK'],
+  ['info', 'ViceLab  —  Ethics framework v1.0 verified'],
+  ['info', 'VibeGuard  —  Compliance module standby'],
+  ['ok',   'Data retention check  —  ZERO confirmed'],
+  ['ok',   'Network  —  AU-QLD node nominal'],
+  ['info', 'Network  —  EU-PT node nominal'],
+  ['info', 'Signal monitor  —  Baseline calibrated'],
+  ['ok',   'Cooked Pilot  —  Wingmate check-in nominal'],
+  ['warn', 'VibeGuard  —  Early access mode active'],
+  ['info', 'Research archive  —  Index sync complete'],
+  ['ok',   'Ethics lock  —  State confirmed LOCKED'],
+  ['info', 'SYS  —  Uptime nominal'],
+];
+let msgIdx=0, evTotal=0;
+const $tel   = document.getElementById('tel-body');
+const $count = document.getElementById('tel-count');
+
+function addTelLine() {
+  const [type, msg] = MSGS[msgIdx++ % MSGS.length];
+  evTotal++;
+  const n=new Date(), p=v=>String(v).padStart(2,'0');
+  const ts=`${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+  const el=document.createElement('div');
+  el.className=`tel-line tel-${type}`;
+  el.innerHTML=`<span class="tel-ts">${ts}</span><span class="tel-msg">${msg}</span>`;
+  $tel.insertBefore(el, $tel.firstChild);
+  while($tel.children.length > 6) $tel.removeChild($tel.lastChild);
+  $count.textContent=`${evTotal} event${evTotal!==1?'s':''}`;
+}
+
+// Initial burst then slow cadence
+[700, 1500, 2700, 4300].forEach(d => setTimeout(addTelLine, d));
+(function recurse(){
+  setTimeout(()=>{ addTelLine(); recurse(); }, 7000+Math.random()*7000);
+})();
+
+// ═══════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════
+scheduleSpike();
+updateFooter(0);              // pre-populate clock — prevents --:--:-- flash on load
+if(scopeVisible()) startScope();
+</script>
+</body>
+</html>
