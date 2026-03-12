@@ -418,7 +418,7 @@ nav {
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
+  gap: 6px;
 }
 
 .tool-card {
@@ -490,9 +490,9 @@ nav {
   border: 1px solid var(--border);
   color: var(--text-dimmer);
 }
-.tool-card.vault  .tc-tag { border-color: rgba(43,255,136,0.14); color: rgba(43,255,136,0.50); }
-.tool-card.matrix .tc-tag { border-color: rgba(240,160,48,0.14); color: rgba(240,160,48,0.50); }
-.tool-card.briefs .tc-tag { border-color: rgba(77,163,255,0.14); color: rgba(77,163,255,0.50); }
+.tool-card.vault  .tc-tag { border-color: rgba(43,255,136,0.20); color: rgba(43,255,136,0.75); }
+.tool-card.matrix .tc-tag { border-color: rgba(240,160,48,0.20); color: rgba(240,160,48,0.75); }
+.tool-card.briefs .tc-tag { border-color: rgba(77,163,255,0.20); color: rgba(77,163,255,0.80); }
 
 .tc-foot {
   padding: 12px 20px;
@@ -566,7 +566,7 @@ nav {
 .vault-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
+  gap: 6px;
   margin-top: 0;
 }
 .vault-cell {
@@ -692,7 +692,7 @@ nav {
 .why-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
 }
-.why-stats { display: flex; flex-direction: column; gap: 3px; }
+.why-stats { display: flex; flex-direction: column; gap: 6px; }
 .why-stat {
   padding: 20px 22px;
   background: var(--bg-card); border: 1px solid var(--border);
@@ -722,7 +722,7 @@ nav {
 .system-section { padding: 100px 0; }
 .system-header { margin-bottom: 48px; }
 .system-nodes {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
 }
 .sys-node {
   padding: 24px 20px;
@@ -774,7 +774,7 @@ nav {
   position: relative; z-index: 1;
   display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
 }
-.final-options { display: flex; flex-direction: column; gap: 3px; }
+.final-options { display: flex; flex-direction: column; gap: 5px; }
 .final-option {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 18px;
@@ -939,11 +939,11 @@ footer {
 .pc-edition.ed01   { color: rgba(0,255,198,0.70) !important; }
 
 /* Waveform subtitle */
-#wave-sub, .wave-sub { color: var(--text-muted) !important; font-size: 0.75rem !important; }
+#wave-sub, .wave-sub { color: var(--text-dim) !important; font-size: 0.75rem !important; }
 
 /* Info block labels */
-.info-block-label { color: rgba(255,184,48,0.65) !important; }
-.info-block-label::before { opacity: 0.55 !important; }
+.info-block-label { color: rgba(255,184,48,0.78) !important; }
+.info-block-label::before { opacity: 0.65 !important; }
 
 </style>
 </head>
@@ -1163,7 +1163,7 @@ footer {
         <table class="mx-table">
           <thead>
             <tr>
-              <th style="text-align:left;color:var(--text-dimmer)">Substance</th>
+              <th style="text-align:left;color:var(--text-dim)">Substance</th>
               <th>MDMA</th>
               <th>LSD</th>
               <th>Alcohol</th>
@@ -1219,7 +1219,7 @@ footer {
         <div class="mx-legend-item"><div class="mx-legend-dot" style="background:#FF4D6A"></div>Avoid — significant risk</div>
         <div class="mx-legend-item"><div class="mx-legend-dot" style="background:#F0A030"></div>Caution — monitor closely</div>
         <div class="mx-legend-item"><div class="mx-legend-dot" style="background:#2BFF88"></div>Low risk — exercise care</div>
-        <div class="mx-legend-item" style="margin-left:auto"><div class="mx-legend-dot" style="background:var(--text-dimmer)"></div>Preview only — open Matrix for full analysis</div>
+        <div class="mx-legend-item" style="margin-left:auto"><div class="mx-legend-dot" style="background:var(--text-dim)"></div>Preview only — open Matrix for full analysis</div>
       </div>
     </div>
   </div>
@@ -1302,9 +1302,9 @@ footer {
           <a href="/signal/substance-vault"    class="final-option"><span>Open the Vault</span><span>→</span></a>
           <a href="/signal/interaction-matrix" class="final-option"><span>Access the Matrix</span><span>→</span></a>
           <a href="/signal/substance-briefs"   class="final-option"><span>Read Substance Briefs</span><span>→</span></a>
-          <a href="/archive" class="final-option" style="border-color:rgba(77,163,255,0.12);color:rgba(77,163,255,0.40)"><span>Explore the Archive</span><span>→</span></a>
+          <a href="/archive" class="final-option" style="border-color:rgba(77,163,255,0.20);color:rgba(77,163,255,0.72)"><span>Explore the Archive</span><span>→</span></a>
         </div>
-        <div style="margin-top:10px;font-family:var(--mono);font-size: 0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dimmer);padding-left:4px">
+        <div style="margin-top:10px;font-family:var(--mono);font-size: 0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);padding-left:4px">
           No account required · Zero data retained
         </div>
       </div>

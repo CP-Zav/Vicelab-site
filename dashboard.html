@@ -98,7 +98,7 @@ body::before {
   position: relative; z-index: 1;
   width: min(720px, calc(100% - 32px));
   display: flex; flex-direction: column;
-  gap: 3px;
+  gap: 5px;
   padding: 20px 0;
 }
 
@@ -546,11 +546,11 @@ canvas { display: block; width: 100%; }
 .pc-edition.ed01   { color: rgba(0,255,198,0.70) !important; }
 
 /* Waveform subtitle */
-#wave-sub, .wave-sub { color: var(--text-muted) !important; font-size: 0.75rem !important; }
+#wave-sub, .wave-sub { color: var(--text-dim) !important; font-size: 0.75rem !important; }
 
 /* Info block labels */
-.info-block-label { color: rgba(255,184,48,0.65) !important; }
-.info-block-label::before { opacity: 0.55 !important; }
+.info-block-label { color: rgba(255,184,48,0.78) !important; }
+.info-block-label::before { opacity: 0.65 !important; }
 
 /* ─────────────────────────────────────────────────────
    NAV
@@ -585,7 +585,7 @@ canvas { display: block; width: 100%; }
 }
 .site-nav-links a {
   font-family: "DM Mono","Courier New",monospace;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-secondary);
   text-decoration: none;
   letter-spacing: 0.10em;
@@ -607,7 +607,7 @@ canvas { display: block; width: 100%; }
 @media (max-width: 600px) {
   .site-nav { padding: 0 16px; gap: 12px; }
   .site-nav-links { gap: 14px; }
-  .site-nav-links a { font-size: 9px; }
+  .site-nav-links a { font-size: 10px; }
 }
 /* Push dash content below fixed nav */
 body { padding-top: 56px; }
