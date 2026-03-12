@@ -552,9 +552,82 @@ canvas { display: block; width: 100%; }
 .info-block-label { color: rgba(255,184,48,0.65) !important; }
 .info-block-label::before { opacity: 0.55 !important; }
 
+/* ─────────────────────────────────────────────────────
+   NAV
+───────────────────────────────────────────────────── */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 56px;
+  background: rgba(4,6,13,0.90);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0,255,200,0.12);
+}
+.site-nav-logo {
+  font-family: "DM Mono","Courier New",monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-system);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.site-nav-logo span { color: var(--signal-ok); }
+.site-nav-links {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.site-nav-links a {
+  font-family: "DM Mono","Courier New",monospace;
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.site-nav-links a:hover { color: var(--text-system); }
+.site-nav-active { color: var(--text-system) !important; }
+.site-nav-cta {
+  padding: 6px 16px;
+  border: 1px solid rgba(0,255,200,0.35);
+  color: var(--signal-ok) !important;
+  letter-spacing: 0.10em;
+}
+.site-nav-cta:hover {
+  background: rgba(0,255,200,0.06) !important;
+  border-color: rgba(0,255,200,0.60) !important;
+}
+@media (max-width: 600px) {
+  .site-nav { padding: 0 16px; gap: 12px; }
+  .site-nav-links { gap: 14px; }
+  .site-nav-links a { font-size: 9px; }
+}
+/* Push dash content below fixed nav */
+body { padding-top: 56px; }
+
 </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════ NAV -->
+<nav class="site-nav">
+  <a href="index.html" class="site-nav-logo">Vice<span>Lab</span></a>
+  <div class="site-nav-links">
+    <a href="vicelab.html">ViceLab</a>
+    <a href="cooked-pilot.html">Cooked Pilot</a>
+    <a href="vibeguard.html">VibeGuard</a>
+    <a href="signal.html">Signal</a>
+    <a href="dashboard.html" class="site-nav-cta site-nav-active">Dashboard</a>
+  </div>
+</nav>
+
 <div class="dash">
 
   <!-- ① System header ─────────────── -->
