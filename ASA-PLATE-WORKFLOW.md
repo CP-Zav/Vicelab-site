@@ -74,6 +74,7 @@ stimulant · psychedelic · opioid · dissociative · empathogen · cannabinoid 
 | ASA-ST-02   | `asa-st-02-cocaine.html`      | Substance | Canonical Lock |
 | ASA-PL-02   | `asa-pl-02-stimulants.html`   | Class     | Canonical Lock |
 | ASA-PS-01   | `asa-ps-01-lsd.html`          | Substance | Canonical Lock |
+| ASA-DI-01   | `asa-di-01-ketamine.html`     | Substance | Canonical Lock |
 
 > Update this table each time a plate is added.
 
