@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ASA-PS-01 · LSD — Altered State Archive · ViceLab                     ║
+║  Template: asa-plate-template-v2.html                                   ║
+║  Class: Psychedelic · Accent: #A78BFA (Lavender Purple)                 ║
+╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="en"
+  data-cc-rgb="167,139,250"
+  data-plate-tags="ASA-PS-01,LSD,5-HT2A,PSYCHEDELIC,SEROTONIN,LYSERGIC ACID,LYSERGAMIDE,CORTEX,HARM REDUCTION,VICELAB,ACID,BLOTTER,ERGOLINE,THALAMUS">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASA-PS-01 · LSD — Altered State Archive · ViceLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="asa-plate.css">
+<style>
+/* CONFIG ② — Psychedelic class: lavender purple */
+:root {
+  --cc:        #A78BFA;
+  --cc-dim:    rgba(167, 139, 250, 0.06);
+  --cc-mid:    rgba(167, 139, 250, 0.13);
+  --cc-border: rgba(167, 139, 250, 0.26);
+  --cc-glow:   0 0 36px rgba(167,139,250,0.14), 0 0 80px rgba(167,139,250,0.06);
+  --cc-pulse:  rgba(167, 139, 250, 0.28);
+}
+</style>
+</head>
+
+<body>
+<canvas id="c-field"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="tag-layer" id="tag-layer"></div>
+
+<div class="site">
+
+<nav>
+  <a href="/" class="nav-logo">Vice<em>Lab</em></a>
+  <div class="nav-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/field-manual">Field Manual</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive" class="nav-active">Archive</a>
+    <a href="/contact" class="nav-badge">Work with us</a>
+  </div>
+</nav>
+
+
+<!-- ① ARCHIVE HEADER -->
+<div class="arc-header">
+<div class="container">
+  <div class="breadcrumb reveal">
+    <a href="/archive">Archive</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/archive?filter=psychedelic">Psychedelics</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">ASA-PS-01</span>
+  </div>
+  <div class="arc-plate-label reveal">ARCHIVE PLATE</div>
+  <div class="arc-plate-id reveal">
+    <span class="arc-plate-id-dot"></span>
+    ASA-PS-01
+  </div>
+  <h1 class="arc-title reveal">
+    <span class="arc-title-accent">L</span>SD
+  </h1>
+  <div class="arc-system-strip reveal">
+    <span>CLASS:</span>
+    <span class="arc-strip-val accent">Psychedelic</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>STATUS:</span>
+    <span class="arc-strip-val">Verified</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>RELEASE:</span>
+    <span class="arc-strip-val">2026</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>EDITION:</span>
+    <span class="arc-strip-val">Canonical Lock</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>SOURCE:</span>
+    <span class="arc-strip-val">ViceLab Research Intelligence</span>
+  </div>
+</div>
+</div>
+
+
+<!-- ② PLATE ARTIFACT DISPLAY -->
+<section class="plate-display-section">
+<div class="container">
+  <div class="plate-frame-wrap reveal">
+    <div class="corner-tr"></div>
+    <div class="corner-bl"></div>
+    <div class="plate-frame">
+      <div class="plate-visual">
+        <svg viewBox="0 0 900 675" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bg-g" cx="50%" cy="42%" r="70%">
+              <stop offset="0%"   stop-color="#080612"/>
+              <stop offset="55%"  stop-color="#07090F"/>
+              <stop offset="100%" stop-color="#04060D"/>
+            </radialGradient>
+            <radialGradient id="core-g" cx="50%" cy="60%" r="55%">
+              <stop offset="0%"   stop-color="#A78BFA" stop-opacity="0.14"/>
+              <stop offset="100%" stop-color="#A78BFA" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="lsd-core" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#C4B5FD" stop-opacity="0.95"/>
+              <stop offset="55%"  stop-color="#A78BFA" stop-opacity="0.75"/>
+              <stop offset="100%" stop-color="#7C3AED" stop-opacity="0.15"/>
+            </radialGradient>
+            <pattern id="coord-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(167,139,250,0.040)" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="fine-grid" width="15" height="15" patternUnits="userSpaceOnUse">
+              <path d="M 15 0 L 0 0 0 15" fill="none" stroke="rgba(167,139,250,0.015)" stroke-width="0.3"/>
+            </pattern>
+            <filter id="gf-soft"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="gf-haze"><feGaussianBlur stdDeviation="12"/></filter>
+            <filter id="gf-haze-lg"><feGaussianBlur stdDeviation="28"/></filter>
+            <filter id="gf-ring"><feGaussianBlur stdDeviation="3.5"/></filter>
+            <radialGradient id="vignette-g" cx="50%" cy="50%" r="70%">
+              <stop offset="55%"  stop-color="transparent"/>
+              <stop offset="100%" stop-color="rgba(4,6,13,0.65)"/>
+            </radialGradient>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M 0 0 L 6 3 L 0 6 Z" fill="rgba(167,139,250,0.60)"/>
+            </marker>
+          </defs>
+
+          <rect width="900" height="675" fill="url(#bg-g)"/>
+          <rect width="900" height="675" fill="url(#fine-grid)"/>
+          <rect width="900" height="675" fill="url(#coord-grid)"/>
+
+          <!-- Ambient psychedelic glow — lower, emanating from signal cascade -->
+          <ellipse cx="450" cy="440" rx="380" ry="220" fill="url(#core-g)" filter="url(#gf-haze-lg)"/>
+
+          <!-- ── LSD: 5-HT2A CORTICAL AGONISM MODEL ──
+               Visual concept: LSD locked in the 5-HT2A binding pocket
+               on a cortical pyramidal neuron's postsynaptic membrane.
+               Downstream signal cascade represented as expanding
+               interference rings — the cortical network perturbation
+               that underlies the psychedelic state.
+               The LID mechanism: LSD is trapped unusually long
+               in the receptor by an extracellular loop acting as a cap.
+          -->
+
+          <!-- PRESYNAPTIC indicator (upper) -->
+          <rect x="80" y="145" width="740" height="1" fill="rgba(167,139,250,0.12)" filter="url(#gf-soft)"/>
+          <text x="76" y="143" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(167,139,250,0.28)" letter-spacing="1.2">PRESYNAPTIC</text>
+
+          <!-- Synaptic cleft shading -->
+          <rect x="80" y="146" width="740" height="96" fill="rgba(167,139,250,0.007)"/>
+
+          <!-- POSTSYNAPTIC MEMBRANE (cortical pyramidal cell dendrite) -->
+          <rect x="80" y="242" width="740" height="1.5" fill="rgba(167,139,250,0.24)" filter="url(#gf-soft)"/>
+          <rect x="80" y="244" width="740" height="0.5"  fill="rgba(167,139,250,0.10)"/>
+          <text x="76" y="240" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(167,139,250,0.38)" letter-spacing="1.2">POSTSYNAPTIC</text>
+
+          <!-- ── PRIMARY 5-HT2A RECEPTOR — central, main LSD interaction site ── -->
+          <!-- Left helix arm -->
+          <path d="M 418 200 Q 411 213 420 224 Q 411 235 420 231"
+            fill="none" stroke="rgba(167,139,250,0.52)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Right helix arm -->
+          <path d="M 442 200 Q 449 213 440 224 Q 449 235 440 231"
+            fill="none" stroke="rgba(167,139,250,0.52)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Helix cross-bridges -->
+          <line x1="420" y1="210" x2="440" y2="210" stroke="rgba(167,139,250,0.30)" stroke-width="1.2"/>
+          <line x1="420" y1="222" x2="440" y2="222" stroke="rgba(167,139,250,0.22)" stroke-width="1.0"/>
+          <!-- Receptor mouth channel -->
+          <path d="M 408 231 L 418 231 L 418 244 L 442 244 L 442 231 L 452 231"
+            fill="none" stroke="#A78BFA" stroke-width="1.2" stroke-opacity="0.55"/>
+
+          <!-- ── LSD MOLECULE — locked in the 5-HT2A binding pocket ── -->
+          <!-- LSD has an unusually complex ergoline tetracyclic ring system.
+               Represented here as a layered elliptical geometry — larger
+               and more angular than serotonin's simple indole. -->
+
+          <!-- Outer ergoline boundary -->
+          <ellipse cx="430" cy="235" rx="23" ry="10"
+            fill="rgba(167,139,250,0.16)" stroke="#C4B5FD" stroke-width="1.2" stroke-opacity="0.82"
+            filter="url(#gf-soft)"/>
+          <!-- Inner indole / D-ring -->
+          <ellipse cx="430" cy="235" rx="14" ry="6.5"
+            fill="rgba(196,181,253,0.30)" filter="url(#gf-soft)"/>
+          <!-- Core binding anchor — indole nitrogen contact -->
+          <ellipse cx="427" cy="235" rx="6.5" ry="3.2"
+            fill="url(#lsd-core)"/>
+          <!-- Indole nitrogen (primary receptor contact point) -->
+          <circle cx="422" cy="235" r="3.5"
+            fill="#A78BFA" fill-opacity="0.90" filter="url(#gf-soft)"/>
+
+          <!-- Diethylamide arm — the distinguishing structural feature of LSD
+               (this is what differentiates it from natural lysergamides) -->
+          <line x1="445" y1="232" x2="462" y2="223" stroke="#C4B5FD" stroke-width="0.9" stroke-opacity="0.68"/>
+          <circle cx="462" cy="223" r="2.5" fill="#C4B5FD" fill-opacity="0.75"/>
+          <line x1="462" y1="223" x2="474" y2="214" stroke="#C4B5FD" stroke-width="0.7" stroke-opacity="0.52"/>
+          <circle cx="474" cy="214" r="2"   fill="#C4B5FD" fill-opacity="0.58"/>
+          <line x1="462" y1="223" x2="474" y2="231" stroke="#C4B5FD" stroke-width="0.7" stroke-opacity="0.46"/>
+          <circle cx="474" cy="231" r="2"   fill="#C4B5FD" fill-opacity="0.52"/>
+
+          <!-- A-ring / lysergic acid backbone -->
+          <line x1="415" y1="232" x2="403" y2="224" stroke="#C4B5FD" stroke-width="0.8" stroke-opacity="0.56"/>
+          <circle cx="403" cy="224" r="2"   fill="#C4B5FD" fill-opacity="0.62"/>
+          <line x1="403" y1="224" x2="394" y2="230" stroke="#C4B5FD" stroke-width="0.7" stroke-opacity="0.40"/>
+          <circle cx="394" cy="230" r="1.8" fill="#C4B5FD" fill-opacity="0.44"/>
+
+          <!-- LID MECHANISM — extracellular loop acts as a molecular cap,
+               trapping LSD in the receptor far longer than serotonin.
+               This accounts for LSD's unusually extended duration. -->
+          <path d="M 410 222 Q 430 213 450 222"
+            fill="none" stroke="#A78BFA" stroke-width="1.0" stroke-opacity="0.60"
+            stroke-dasharray="2 2"/>
+          <text x="430" y="210" text-anchor="middle"
+            font-family="IBM Plex Mono,monospace" font-size="6"
+            fill="rgba(167,139,250,0.58)" letter-spacing="1.2">LSD · LID LOCK</text>
+
+          <!-- Crosshair at primary binding site -->
+          <g stroke="#A78BFA" stroke-width="0.5" stroke-opacity="0.32">
+            <line x1="430" y1="218" x2="430" y2="227"/>
+            <line x1="430" y1="244" x2="430" y2="253"/>
+            <line x1="410" y1="235" x2="418" y2="235"/>
+            <line x1="442" y1="235" x2="450" y2="235"/>
+          </g>
+
+          <!-- ── G-PROTEIN COUPLING — downstream of 5-HT2A activation ── -->
+          <!-- Gq alpha subunit dissociation — primary signalling pathway -->
+          <path d="M 430 257 Q 430 280 408 292 Q 386 304 375 326"
+            fill="none" stroke="rgba(167,139,250,0.38)" stroke-width="1.2"/>
+          <path d="M 430 257 Q 430 280 452 292 Q 474 304 485 326"
+            fill="none" stroke="rgba(167,139,250,0.26)" stroke-width="1.0"/>
+
+          <!-- Gq alpha subunit (primary) -->
+          <circle cx="374" cy="328" r="7"
+            fill="rgba(167,139,250,0.26)" stroke="#A78BFA" stroke-width="0.8" stroke-opacity="0.58"
+            filter="url(#gf-soft)"/>
+          <circle cx="374" cy="328" r="3.5" fill="rgba(196,181,253,0.55)"/>
+          <!-- Gβγ dimer (secondary) -->
+          <circle cx="486" cy="328" r="5.5"
+            fill="rgba(167,139,250,0.18)" stroke="#A78BFA" stroke-width="0.7" stroke-opacity="0.42"/>
+          <circle cx="486" cy="328" r="2.5" fill="rgba(196,181,253,0.38)"/>
+
+          <text x="358" y="344" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(167,139,250,0.48)" letter-spacing="1.2">Gαq</text>
+          <text x="470" y="344" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(167,139,250,0.36)" letter-spacing="1.2">Gβγ</text>
+
+          <!-- PLC-beta activation (downstream of Gq) -->
+          <line x1="374" y1="337" x2="374" y2="360" stroke="rgba(167,139,250,0.28)" stroke-width="0.8" stroke-dasharray="3 2"/>
+          <text x="340" y="374" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="rgba(167,139,250,0.35)" letter-spacing="1.2">PLCβ → IP3/DAG</text>
+
+          <!-- ── CORTICAL EXCITATION CASCADE — expanding interference rings ── -->
+          <!-- The expanding rings represent the thalamo-cortical gating disruption
+               — the core of the psychedelic state — radiating out from the
+               initial receptor activation event. -->
+          <circle cx="450" cy="455" r="42"  fill="none" stroke="#A78BFA" stroke-width="0.9" stroke-opacity="0.52" filter="url(#gf-ring)"/>
+          <circle cx="450" cy="455" r="82"  fill="none" stroke="#A78BFA" stroke-width="0.65" stroke-opacity="0.36"/>
+          <circle cx="450" cy="455" r="124" fill="none" stroke="#A78BFA" stroke-width="0.50" stroke-opacity="0.24"/>
+          <circle cx="450" cy="455" r="168" fill="none" stroke="#A78BFA" stroke-width="0.38" stroke-opacity="0.15"/>
+          <circle cx="450" cy="455" r="214" fill="none" stroke="#A78BFA" stroke-width="0.28" stroke-opacity="0.09"/>
+
+          <!-- Signal origin -->
+          <circle cx="450" cy="455" r="9"
+            fill="#A78BFA" fill-opacity="0.55" filter="url(#gf-soft)"/>
+          <circle cx="450" cy="455" r="4"
+            fill="#C4B5FD" fill-opacity="0.92"/>
+
+          <!-- Cascade label -->
+          <line x1="460" y1="455" x2="506" y2="445" stroke="rgba(167,139,250,0.22)" stroke-width="0.5"/>
+          <text x="509" y="442" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="rgba(167,139,250,0.44)" letter-spacing="1.2">CORTICAL CASCADE</text>
+
+          <!-- ── SECONDARY 5-HT2A RECEPTOR — left, unoccupied ── -->
+          <path d="M 218 200 Q 212 212 220 222 Q 212 231 220 228"
+            fill="none" stroke="rgba(167,139,250,0.30)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 240 200 Q 246 212 238 222 Q 246 231 238 228"
+            fill="none" stroke="rgba(167,139,250,0.30)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 208 228 L 218 228 L 218 240 L 240 240 L 240 228 L 250 228"
+            fill="none" stroke="#A78BFA" stroke-width="0.9" stroke-opacity="0.35"/>
+          <!-- Unoccupied receptor mouth — open -->
+          <ellipse cx="229" cy="234" rx="16" ry="7"
+            fill="rgba(167,139,250,0.05)" stroke="#A78BFA" stroke-width="0.7" stroke-opacity="0.35"/>
+
+          <!-- ── TERTIARY 5-HT2A RECEPTOR — right, unoccupied ── -->
+          <path d="M 628 200 Q 622 212 630 222 Q 622 231 630 228"
+            fill="none" stroke="rgba(167,139,250,0.25)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 650 200 Q 656 212 648 222 Q 656 231 648 228"
+            fill="none" stroke="rgba(167,139,250,0.25)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 618 228 L 628 228 L 628 240 L 650 240 L 650 228 L 660 228"
+            fill="none" stroke="#A78BFA" stroke-width="0.7" stroke-opacity="0.28"/>
+          <ellipse cx="639" cy="234" rx="16" ry="7"
+            fill="rgba(167,139,250,0.04)" stroke="#A78BFA" stroke-width="0.7" stroke-opacity="0.28"/>
+
+          <!-- ── NATURAL 5-HT MOLECULES — sparse in cleft ── -->
+          <!-- LSD's 5-HT2A affinity is ~10–100x greater than serotonin itself.
+               Endogenous serotonin is effectively outcompeted at active dose. -->
+          <circle cx="310" cy="186" r="5"   fill="#A78BFA" fill-opacity="0.32" filter="url(#gf-soft)"/>
+          <circle cx="310" cy="186" r="9"   fill="none" stroke="#A78BFA" stroke-width="0.6" stroke-opacity="0.18"/>
+          <circle cx="360" cy="172" r="4"   fill="#A78BFA" fill-opacity="0.26"/>
+          <circle cx="520" cy="176" r="4.5" fill="#A78BFA" fill-opacity="0.28" filter="url(#gf-soft)"/>
+          <circle cx="570" cy="190" r="4"   fill="#A78BFA" fill-opacity="0.22"/>
+          <circle cx="200" cy="178" r="3.5" fill="#A78BFA" fill-opacity="0.20"/>
+          <circle cx="680" cy="180" r="4"   fill="#A78BFA" fill-opacity="0.18"/>
+          <circle cx="750" cy="188" r="3"   fill="#A78BFA" fill-opacity="0.14"/>
+          <circle cx="160" cy="196" r="3"   fill="#A78BFA" fill-opacity="0.12"/>
+          <circle cx="760" cy="196" r="2.5" fill="#A78BFA" fill-opacity="0.10"/>
+
+          <!-- ── BETA-ARRESTIN PATHWAY — alternate downstream route ── -->
+          <!-- LSD shows biased signalling toward beta-arrestin (GRK/beta-arrestin2).
+               This pathway is associated with the unique character of LSD effects. -->
+          <path d="M 452 257 Q 580 295 620 345"
+            fill="none" stroke="rgba(167,139,250,0.18)" stroke-width="0.8" stroke-dasharray="4 3"/>
+          <circle cx="621" cy="347" r="4.5"
+            fill="rgba(167,139,250,0.14)" stroke="#A78BFA" stroke-width="0.6" stroke-opacity="0.38"/>
+          <text x="628" y="350" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="rgba(167,139,250,0.32)" letter-spacing="1.2">β-ARR</text>
+
+          <!-- ── ANNOTATION LAYER ── -->
+          <!-- Primary: receptor binding -->
+          <line x1="453" y1="225" x2="534" y2="194" stroke="rgba(167,139,250,0.28)" stroke-width="0.5"/>
+          <text x="537" y="191" font-family="IBM Plex Mono,monospace" font-size="7.5" fill="#A78BFA" fill-opacity="0.70" letter-spacing="1.5">LSD · 5-HT2A AGONISM</text>
+
+          <!-- G-protein coupling -->
+          <line x1="430" y1="270" x2="498" y2="288" stroke="rgba(167,139,250,0.20)" stroke-width="0.5"/>
+          <text x="500" y="285" font-family="IBM Plex Mono,monospace" font-size="7" fill="#A78BFA" fill-opacity="0.44" letter-spacing="1.2">Gq COUPLING</text>
+
+          <!-- Displaced 5-HT -->
+          <line x1="302" y1="182" x2="246" y2="162" stroke="rgba(167,139,250,0.18)" stroke-width="0.5"/>
+          <text x="148" y="159" font-family="IBM Plex Mono,monospace" font-size="7" fill="#A78BFA" fill-opacity="0.38" letter-spacing="1.2">5-HT DISPLACED</text>
+
+          <!-- Receptor labels -->
+          <line x1="229" y1="242" x2="175" y2="264" stroke="rgba(167,139,250,0.18)" stroke-width="0.5"/>
+          <text x="96"  y="261" font-family="IBM Plex Mono,monospace" font-size="7" fill="#A78BFA" fill-opacity="0.35" letter-spacing="1.2">5-HT2A-L</text>
+
+          <line x1="639" y1="242" x2="692" y2="258" stroke="rgba(167,139,250,0.18)" stroke-width="0.5"/>
+          <text x="695" y="255" font-family="IBM Plex Mono,monospace" font-size="7" fill="#A78BFA" fill-opacity="0.32" letter-spacing="1.2">5-HT2A-R</text>
+
+          <!-- Wave label (ring system) -->
+          <text x="830" y="362" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(167,139,250,0.35)" letter-spacing="1.2">5-HT2A</text>
+          <text x="830" y="373" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(167,139,250,0.24)" letter-spacing="1.2">RING-N</text>
+
+          <!-- Coordinate axis labels -->
+          <text x="84"  y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.18)" letter-spacing="1">A1</text>
+          <text x="224" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.18)" letter-spacing="1">B1</text>
+          <text x="364" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.18)" letter-spacing="1">C1</text>
+          <text x="504" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.18)" letter-spacing="1">D1</text>
+          <text x="644" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.18)" letter-spacing="1">E1</text>
+          <text x="784" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.18)" letter-spacing="1">F1</text>
+          <text x="6" y="90"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.14)" letter-spacing="0">A2</text>
+          <text x="6" y="200" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.14)" letter-spacing="0">A3</text>
+          <text x="6" y="310" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.14)" letter-spacing="0">A4</text>
+          <text x="6" y="420" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.14)" letter-spacing="0">A5</text>
+          <text x="6" y="560" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(167,139,250,0.14)" letter-spacing="0">A6</text>
+
+          <text x="880" y="22" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(167,139,250,0.30)" letter-spacing="1.5">SUBSTANCE PLATE</text>
+          <text x="880" y="33" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(167,139,250,0.20)" letter-spacing="1.5">LSD · PSYCHEDELIC</text>
+          <text x="20" y="660" font-family="IBM Plex Mono,monospace" font-size="7" fill="#A78BFA" fill-opacity="0.22" letter-spacing="2">ASA-PS-01 · LSD · PSYCHEDELIC CLASS · ALTERED STATE ARCHIVE · VICELAB RESEARCH INTELLIGENCE · CANONICAL LOCK · 2026</text>
+
+          <rect width="900" height="675" fill="url(#vignette-g)"/>
+        </svg>
+      </div>
+      <div class="plate-strip">
+        <div class="plate-strip-id">ASA-PS-01 · LSD · Substance Plate · Altered State Archive · 2026</div>
+        <div class="plate-strip-status"><div class="plate-strip-dot"></div>Canonical Lock</div>
+      </div>
+    </div>
+  </div>
+  <p class="plate-caption reveal">
+    Research-informed visual pharmacology plate. 5-HT2A Cortical Agonism Model — Receptor Binding, Lid-Lock Mechanism, and Thalamo-Cortical Cascade.
+  </p>
+</div>
+</section>
+
+
+<!-- ③ SCIENTIFIC METADATA PANEL -->
+<section class="sci-meta-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Scientific Record</div>
+  <h2 class="section-title reveal">Pharmacological Profile</h2>
+  <table class="meta-table reveal-stagger">
+    <tbody>
+      <tr>
+        <td class="meta-key">Class</td>
+        <td class="meta-val">
+          <strong>Psychedelic / Serotonergic Psychedelic</strong>
+          <span class="tag">Lysergamide</span>
+          <span class="tag">Ergoline</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="meta-key">Scientific Name</td>
+        <td class="meta-val"><strong>Lysergic acid diethylamide</strong> (LSD-25)</td>
+      </tr>
+      <tr>
+        <td class="meta-key">Common Names</td>
+        <td class="meta-val">LSD · Acid · Blotter · Tabs · Lucy · L · Window Pane · Microdot</td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Primary Mechanism</td>
+        <td class="meta-val">
+          <strong>Serotonin 5-HT2A partial agonism.</strong>
+          LSD binds with exceptionally high affinity to 5-HT2A receptors on cortical pyramidal neurons and interneurons. This G-protein–coupled receptor's activation initiates downstream signalling cascades — primarily through Gq and phospholipase C-beta — that disrupt the thalamo-cortical gating system. This disruption of sensory filtering is understood to be the central driver of the psychedelic state: visual and perceptual distortions, enhanced pattern recognition, and alterations in the sense of self and time.
+        </td>
+      </tr>
+      <tr>
+        <td class="meta-key">Lid Mechanism</td>
+        <td class="meta-val">
+          Unlike serotonin, LSD is physically trapped inside the 5-HT2A binding pocket by an extracellular loop that acts as a molecular cap. This "lid lock" mechanism slows receptor dissociation by orders of magnitude — a key reason LSD's effects persist well beyond its plasma half-life, and why a single dose can produce effects lasting 10–12 hours despite a plasma half-life of approximately 3–5 hours.
+        </td>
+      </tr>
+      <tr>
+        <td class="meta-key">Secondary Activity</td>
+        <td class="meta-val">5-HT2C, 5-HT1A, and 5-HT6 partial agonism. Dopamine D1 and D2 receptor activity. Sigma-1 receptor affinity. Beta-arrestin biased signalling at 5-HT2A. These secondary targets modulate the affective and cognitive character of the experience without being the primary driver.</td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Half-Life</td>
+        <td class="meta-val"><strong>3 – 5 hours</strong> (plasma, oral route) · Subjective effects persist significantly beyond plasma clearance due to receptor lid-lock</td>
+      </tr>
+      <tr>
+        <td class="meta-key">Onset</td>
+        <td class="meta-val">Oral / sublingual: <strong>30–90 min</strong></td>
+      </tr>
+      <tr>
+        <td class="meta-key">Duration</td>
+        <td class="meta-val">Primary effects: <strong>8–12 hours</strong> · Afterglow / residual stimulation: up to <strong>24 hours</strong></td>
+      </tr>
+      <tr>
+        <td class="meta-key">Active Dose Range</td>
+        <td class="meta-val">
+          Threshold: <strong>~25–50 µg</strong> ·
+          Common: <strong>75–150 µg</strong> ·
+          Strong: <strong>150–300 µg</strong> ·
+          Active at the microgram scale — dosing errors are a serious risk
+        </td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Typical Effects</td>
+        <td class="meta-val">
+          <strong>Perceptual:</strong> visual patterning and geometric distortions, colour enhancement, synesthesia, altered depth perception, trailing effects<br>
+          <strong>Cognitive:</strong> intensified pattern recognition, altered sense of time, introspective loops, heightened emotional sensitivity<br>
+          <strong>Somatic:</strong> mild stimulation, pupil dilation, jaw tension, mild increase in heart rate and body temperature
+        </td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Primary Risks</td>
+        <td class="meta-val">
+          <span class="tag alert">Psychological Distress</span>
+          <span class="tag alert">Adulterant Substitution</span>
+          <span class="tag warn">Dosing Errors</span>
+          <span class="tag warn">HPPD</span>
+          <span class="tag warn">Latent Psychiatric Conditions</span>
+          <br>
+          The greatest acute risk is severe psychological distress — a "difficult experience" — particularly at high doses, in unfamiliar environments, or without adequate preparation. Adulterant substitution (NBOMe compounds, DOx series) is documented and carries substantially higher physiological risk than LSD itself.
+        </td>
+      </tr>
+      <tr>
+        <td class="meta-key">Interactions</td>
+        <td class="meta-val">
+          <span class="tag alert">Lithium (seizures — contraindicated)</span>
+          <span class="tag alert">MAOIs</span>
+          <span class="tag warn">SSRIs / SNRIs</span>
+          <span class="tag warn">Tramadol</span>
+          <span class="tag warn">Cannabis</span>
+          <span class="tag warn">Stimulants</span>
+          <br>
+          Lithium co-administration is associated with risk of seizures and should be treated as contraindicated. MAOIs can potentiate effects unpredictably. Cannabis commonly intensifies and extends the experience and significantly increases the risk of anxiety and panic.
+        </td>
+      </tr>
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+      <tr>
+        <td class="meta-key">Status</td>
+        <td class="meta-val status-verified"><span class="status-dot"></span><strong>Verified</strong> · Canonical Lock · 2026</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+
+<!-- ④ HARM REDUCTION NOTES -->
+<section class="hr-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Field Intelligence</div>
+  <div class="hr-panel reveal">
+    <div class="hr-panel-header">
+      <div class="hr-panel-title">
+        HARM REDUCTION NOTES
+        <span class="hr-panel-title-mark">ASA-PS-01</span>
+      </div>
+      <div class="hr-panel-meta">Evidence-first · Non-judgemental · Operational</div>
+    </div>
+    <div class="hr-grid reveal-stagger">
+
+      <div class="hr-note">
+        <div class="hr-note-key">Set and Setting</div>
+        <div class="hr-note-body">
+          No single factor determines an LSD experience more than <strong>set</strong> (your mental state, expectations, and intention going in) and <strong>setting</strong> (the physical and social environment). Choose familiar, safe, comfortable surroundings — especially for first or high-dose experiences. A crowded, loud, or chaotic environment that might be fine sober can become genuinely overwhelming. Emotional stress, unresolved anxiety, or poor sleep in the days before significantly increase the likelihood of a difficult experience.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Test Your Supply — Ehrlich Reagent</div>
+        <div class="hr-note-body">
+          Substitution of LSD with NBOMe compounds (25I-NBOMe, 25C-NBOMe) and DOx-series psychedelics is documented. Both classes are active at similarly low doses but carry substantially higher physiological risk, including vasoconstriction, hyperthermia, and seizures. <strong>The Ehrlich reagent (p-DMAB) is the primary field test for LSD — it should turn purple in the presence of an indole. No colour change is a red flag.</strong> Reagent testing does not guarantee identity with certainty; confirmatory testing via laboratory services provides significantly higher confidence.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Dosing at Micrograms</div>
+        <div class="hr-note-body">
+          LSD is active at the microgram scale — a typical blotter tab may contain anywhere from 50 to 200 µg, and the range between a threshold dose (~50 µg) and a very strong dose (200+ µg) is not visible, weighable, or detectable without laboratory analysis. <strong>Start at a known low dose. If the source is unknown, treat the first use conservatively.</strong> Effects begin 30–90 minutes after ingestion. Dosing again before the first dose has taken full effect is a common cause of unexpectedly intense experiences. HPPD (Hallucinogen Persisting Perception Disorder) risk increases with frequency and dose intensity.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Trip Sitter</div>
+        <div class="hr-note-body">
+          For first experiences, high doses, or unfamiliar environments, a sober and trusted companion significantly reduces risk. A good trip sitter does not intervene to steer the experience unnecessarily — they <strong>provide a stable, calm presence</strong>, can help navigate if the experience becomes difficult, and are available to intervene if something goes genuinely wrong. They are not required to be a pharmacology expert. Calm, grounded presence is more valuable than technical knowledge.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Navigating Difficulty</div>
+        <div class="hr-note-body">
+          Difficult or frightening experiences are not uncommon with LSD, particularly at higher doses or in unprepared circumstances. They are rarely dangerous physiologically — but they can be psychologically intense. <strong>Changing your physical position (sitting, lying down, moving to a quieter room), slowing your breathing, or grounding attention in a simple sensory anchor — a texture, sound, or familiar object — can help.</strong> If someone is in acute distress, stay with them, speak calmly, reassure them that the substance is temporary, and take them somewhere quieter if possible. Avoid confrontational or alarmed responses.
+        </div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Medication Interactions</div>
+        <div class="hr-note-body">
+          <strong>Lithium is contraindicated — co-administration with LSD is associated with seizure risk.</strong> If you take lithium for any reason, do not use LSD. SSRIs and SNRIs blunt psychedelic effects via 5-HT2A receptor downregulation, often leading to higher dosing attempts — increasing exposure risk. MAOIs may potentiate effects unpredictably. Tramadol carries seizure risk. <strong>If you take any regular psychiatric medication, research interactions specifically before use.</strong> Do not assume that a psychiatric prescription makes LSD safer.
+        </div>
+      </div>
+
+      <div class="hr-note full">
+        <div class="hr-note-key">Wingmate Protocol</div>
+        <div class="hr-note-body">
+          Watch your group. LSD's duration means people may be in altered states for 10–12 hours in environments that change over that time — from comfortable to cold, from familiar to crowded. <strong>Check in on people periodically, not just at the peak.</strong> The onset is slow enough that someone may have re-dosed thinking nothing was happening. Red flags that indicate a person needs support: extreme and persistent panic despite reassurance, disorientation that is not resolving, chest pain, physical rigidity, or a person who is genuinely unresponsive. In these cases, get to the event harm reduction or medical team. Tell them what was taken and when. You will not get in trouble for doing so — this information is essential to providing appropriate care.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ⑤ RESEARCH NOTE / CONTEXT BLOCK -->
+<section class="research-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Archive Context</div>
+  <div class="research-inner reveal">
+    <div class="research-sidebar">
+      <div class="research-sidebar-label">ARCHIVE<br>RECORD</div>
+      <div class="research-sidebar-id">ASA-PS-01</div>
+      <div class="research-sidebar-meta">
+        Type<br>Substance Plate<br><br>
+        Division<br>ViceLab Research<br>Intelligence<br><br>
+        Indexed<br>2026<br><br>
+        Status<br>Canonical Lock
+      </div>
+    </div>
+    <div class="research-body">
+      <h3 class="research-title">Why this plate exists in the archive.</h3>
+      <div class="research-text">
+        <p>LSD occupies a paradoxical position in the public record. It is simultaneously one of the most researched psychoactive substances in history — the subject of thousands of studies between the 1950s and 1970s, and again in the ongoing therapeutic research renaissance — and one of the most misrepresented in popular discourse. Neither the sensational narrative of the prohibition era nor the enthusiastic framing of therapeutic research gives festival attendees or recreational users what they operationally need.</p>
+        <p>The practical risks of LSD in nightlife and festival contexts are specific, identifiable, and largely preventable. Adulterant substitution — particularly NBOMe compounds, which produce a physically indistinguishable blotter but carry meaningfully higher physiological risk — is the most immediately dangerous. Dosing uncertainty, the slow onset that encourages redosing, and the interaction with cannabis that can rapidly escalate both intensity and anxiety are the next tier. Psychological distress is common and manageable with preparation; it is rarely a medical emergency when it occurs in conditions where basic support is available.</p>
+        <p><strong>The 5-HT2A agonism model and the lid-lock mechanism are central to this plate</strong> because they explain two things festival-context users need to understand: why the effects are so cognitively and perceptually distinct from other substance classes, and why the duration of LSD is so much longer than its plasma half-life suggests. The expanding interference rings in the plate's visual are an abstraction of the thalamo-cortical gating disruption — the most current mechanistic account of what a psychedelic state is, at the systems level. The archive's purpose is to make that legible without requiring a neuroscience background.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- RELATED PLATES -->
+<section class="related-section">
+<div class="container">
+  <div class="related-eyebrow reveal">Altered State Archive</div>
+  <div class="related-grid reveal-stagger">
+
+    <a href="/archive/plates/asa-pl-03" class="rel-card" data-accent="psychedelic">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <defs>
+            <pattern id="rg-ps" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(167,139,250,0.06)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#rg-ps)"/>
+          <circle cx="150" cy="100" r="55" fill="none" stroke="#A78BFA" stroke-width="0.7" stroke-opacity="0.30"/>
+          <circle cx="150" cy="100" r="38" fill="none" stroke="#A78BFA" stroke-width="0.6" stroke-opacity="0.38"/>
+          <circle cx="150" cy="100" r="22" fill="none" stroke="#A78BFA" stroke-width="0.8" stroke-opacity="0.48"/>
+          <circle cx="150" cy="100" r="9"  fill="none" stroke="#A78BFA" stroke-width="1.0" stroke-opacity="0.62"/>
+          <circle cx="150" cy="100" r="3.5" fill="#A78BFA" fill-opacity="0.82"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#A78BFA" fill-opacity="0.28" letter-spacing="1.5">ASA-PL-03 · PSYCHEDELICS</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-03</div>
+        <div class="rel-title">Psychedelics</div>
+        <div class="rel-class">Class Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="/archive/plates/asa-em-01" class="rel-card" data-accent="empathogen">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <defs>
+            <pattern id="rg-em" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(228,60,255,0.06)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#rg-em)"/>
+          <ellipse cx="150" cy="100" rx="120" ry="75" fill="rgba(228,60,255,0.06)"/>
+          <path d="M 30 130 Q 70 60 110 95 Q 150 130 190 70 Q 230 20 275 85" fill="none" stroke="#E43CFF" stroke-width="1" stroke-opacity="0.55"/>
+          <path d="M 30 148 Q 70 78 110 113 Q 150 148 190 88 Q 230 38 275 103" fill="none" stroke="#E43CFF" stroke-width="0.6" stroke-opacity="0.28"/>
+          <circle cx="150" cy="100" r="6" fill="#E43CFF" fill-opacity="0.80"/>
+          <circle cx="150" cy="100" r="13" fill="none" stroke="#E43CFF" stroke-width="0.7" stroke-opacity="0.28"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#E43CFF" fill-opacity="0.30" letter-spacing="1.5">ASA-EM-01 · MDMA</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-EM-01</div>
+        <div class="rel-title">MDMA</div>
+        <div class="rel-class">Substance Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="/archive/plates/asa-pl-04" class="rel-card" data-accent="dissociative">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <defs>
+            <pattern id="rg-di" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(0,255,198,0.06)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#rg-di)"/>
+          <path d="M 30 100 L 88 100" stroke="#00FFC6" stroke-width="1.2" stroke-opacity="0.50"/>
+          <path d="M 100 100 L 142 100" stroke="#00FFC6" stroke-width="1" stroke-opacity="0.35"/>
+          <path d="M 158 100 L 202 100" stroke="#00FFC6" stroke-width="1.1" stroke-opacity="0.44"/>
+          <path d="M 215 100 L 262 100" stroke="#00FFC6" stroke-width="0.9" stroke-opacity="0.30"/>
+          <circle cx="88"  cy="100" r="5"   fill="#00FFC6" fill-opacity="0.65"/>
+          <circle cx="142" cy="100" r="4"   fill="#00FFC6" fill-opacity="0.48"/>
+          <circle cx="202" cy="100" r="4.5" fill="#00FFC6" fill-opacity="0.58"/>
+          <ellipse cx="150" cy="100" rx="80" ry="40" fill="none" stroke="#00FFC6" stroke-width="0.6" stroke-opacity="0.20" stroke-dasharray="4 6"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#00FFC6" fill-opacity="0.28" letter-spacing="1.5">ASA-PL-04 · DISSOCIATIVES</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-04</div>
+        <div class="rel-title">Dissociatives</div>
+        <div class="rel-class">Class Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="/archive/plates/asa-st-02" class="rel-card" data-accent="stimulant">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <defs>
+            <pattern id="rg-st" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="rgba(77,163,255,0.06)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#rg-st)"/>
+          <path d="M 30 100 L 88 100" stroke="#4DA3FF" stroke-width="1.2" stroke-opacity="0.50"/>
+          <path d="M 100 100 L 142 100" stroke="#4DA3FF" stroke-width="1" stroke-opacity="0.35"/>
+          <path d="M 158 100 L 202 100" stroke="#4DA3FF" stroke-width="1.1" stroke-opacity="0.44"/>
+          <circle cx="88"  cy="100" r="5"   fill="#4DA3FF" fill-opacity="0.65"/>
+          <circle cx="142" cy="100" r="4"   fill="#4DA3FF" fill-opacity="0.48"/>
+          <circle cx="202" cy="100" r="4.5" fill="#4DA3FF" fill-opacity="0.58"/>
+          <ellipse cx="150" cy="100" rx="80" ry="40" fill="none" stroke="#4DA3FF" stroke-width="0.6" stroke-opacity="0.20" stroke-dasharray="4 6"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4DA3FF" fill-opacity="0.30" letter-spacing="1.5">ASA-ST-02 · COCAINE</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-ST-02</div>
+        <div class="rel-title">Cocaine</div>
+        <div class="rel-class">Substance Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+  </div>
+</div>
+</section>
+
+
+<!-- ⑥ PLATE NAVIGATION -->
+<div class="plate-nav">
+<div class="container">
+  <div class="plate-nav-inner">
+    <a href="/archive" class="plate-nav-link prev">
+      <span>←</span>
+      <span>Back to Archive<span class="plate-nav-link-sub">Altered State Archive Index</span></span>
+    </a>
+    <a href="/archive" class="plate-nav-back">Back to Archive</a>
+    <a href="/archive/plates/asa-ps-02" class="plate-nav-link next">
+      <span>Next Plate<span class="plate-nav-link-sub">ASA-PS-02 · Psilocybin</span></span>
+      <span>→</span>
+    </a>
+  </div>
+</div>
+</div>
+
+<footer>
+  <a href="/" class="footer-brand">Vice<em>Lab</em></a>
+  <div class="footer-sys">Altered State Archive · <em>ViceLab Research Division</em></div>
+  <div class="footer-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/signal">Signal</a>
+    <a href="/archive">Archive</a>
+    <a href="/field-manual">Field Manual</a>
+  </div>
+</footer>
+
+</div><!-- /site -->
+<script src="asa-plate.js"></script>
+</body>
+</html>
