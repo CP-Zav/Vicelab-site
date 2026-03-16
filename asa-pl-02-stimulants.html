@@ -776,6 +776,69 @@ footer {
 .info-block-label { color: rgba(255,184,48,0.78) !important; }
 .info-block-label::before { opacity: 0.65 !important; }
 
+/* ── STATUS TAGS (mirrored from asa-plate.css for this standalone page) ── */
+.asa-status-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: 16px;
+}
+.asa-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 0.68rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 3px 10px; border: 1px solid; white-space: nowrap;
+}
+.asa-tag::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor; flex-shrink: 0;
+}
+.asa-tag.verified {
+  color: var(--signal-ok);
+  border-color: rgba(60, 255, 156, 0.25);
+  background: rgba(60, 255, 156, 0.04);
+}
+.asa-tag.tier {
+  color: var(--stim);
+  border-color: rgba(255,184,48,0.26);
+  background: rgba(255,184,48,0.05);
+}
+.asa-tag.tier::before { display: none; }
+
+/* ── PLATE NAVIGATION RIBBON ── */
+.plate-nav { padding: 32px 0; border-bottom: 1px solid var(--line-subtle); }
+.plate-nav-inner {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.plate-nav-link {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dim); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.plate-nav-link:hover { color: var(--stim); border-color: rgba(255,184,48,0.26); }
+.plate-nav-link.next { flex-direction: row-reverse; }
+.plate-nav-link-sub {
+  display: block; font-size: 0.72rem; letter-spacing: 0.10em;
+  color: var(--text-muted); margin-top: 2px;
+}
+.plate-nav-back {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dim); text-decoration: none;
+  padding: 8px 20px; border: 1px solid var(--line-subtle);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.plate-nav-back:hover {
+  color: var(--stim);
+  border-color: rgba(255,184,48,0.26);
+  background: rgba(255,184,48,0.04);
+}
+@media (max-width: 768px) {
+  .plate-nav-inner { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 20px; }
+}
+
 </style>
 </head>
 <body>
@@ -790,13 +853,11 @@ footer {
 
 <!-- ══════════ NAV ══════════ -->
 <nav>
-  <a href="/" class="nav-logo">Vice<em>Lab</em></a>
+  <a href="index.html" class="nav-logo">Vice<em>Lab</em></a>
   <div class="nav-links">
-    <a href="/dashboard">Dashboard</a>
-    <a href="/field-manual">Field Manual</a>
-    <a href="/signal">Signal</a>
-    <a href="/archive" class="nav-active">Archive</a>
-    <a href="/contact" class="nav-badge">Work with us</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="signal.html">Signal</a>
+    <a href="archive.html" class="nav-active">Archive</a>
   </div>
 </nav>
 
@@ -805,7 +866,7 @@ footer {
 <div class="plate-header">
 
   <div class="breadcrumb reveal">
-    <a href="/archive">Archive</a>
+    <a href="archive.html">Archive</a>
     <span class="breadcrumb-sep">/</span>
     <span class="breadcrumb-current">Plate ASA-PL-02</span>
   </div>
@@ -827,6 +888,11 @@ footer {
     <span>Archive Edition</span>
     <span class="plate-meta-sep">·</span>
     <span>ViceLab Research Intelligence</span>
+  </div>
+
+  <div class="asa-status-row reveal">
+    <span class="asa-tag verified">Verified</span>
+    <span class="asa-tag tier">Evidence · Tier 1</span>
   </div>
 
 </div>
@@ -1141,7 +1207,7 @@ footer {
     <div class="related-grid reveal-stagger">
 
       <!-- ASA-PL-01 MDMA -->
-      <a href="/archive/plates/asa-pl-01" class="plate-card c1">
+      <a href="archive.html" class="plate-card c1">
         <div class="pc-thumb">
           <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
             <rect width="300" height="200" fill="#04060D"/>
@@ -1172,7 +1238,7 @@ footer {
       </a>
 
       <!-- ASA-PL-03 PSYCHEDELICS -->
-      <a href="/archive/plates/asa-pl-03" class="plate-card c2">
+      <a href="archive.html" class="plate-card c2">
         <div class="pc-thumb">
           <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
             <rect width="300" height="200" fill="#04060D"/>
@@ -1213,7 +1279,7 @@ footer {
       </a>
 
       <!-- ASA-PL-04 DISSOCIATIVES -->
-      <a href="/archive/plates/asa-pl-04" class="plate-card c3">
+      <a href="archive.html" class="plate-card c3">
         <div class="pc-thumb">
           <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
             <rect width="300" height="200" fill="#04060D"/>
@@ -1250,7 +1316,7 @@ footer {
       </a>
 
       <!-- ASA-PL-05 DEPRESSANTS -->
-      <a href="/archive/plates/asa-pl-05" class="plate-card c4">
+      <a href="archive.html" class="plate-card c4">
         <div class="pc-thumb">
           <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
             <rect width="300" height="200" fill="#04060D"/>
@@ -1298,22 +1364,39 @@ footer {
         These plates translate complex substance intelligence into visual forms designed to be retained, shared, and understood. The Archive exists to preserve knowledge that helps people make safer decisions.
       </p>
       <div class="cta-row">
-        <a href="/archive" class="btn-arc"><span>Return to Archive</span></a>
-        <a href="/archive/plates" class="btn-ghost">Browse More Plates</a>
+        <a href="archive.html" class="btn-arc"><span>Return to Archive</span></a>
+        <a href="archive.html" class="btn-ghost">Browse More Plates</a>
       </div>
     </div>
   </div>
 </section>
 
 
+<!-- ══════════ PLATE NAVIGATION ══════════ -->
+<div class="plate-nav">
+<div class="container">
+  <div class="plate-nav-inner">
+    <a href="asa-st-02-cocaine.html" class="plate-nav-link prev">
+      <span>←</span>
+      <span>Previous Plate<span class="plate-nav-link-sub">ASA-ST-02 · Cocaine</span></span>
+    </a>
+    <a href="archive.html" class="plate-nav-back">Back to Archive</a>
+    <a href="archive.html" class="plate-nav-link next">
+      <span>Archive Index<span class="plate-nav-link-sub">Altered State Archive</span></span>
+      <span>→</span>
+    </a>
+  </div>
+</div>
+</div>
+
+
 <!-- ══════════ FOOTER ══════════ -->
 <footer>
-  <a href="/" class="footer-brand">Vice<em>Lab</em></a>
+  <a href="index.html" class="footer-brand">Vice<em>Lab</em></a>
   <div class="footer-links">
-    <a href="/dashboard">Dashboard</a>
-    <a href="/field-manual">Field Manual</a>
-    <a href="/signal">Signal</a>
-    <a href="/archive">Archive</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="signal.html">Signal</a>
+    <a href="archive.html">Archive</a>
   </div>
   <div class="footer-note">ViceLab · Harm Reduction Infrastructure</div>
 </footer>

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "ASA-EM-01",
+    "title": "MDMA",
+    "slug": "asa-em-01-mdma",
+    "filename": "asa-em-01-mdma.html",
+    "plate_type": "substance",
+    "substance_name": "MDMA",
+    "class_name": "Empathogen",
+    "category": "em",
+    "status": "verified",
+    "evidence_tier": "tier-1",
+    "archive_summary": "Triple monoamine efflux mechanism, serotonin-dominant effects, and the specific festival risk profile that makes MDMA one of the most consequential archive entries.",
+    "tags": ["MDMA", "SEROTONIN", "EMPATHOGEN", "ENTACTOGEN", "SERT", "5-HT", "MOLLY", "ECSTASY"],
+    "family_tree": {
+      "Chemical Family": "Phenethylamine",
+      "Subclass": "Substituted Amphetamine",
+      "Functional Class": "Empathogen / Entactogen",
+      "Substance": "MDMA"
+    },
+    "published": true,
+    "prev_plate": null,
+    "next_plate": "ASA-ST-02"
+  },
+  {
+    "id": "ASA-ST-02",
+    "title": "Cocaine",
+    "slug": "asa-st-02-cocaine",
+    "filename": "asa-st-02-cocaine.html",
+    "plate_type": "substance",
+    "substance_name": "Cocaine",
+    "class_name": "Stimulant",
+    "category": "st",
+    "status": "verified",
+    "evidence_tier": "tier-1",
+    "archive_summary": "Dopamine transporter blockade, rapid-onset cardiovascular activation, and adulteration as the primary harm vector in festival and nightlife environments.",
+    "tags": ["COCAINE", "DAT", "DOPAMINE", "STIMULANT", "TROPANE", "NOREPINEPHRINE", "CARDIOVASCULAR"],
+    "family_tree": {
+      "Chemical Family": "Tropane Alkaloid",
+      "Natural Source": "Erythroxylum coca",
+      "Functional Class": "Stimulant / Local Anesthetic",
+      "Substance": "Cocaine"
+    },
+    "published": true,
+    "prev_plate": "ASA-EM-01",
+    "next_plate": "ASA-PL-02"
+  },
+  {
+    "id": "ASA-PL-02",
+    "title": "Stimulants",
+    "slug": "asa-pl-02-stimulants",
+    "filename": "asa-pl-02-stimulants.html",
+    "plate_type": "class",
+    "substance_name": null,
+    "class_name": "Stimulant",
+    "category": "pl-st",
+    "status": "verified",
+    "evidence_tier": "tier-1",
+    "archive_summary": "Stimulant class overview: dopamine and noradrenaline mechanisms, shared risk patterns, and cross-substance interaction considerations for the full class.",
+    "tags": ["STIMULANTS", "CLASS PLATE", "DOPAMINE", "NORADRENALINE", "DAT", "NET"],
+    "family_tree": null,
+    "published": true,
+    "prev_plate": "ASA-ST-02",
+    "next_plate": null
+  }
+]
