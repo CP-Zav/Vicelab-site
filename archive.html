@@ -2,11 +2,12 @@
 <!--
 ╔══════════════════════════════════════════════════════════════════════════╗
 ║  ARCHIVE INDEX — Altered State Archive · ViceLab                        ║
-║  v1.0 · 2026                                                            ║
+║  v2.0 · 2026                                                            ║
 ╠══════════════════════════════════════════════════════════════════════════╣
 ║  Hub page for the ASA plate system.                                     ║
-║  Add new plate cards here whenever a new entry is created.             ║
-║  Follow the naming convention in ASA_NEW_ENTRY.md.                     ║
+║  Card content is rendered from asa-index.json via JS.                  ║
+║  Static HTML cards below are the no-JS fallback.                       ║
+║  To add a new plate: add an entry to asa-index.json first.             ║
 ╚══════════════════════════════════════════════════════════════════════════╝
 -->
 <html lang="en"
@@ -277,19 +278,19 @@ footer {
 <div class="container">
 <div class="archive-stats reveal">
   <div class="stat-item">
-    <div class="stat-num"><em>3</em></div>
+    <div class="stat-num" id="stat-total"><em>3</em></div>
     <div class="stat-label">Plates Published</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">2</div>
+    <div class="stat-num" id="stat-substances">2</div>
     <div class="stat-label">Substance Entries</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">1</div>
+    <div class="stat-num" id="stat-class-plates">1</div>
     <div class="stat-label">Class Plates</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">2</div>
+    <div class="stat-num" id="stat-classes">2</div>
     <div class="stat-label">Classes Covered</div>
   </div>
 </div>
@@ -302,7 +303,7 @@ footer {
 
   <div class="section-label reveal">Substance Plates — <em>Individual Entries</em></div>
 
-  <div class="plate-grid reveal-stagger">
+  <div class="plate-grid reveal-stagger" id="substance-grid">
 
     <!-- ASA-EM-01 · MDMA -->
     <a href="asa-em-01-mdma.html" class="plate-card em reveal">
@@ -338,7 +339,7 @@ footer {
 
   <div class="section-label reveal">Class Plates — <em>Substance Groups</em></div>
 
-  <div class="plate-grid reveal-stagger">
+  <div class="plate-grid reveal-stagger" id="class-grid">
 
     <!-- ASA-PL-02 · Stimulants -->
     <a href="asa-pl-02-stimulants.html" class="plate-card pl-st reveal">
@@ -371,5 +372,80 @@ footer {
 </div><!-- /site -->
 
 <script src="asa-plate.js"></script>
+
+<script>
+/* ── ARCHIVE: JSON-DRIVEN CARD RENDERING ─────────────────────────────
+   Fetches asa-index.json and re-renders the plate grids + stats.
+   Falls back to static HTML if fetch fails or JS is disabled.
+   ──────────────────────────────────────────────────────────────────── */
+(function () {
+  'use strict';
+
+  /* Map category codes to CSS accent/hover rules defined in <style>.
+     Categories not listed here fall back to raw category value.
+     Add new entries here as new plate categories are published. */
+  var CATEGORY_CSS = {
+    'em':    'em',
+    'st':    'st',
+    'pl-st': 'pl-st'
+  };
+
+  function buildCard(plate) {
+    var cls    = CATEGORY_CSS[plate.category] || plate.category;
+    var typeLabel = plate.plate_type === 'class' ? 'Class Plate' : plate.class_name;
+    var a = document.createElement('a');
+    a.href      = plate.filename;
+    a.className = 'plate-card ' + cls + ' reveal';
+    a.innerHTML =
+      '<div class="plate-card-head">'
+      +  '<span class="plate-id">' + plate.id + '</span>'
+      +  '<span class="plate-class">' + typeLabel + '</span>'
+      + '</div>'
+      + '<h3>' + plate.title + '</h3>'
+      + '<p>' + plate.archive_summary + '</p>'
+      + '<div class="plate-card-cta">View Plate \u2192</div>';
+    return a;
+  }
+
+  function renderGrid(containerId, plates) {
+    var grid = document.getElementById(containerId);
+    if (!grid || !plates.length) return;
+    grid.innerHTML = '';
+    plates.forEach(function (p) {
+      grid.appendChild(buildCard(p));
+    });
+    /* Re-trigger scroll reveal for freshly inserted elements */
+    grid.querySelectorAll('.reveal').forEach(function (el) {
+      el.classList.add('in');
+    });
+  }
+
+  function updateStat(id, value, accent) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = accent ? '<em>' + value + '</em>' : value;
+  }
+
+  fetch('asa-index.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var published   = data.filter(function (p) { return p.published; });
+      var substances  = published.filter(function (p) { return p.plate_type === 'substance'; });
+      var classPlates = published.filter(function (p) { return p.plate_type === 'class'; });
+      var classes     = Array.from(new Set(published.map(function (p) { return p.class_name; }))).length;
+
+      renderGrid('substance-grid', substances);
+      renderGrid('class-grid',     classPlates);
+
+      updateStat('stat-total',        published.length,   true);
+      updateStat('stat-substances',   substances.length,  false);
+      updateStat('stat-class-plates', classPlates.length, false);
+      updateStat('stat-classes',      classes,            false);
+    })
+    .catch(function () {
+      /* Silently fall back to static HTML — no action needed */
+    });
+}());
+</script>
 </body>
 </html>

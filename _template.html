@@ -173,6 +173,18 @@
     <span class="arc-strip-val">ViceLab Research Intelligence</span>
   </div>
 
+  <!--
+    SLOT: STATUS TAGS
+    Match values to asa-index.json: status + evidence_tier for this plate.
+    Tag classes: .verified  .limited  .emerging
+    Tier tag:    .tier (no dot prefix, use for evidence tier label)
+    Keep both tags on every published plate.
+  -->
+  <div class="asa-status-row reveal">
+    <span class="asa-tag verified">Verified</span>
+    <span class="asa-tag tier">Evidence · Tier 1</span>
+  </div>
+
 </div>
 </div>
 
@@ -307,6 +319,32 @@
 
   <div class="section-eyebrow reveal">Scientific Record</div>
   <h2 class="section-title reveal">Pharmacological Profile</h2>
+
+  <!--
+    SLOT: FAMILY TREE
+    Source values from asa-index.json family_tree field for this plate.
+    Omit this block for class plates (family_tree: null in JSON).
+    Rows: Chemical Family · Subclass (or Natural Source) · Functional Class · Substance
+  -->
+  <div class="asa-family-tree reveal">
+    <div class="asa-family-label">Chemical Taxonomy</div>
+    <div class="asa-family-row">
+      <span class="asa-family-key">Chemical Family</span>
+      <span class="asa-family-val">[Chemical family — e.g. Phenethylamine / Tropane Alkaloid]</span>
+    </div>
+    <div class="asa-family-row">
+      <span class="asa-family-key">Subclass</span>
+      <span class="asa-family-val">[Subclass or Natural Source]</span>
+    </div>
+    <div class="asa-family-row">
+      <span class="asa-family-key">Functional Class</span>
+      <span class="asa-family-val">[Functional pharmacological class]</span>
+    </div>
+    <div class="asa-family-row">
+      <span class="asa-family-key">Substance</span>
+      <span class="asa-family-val accent">[Substance Name]</span>
+    </div>
+  </div>
 
   <!--
     SLOT: METADATA TABLE
@@ -696,7 +734,12 @@
 <div class="container">
   <div class="plate-nav-inner">
 
-    <!-- SLOT: PREV PLATE LINK — set href + sub-label text -->
+    <!--
+      SLOT: PREV PLATE LINK
+      Set href to the prev_plate filename from asa-index.json.
+      If no prev plate exists, point to archive.html and use label "Back to Archive".
+      Sub-label: [ID] · [Title] (match asa-index.json id + title fields)
+    -->
     <a href="archive.html" class="plate-nav-link prev">
       <span>←</span>
       <span>
@@ -707,7 +750,12 @@
 
     <a href="archive.html" class="plate-nav-back">Back to Archive</a>
 
-    <!-- SLOT: NEXT PLATE LINK — set href to actual filename (e.g. asa-em-02-mda.html) -->
+    <!--
+      SLOT: NEXT PLATE LINK
+      Set href to the next_plate filename from asa-index.json.
+      If no next plate exists, point to archive.html and use label "Archive Index".
+      Sub-label: [ID] · [Title] (match asa-index.json id + title fields)
+    -->
     <a href="archive.html" class="plate-nav-link next">
       <span>
         Next Plate

@@ -11,6 +11,7 @@ The ASA system currently relies on:
 - `_template.html`
 - `asa-plate.css`
 - `asa-plate.js`
+- `asa-index.json` ← canonical data index (added v2)
 - `archive.html`
 
 All new entries must remain compatible with these files unless the system is intentionally refactored.
@@ -65,6 +66,8 @@ Replace template placeholders with the new entry details:
 - plate ID
 - subtitle / strapline
 - breadcrumb path
+- status tags (match `status` and `evidence_tier` values you'll set in the JSON)
+- family tree block (substance plates only — omit for class plates)
 - related plate links
 - footer links if needed
 
@@ -91,16 +94,60 @@ Optional additions when relevant:
 - Keep references to `asa-plate.css` and `asa-plate.js`
 - Do not redesign the plate structure unless intentionally refactoring the system
 
-### Step 6 — Add the new entry to `archive.html`
-- Add a new plate card block in the relevant archive section
-- Use the correct class code on the card
-- Update visible counts if the archive page displays totals
+### Step 6 — Add the entry to `asa-index.json`
+This is the canonical step. `archive.html` renders cards from this file.
 
-### Step 7 — Test the entry
+Add a new object to the array with all required fields:
+
+```json
+{
+  "id": "ASA-XX-00",
+  "title": "Substance Name",
+  "slug": "asa-xx-00-name",
+  "filename": "asa-xx-00-name.html",
+  "plate_type": "substance",
+  "substance_name": "Substance Name",
+  "class_name": "Class Name",
+  "category": "xx",
+  "status": "verified",
+  "evidence_tier": "tier-1",
+  "archive_summary": "One-sentence summary for the archive card.",
+  "tags": ["TAG1", "TAG2", "TAG3"],
+  "family_tree": {
+    "Chemical Family": "...",
+    "Subclass": "...",
+    "Functional Class": "...",
+    "Substance": "Substance Name"
+  },
+  "published": true,
+  "prev_plate": "ASA-XX-prev",
+  "next_plate": null
+}
+```
+
+For class plates, set `"plate_type": "class"`, `"substance_name": null`, and `"family_tree": null`.
+
+Set `prev_plate` to the `id` of the plate before this one in archive order.
+Set `next_plate` to the `id` of the plate after this one, or `null` if it's last.
+
+**Also update** the previously last plate's `next_plate` field to point to the new entry's `id`.
+
+### Step 7 — Set plate navigation links
+Update the `.plate-nav` section in the new plate HTML:
+- `prev` href: filename from the `prev_plate` entry in JSON (or `archive.html` if null)
+- `next` href: filename from the `next_plate` entry in JSON (or `archive.html` if null)
+- Sub-labels: `[ID] · [Title]` matching JSON `id` + `title` fields
+
+Also update the previously last plate's `next` nav link to point to the new plate.
+
+### Step 8 — Test the entry
 Check that:
 - the new file opens correctly
-- archive card links to the new plate
+- archive card renders from JSON (and static fallback exists)
 - breadcrumbs work
+- status tags display correctly
+- family tree block shows correct taxonomy (substance plates only)
+- navigation ribbon links forward and back correctly
 - related plate links work
 - styling matches the existing ASA system
 - all links remain relative-path compatible for GitHub Pages
@@ -120,6 +167,9 @@ Check that:
 - [ ] Update page title
 - [ ] Update plate ID
 - [ ] Update substance name and class label
+- [ ] Update status tags (`.asa-tag.verified` / `.asa-tag.tier`)
+- [ ] Fill family tree block with correct taxonomy (substance plates)
+- [ ] Remove family tree block if this is a class plate
 
 ### Content
 - [ ] Add simplified mechanism of action
@@ -129,16 +179,20 @@ Check that:
 - [ ] Add interaction considerations
 - [ ] Add harm-reduction insights
 
-### Linking
-- [ ] Update breadcrumbs
+### JSON + linking
+- [ ] Add plate object to `asa-index.json`
+- [ ] Set `prev_plate` and `next_plate` in JSON
+- [ ] Update previous last plate's `next_plate` in JSON
+- [ ] Update breadcrumbs in HTML
+- [ ] Update nav ribbon prev/next links in HTML
+- [ ] Update previously last plate's nav `next` link in HTML
 - [ ] Update related plate links
-- [ ] Add archive card entry
-- [ ] Update archive counts if used
 
 ### Compatibility
 - [ ] Uses existing `asa-plate.css` classes
 - [ ] Uses existing `asa-plate.js` hooks
 - [ ] Uses relative links for GitHub Pages
+- [ ] No absolute root paths introduced
 
 ### Final check
 - [ ] Opens correctly in browser
@@ -159,46 +213,81 @@ Use:
 - `_template.html` as the structural base
 - `asa-plate.css` for styling compatibility
 - `asa-plate.js` for runtime compatibility
-- `archive.html` for archive card insertion
+- `asa-index.json` for the data index entry
+- `archive.html` (cards render from JSON automatically)
 
 Inputs
 
-Substance name: [INSERT NAME]  
-Class: [INSERT CLASS]  
-Class code: [INSERT CODE]  
-Entry number: [INSERT NUMBER]  
-Filename: [INSERT FINAL FILENAME]  
-Mechanism of action: [INSERT SIMPLIFIED MOA]  
-Typical effects: [INSERT EFFECTS]  
-Duration / pharmacokinetics: [INSERT DURATION]  
-Key risks: [INSERT RISKS]  
-Interaction notes: [INSERT INTERACTIONS]  
+Substance name: [INSERT NAME]
+Class: [INSERT CLASS]
+Class code: [INSERT CODE]
+Entry number: [INSERT NUMBER]
+Filename: [INSERT FINAL FILENAME]
+Mechanism of action: [INSERT SIMPLIFIED MOA]
+Typical effects: [INSERT EFFECTS]
+Duration / pharmacokinetics: [INSERT DURATION]
+Key risks: [INSERT RISKS]
+Interaction notes: [INSERT INTERACTIONS]
 Harm-reduction insights: [INSERT HARM REDUCTION NOTES]
+Chemical family: [INSERT CHEMICAL FAMILY]
+Subclass or natural source: [INSERT SUBCLASS]
+Functional class: [INSERT FUNCTIONAL CLASS]
+Status: [verified / limited / emerging]
+Evidence tier: [tier-1 / tier-2]
+Prev plate ID: [INSERT PREV ID or null]
+Next plate ID: [INSERT NEXT ID or null]
 
 Requirements
 1. Generate the full HTML file for the new plate
-2. Preserve compatibility with the existing ASA template structure
-3. Use relative internal paths suitable for GitHub Pages
-4. Keep the tone educational, evidence-focused, and non-sensational
-5. Do not redesign the plate system
-6. Reuse existing classes and layout patterns wherever possible
+2. Generate the `asa-index.json` entry object for this plate
+3. Preserve compatibility with the existing ASA template structure
+4. Use relative internal paths suitable for GitHub Pages
+5. Keep the tone educational, evidence-focused, and non-sensational
+6. Do not redesign the plate system
+7. Reuse existing classes and layout patterns wherever possible
 
 Output
 1. Final HTML file content
-2. Suggested page title
-3. Archive card snippet for `archive.html`
+2. `asa-index.json` entry object
+3. Nav link updates needed in the previously adjacent plate
 4. Any related-plate link suggestions
 
 ---
 
-## archive.html Card Snippet Format
+## asa-index.json Entry Format
 
-```html
-<a href="asa-xx-00-name.html" class="plate-card xx reveal">
-  <div class="plate-card-head">
-    <span class="plate-id">ASA-XX-00</span>
-    <span class="plate-class">Class Name</span>
-  </div>
-  <h3>Substance Name</h3>
-  <p>One-sentence archive summary for the substance plate.</p>
-</a>
+```json
+{
+  "id": "ASA-XX-00",
+  "title": "Substance Name",
+  "slug": "asa-xx-00-name",
+  "filename": "asa-xx-00-name.html",
+  "plate_type": "substance",
+  "substance_name": "Substance Name",
+  "class_name": "Class Name",
+  "category": "xx",
+  "status": "verified",
+  "evidence_tier": "tier-1",
+  "archive_summary": "One-sentence summary for archive card.",
+  "tags": ["TAG1", "TAG2", "TAG3"],
+  "family_tree": {
+    "Chemical Family": "...",
+    "Subclass": "...",
+    "Functional Class": "...",
+    "Substance": "Substance Name"
+  },
+  "published": true,
+  "prev_plate": "ASA-XX-prev",
+  "next_plate": null
+}
+```
+
+## Status and Evidence Tier Values
+
+| field          | values                          | display tag        |
+|----------------|---------------------------------|--------------------|
+| `status`       | `verified`                      | `.asa-tag.verified` |
+| `status`       | `limited`                       | `.asa-tag.limited`  |
+| `status`       | `emerging`                      | `.asa-tag.emerging` |
+| `evidence_tier`| `tier-1`                        | `.asa-tag.tier`     |
+| `evidence_tier`| `tier-2`                        | `.asa-tag.tier`     |
