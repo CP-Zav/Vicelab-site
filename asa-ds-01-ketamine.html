@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ASA-DS-01 · Ketamine — Altered State Archive · ViceLab                ║
+║  Class: Dissociative · Accent: #00FFC6 (Teal)                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="en"
+  data-cc-rgb="0,255,198"
+  data-plate-tags="ASA-DS-01,KETAMINE,NMDA,DISSOCIATIVE,K-HOLE,ARYLCYCLOHEXYLAMINE,GLUTAMATE,HARM REDUCTION,VICELAB,ASA">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASA-DS-01 · Ketamine — Altered State Archive · ViceLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="asa-plate.css">
+<style>
+/* CONFIG ② — Dissociative class: teal */
+:root {
+  --cc:        #00FFC6;
+  --cc-dim:    rgba(0, 255, 198, 0.06);
+  --cc-mid:    rgba(0, 255, 198, 0.13);
+  --cc-border: rgba(0, 255, 198, 0.26);
+  --cc-glow:   0 0 36px rgba(0,255,198,0.14), 0 0 80px rgba(0,255,198,0.06);
+  --cc-pulse:  rgba(0, 255, 198, 0.28);
+}
+</style>
+</head>
+
+<body>
+<canvas id="c-field"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="tag-layer" id="tag-layer"></div>
+
+<div class="site">
+
+<nav>
+  <a href="index.html" class="nav-logo">Vice<em>Lab</em></a>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="signal.html">Signal</a>
+    <a href="archive.html" class="nav-active">Archive</a>
+  </div>
+</nav>
+
+
+<!-- ① ARCHIVE HEADER -->
+<div class="arc-header">
+<div class="container">
+  <div class="breadcrumb reveal">
+    <a href="archive.html">Archive</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="archive.html">Dissociatives</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">ASA-DS-01</span>
+  </div>
+  <div class="arc-plate-label reveal">ARCHIVE PLATE</div>
+  <div class="arc-plate-id reveal">
+    <span class="arc-plate-id-dot"></span>
+    ASA-DS-01
+  </div>
+  <h1 class="arc-title reveal">
+    <span class="arc-title-accent">K</span>etamine
+  </h1>
+  <div class="arc-system-strip reveal">
+    <span>CLASS:</span>
+    <span class="arc-strip-val accent">Dissociative</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>STATUS:</span>
+    <span class="arc-strip-val">Emerging Research</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>RELEASE:</span>
+    <span class="arc-strip-val">2026</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>EDITION:</span>
+    <span class="arc-strip-val">Canonical Lock</span>
+    <span class="arc-system-strip-sep">·</span>
+    <span>SOURCE:</span>
+    <span class="arc-strip-val">ViceLab Research Intelligence</span>
+  </div>
+
+  <div class="asa-status-row reveal">
+    <span class="asa-tag emerging">Emerging Research</span>
+    <span class="asa-tag tier">Evidence · Mixed</span>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ② PLATE ARTIFACT DISPLAY -->
+<section class="plate-display-section">
+<div class="container">
+  <div class="plate-frame-wrap reveal">
+    <div class="corner-tr"></div>
+    <div class="corner-bl"></div>
+    <div class="plate-frame">
+      <div class="plate-visual">
+        <svg viewBox="0 0 900 675" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bg-g" cx="42%" cy="38%" r="70%">
+              <stop offset="0%"   stop-color="#030D0C"/>
+              <stop offset="55%"  stop-color="#040B0E"/>
+              <stop offset="100%" stop-color="#04060D"/>
+            </radialGradient>
+            <radialGradient id="core-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#00FFC6" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#00FFC6" stop-opacity="0"/>
+            </radialGradient>
+            <pattern id="coord-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(0,255,198,0.04)" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="fine-grid" width="15" height="15" patternUnits="userSpaceOnUse">
+              <path d="M 15 0 L 0 0 0 15" fill="none" stroke="rgba(0,255,198,0.015)" stroke-width="0.3"/>
+            </pattern>
+            <filter id="gf-soft"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="gf-haze"><feGaussianBlur stdDeviation="14"/></filter>
+            <filter id="gf-sharp"><feGaussianBlur stdDeviation="0.8"/></filter>
+            <radialGradient id="vignette-g" cx="50%" cy="50%" r="70%">
+              <stop offset="55%"  stop-color="transparent"/>
+              <stop offset="100%" stop-color="rgba(4,6,13,0.70)"/>
+            </radialGradient>
+            <marker id="arr-k" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M 0 0 L 6 3 L 0 6 Z" fill="rgba(0,255,198,0.65)"/>
+            </marker>
+            <marker id="arr-kb" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
+              <path d="M 0 0 L 5 2.5 L 0 5 Z" fill="rgba(0,255,198,0.35)"/>
+            </marker>
+          </defs>
+
+          <rect width="900" height="675" fill="url(#bg-g)"/>
+          <rect width="900" height="675" fill="url(#fine-grid)"/>
+          <rect width="900" height="675" fill="url(#coord-grid)"/>
+          <ellipse cx="450" cy="310" rx="340" ry="220" fill="url(#core-glow)" filter="url(#gf-haze)"/>
+
+          <!-- ── KETAMINE: NMDA Receptor Channel Block Model ──
+               Visual concept: NMDA ion channel in open state, blocked
+               by ketamine molecule in the channel pore.
+               Surrounding glutamate / glycine binding sites shown.
+               Glutamate wave represents blocked excitatory transmission.
+          -->
+
+          <!-- PRESYNAPTIC MEMBRANE -->
+          <rect x="80" y="175" width="740" height="1.5" fill="rgba(0,255,198,0.20)" filter="url(#gf-soft)"/>
+          <rect x="80" y="177" width="740" height="0.5" fill="rgba(0,255,198,0.10)"/>
+          <!-- POSTSYNAPTIC MEMBRANE -->
+          <rect x="80" y="480" width="740" height="1.5" fill="rgba(0,255,198,0.16)" filter="url(#gf-soft)"/>
+          <text x="76" y="173" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(0,255,198,0.35)" letter-spacing="1.2">PRESYNAPTIC</text>
+          <text x="76" y="479" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(0,255,198,0.28)" letter-spacing="1.2">POSTSYNAPTIC</text>
+
+          <!-- Synaptic cleft region -->
+          <rect x="80" y="177" width="740" height="304" fill="rgba(0,255,198,0.008)"/>
+
+          <!-- GLUTAMATE WAVE — suppressed/blocked by ketamine -->
+          <!-- Fragmented wave = interrupted transmission -->
+          <path d="M 80 300 Q 140 230 200 290 Q 260 350 320 280 Q 360 240 390 270"
+            fill="none" stroke="#00FFC6" stroke-width="1.4" stroke-opacity="0.45" filter="url(#gf-soft)"/>
+          <!-- Gap — blocked zone -->
+          <path d="M 430 300 Q 480 250 530 290 Q 580 330 630 275 Q 680 230 740 280 Q 780 310 820 295"
+            fill="none" stroke="#00FFC6" stroke-width="1.0" stroke-opacity="0.28"/>
+          <!-- Block indicator -->
+          <line x1="400" y1="255" x2="430" y2="305" stroke="rgba(0,255,198,0.35)" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="392" y="252" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(0,255,198,0.48)" letter-spacing="1.2">BLOCKED</text>
+
+          <!-- NMDA RECEPTOR — centre stage, dominant visual element -->
+          <!-- Channel wall — left subunit -->
+          <path d="M 380 480 L 378 420 Q 376 390 390 370 Q 400 356 405 330 Q 408 305 406 280 Q 404 258 398 240 L 396 177"
+            fill="none" stroke="rgba(0,255,198,0.40)" stroke-width="3" stroke-linecap="round"/>
+          <!-- Channel wall — right subunit -->
+          <path d="M 520 480 L 522 420 Q 524 390 510 370 Q 500 356 495 330 Q 492 305 494 280 Q 496 258 502 240 L 504 177"
+            fill="none" stroke="rgba(0,255,198,0.40)" stroke-width="3" stroke-linecap="round"/>
+          <!-- Subunit fill -->
+          <path d="M 398 240 Q 404 258 406 280 Q 408 305 405 330 Q 400 356 390 370 Q 376 390 378 420 L 380 480
+                   L 520 480 L 522 420 Q 524 390 510 370 Q 500 356 495 330 Q 492 305 494 280 Q 496 258 502 240 Z"
+            fill="rgba(0,255,198,0.04)" stroke="none"/>
+
+          <!-- Channel pore outline (open state) -->
+          <rect x="406" y="285" width="88" height="160" rx="4" fill="rgba(0,255,198,0.03)" stroke="rgba(0,255,198,0.15)" stroke-width="0.6"/>
+
+          <!-- Ketamine molecule — blocking the pore -->
+          <!-- Central blocker ring -->
+          <circle cx="450" cy="365" r="18" fill="rgba(0,255,198,0.16)" stroke="#00FFC6" stroke-width="1.4" filter="url(#gf-soft)"/>
+          <circle cx="450" cy="365" r="9"  fill="rgba(0,255,198,0.30)"/>
+          <circle cx="450" cy="365" r="4"  fill="#00FFC6" fill-opacity="0.70"/>
+          <!-- Ketamine structural arms -->
+          <line x1="450" y1="347" x2="450" y2="335" stroke="#00FFC6" stroke-width="1.2" stroke-opacity="0.55"/>
+          <line x1="432" y1="358" x2="422" y2="352" stroke="#00FFC6" stroke-width="1.0" stroke-opacity="0.45"/>
+          <line x1="468" y1="358" x2="478" y2="352" stroke="#00FFC6" stroke-width="1.0" stroke-opacity="0.45"/>
+          <line x1="432" y1="372" x2="422" y2="380" stroke="#00FFC6" stroke-width="0.9" stroke-opacity="0.38"/>
+          <line x1="468" y1="372" x2="478" y2="380" stroke="#00FFC6" stroke-width="0.9" stroke-opacity="0.38"/>
+          <!-- Ketamine label arrow -->
+          <line x1="469" y1="348" x2="520" y2="320" stroke="rgba(0,255,198,0.32)" stroke-width="0.6"/>
+          <text x="524" y="318" font-family="IBM Plex Mono,monospace" font-size="7.5" fill="#00FFC6" fill-opacity="0.70" letter-spacing="1.5">KETAMINE · CHANNEL BLOCK</text>
+
+          <!-- Ca²⁺ ions — blocked, piling up above blocker -->
+          <circle cx="450" cy="316" r="5.5" fill="rgba(0,255,198,0.55)" filter="url(#gf-soft)"/>
+          <circle cx="434" cy="300" r="4"   fill="rgba(0,255,198,0.40)"/>
+          <circle cx="466" cy="300" r="4"   fill="rgba(0,255,198,0.40)"/>
+          <circle cx="450" cy="288" r="3.5" fill="rgba(0,255,198,0.30)"/>
+          <circle cx="436" cy="276" r="3"   fill="rgba(0,255,198,0.22)"/>
+          <circle cx="462" cy="276" r="3"   fill="rgba(0,255,198,0.22)"/>
+          <!-- Ca²⁺ label -->
+          <line x1="415" y1="312" x2="360" y2="295" stroke="rgba(0,255,198,0.22)" stroke-width="0.5"/>
+          <text x="280" y="292" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(0,255,198,0.48)" letter-spacing="1.2">Ca²⁺ INFLUX BLOCKED</text>
+
+          <!-- Glutamate binding site — left outer subunit -->
+          <ellipse cx="368" cy="315" rx="14" ry="9" fill="rgba(0,255,198,0.08)" stroke="rgba(0,255,198,0.30)" stroke-width="0.9"/>
+          <circle cx="368" cy="315" r="3.5" fill="rgba(0,255,198,0.35)"/>
+          <line x1="355" y1="306" x2="336" y2="290" stroke="rgba(0,255,198,0.20)" stroke-width="0.5"/>
+          <text x="260" y="288" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="rgba(0,255,198,0.40)" letter-spacing="1">GLU SITE</text>
+
+          <!-- Glycine binding site — right outer subunit -->
+          <ellipse cx="532" cy="315" rx="14" ry="9" fill="rgba(0,255,198,0.08)" stroke="rgba(0,255,198,0.28)" stroke-width="0.9"/>
+          <circle cx="532" cy="315" r="3.5" fill="rgba(0,255,198,0.32)"/>
+          <line x1="546" y1="306" x2="566" y2="290" stroke="rgba(0,255,198,0.20)" stroke-width="0.5"/>
+          <text x="568" y="288" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="rgba(0,255,198,0.38)" letter-spacing="1">GLY SITE</text>
+
+          <!-- Postsynaptic density below membrane -->
+          <rect x="405" y="482" width="90" height="5" rx="1" fill="rgba(0,255,198,0.18)" stroke="rgba(0,255,198,0.30)" stroke-width="0.5"/>
+          <text x="450" y="497" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.32)" letter-spacing="1">PSD</text>
+
+          <!-- Glutamate molecules in cleft — fewer, some drifting -->
+          <circle cx="290" cy="290" r="5"   fill="#00FFC6" fill-opacity="0.50" filter="url(#gf-soft)"/>
+          <circle cx="330" cy="335" r="4.5" fill="#00FFC6" fill-opacity="0.42"/>
+          <circle cx="260" cy="350" r="4"   fill="#00FFC6" fill-opacity="0.36"/>
+          <circle cx="610" cy="300" r="4.5" fill="#00FFC6" fill-opacity="0.40"/>
+          <circle cx="650" cy="345" r="4"   fill="#00FFC6" fill-opacity="0.34"/>
+          <circle cx="700" cy="310" r="3.5" fill="#00FFC6" fill-opacity="0.28"/>
+          <circle cx="200" cy="320" r="3.5" fill="#00FFC6" fill-opacity="0.25"/>
+          <circle cx="760" cy="360" r="3"   fill="#00FFC6" fill-opacity="0.22"/>
+
+          <!-- Secondary NMDA receptors — flanking, less detail -->
+          <!-- Left receptor -->
+          <path d="M 196 480 L 195 432 Q 193 406 202 390 Q 210 376 212 356 Q 214 335 210 310 L 208 177"
+            fill="none" stroke="rgba(0,255,198,0.20)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 268 480 L 270 432 Q 272 406 264 390 Q 256 376 254 356 Q 252 335 256 310 L 258 177"
+            fill="none" stroke="rgba(0,255,198,0.20)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="233" cy="350" r="8" fill="rgba(0,255,198,0.05)" stroke="rgba(0,255,198,0.18)" stroke-width="0.8"/>
+          <!-- Right receptor -->
+          <path d="M 636 480 L 634 432 Q 632 406 641 390 Q 649 376 651 356 Q 653 335 649 310 L 648 177"
+            fill="none" stroke="rgba(0,255,198,0.20)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 706 480 L 708 432 Q 710 406 702 390 Q 694 376 692 356 Q 690 335 694 310 L 694 177"
+            fill="none" stroke="rgba(0,255,198,0.20)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="671" cy="350" r="8" fill="rgba(0,255,198,0.05)" stroke="rgba(0,255,198,0.16)" stroke-width="0.8"/>
+
+          <!-- Coordinate labels -->
+          <text x="84"  y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.18)" letter-spacing="1">A1</text>
+          <text x="224" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.18)" letter-spacing="1">B1</text>
+          <text x="364" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.18)" letter-spacing="1">C1</text>
+          <text x="504" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.18)" letter-spacing="1">D1</text>
+          <text x="644" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.18)" letter-spacing="1">E1</text>
+          <text x="784" y="12" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.18)" letter-spacing="1">F1</text>
+          <text x="6" y="90"  font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.14)">A2</text>
+          <text x="6" y="200" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.14)">A3</text>
+          <text x="6" y="310" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.14)">A4</text>
+          <text x="6" y="420" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.14)">A5</text>
+          <text x="6" y="560" font-family="IBM Plex Mono,monospace" font-size="6" fill="rgba(0,255,198,0.14)">A6</text>
+
+          <!-- Classification marks -->
+          <text x="880" y="22" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(0,255,198,0.30)" letter-spacing="1.5">SUBSTANCE PLATE</text>
+          <text x="880" y="33" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(0,255,198,0.20)" letter-spacing="1.5">ASA-DS-01 · DISSOCIATIVE</text>
+
+          <!-- Identity watermark -->
+          <text x="20" y="660" font-family="IBM Plex Mono,monospace" font-size="7" fill="rgba(0,255,198,0.22)" letter-spacing="2">ASA-DS-01 · KETAMINE · DISSOCIATIVE CLASS · ALTERED STATE ARCHIVE · VICELAB RESEARCH INTELLIGENCE · CANONICAL LOCK · 2026</text>
+
+          <!-- Vignette — always last -->
+          <rect width="900" height="675" fill="url(#vignette-g)"/>
+        </svg>
+      </div>
+      <div class="plate-strip">
+        <div class="plate-strip-id">ASA-DS-01 · Ketamine · Substance Plate · Altered State Archive · 2026</div>
+        <div class="plate-strip-status">
+          <div class="plate-strip-dot"></div>
+          Canonical Lock
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="plate-caption reveal">
+    Research-informed visual pharmacology plate. NMDA Receptor Open-Channel Block Model — Ketamine-Mediated Glutamate Transmission Suppression.
+  </p>
+</div>
+</section>
+
+
+<!-- ③ SCIENTIFIC METADATA PANEL -->
+<section class="sci-meta-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Scientific Record</div>
+  <h2 class="section-title reveal">Pharmacological Profile</h2>
+
+  <div class="asa-family-tree reveal">
+    <div class="asa-family-label">Chemical Taxonomy</div>
+    <div class="asa-family-row">
+      <span class="asa-family-key">Chemical Family</span>
+      <span class="asa-family-val">Arylcyclohexylamine</span>
+    </div>
+    <div class="asa-family-row">
+      <span class="asa-family-key">Pharmacological Class</span>
+      <span class="asa-family-val">Dissociative Anaesthetic</span>
+    </div>
+    <div class="asa-family-row">
+      <span class="asa-family-key">Functional Class</span>
+      <span class="asa-family-val">NMDA Receptor Antagonist</span>
+    </div>
+    <div class="asa-family-row">
+      <span class="asa-family-key">Substance</span>
+      <span class="asa-family-val accent">Ketamine</span>
+    </div>
+  </div>
+
+  <table class="meta-table reveal-stagger">
+    <tbody>
+
+      <tr>
+        <td class="meta-key">Class</td>
+        <td class="meta-val">
+          <strong>Dissociative Anaesthetic</strong>
+          <span class="tag">Arylcyclohexylamine</span>
+          <span class="tag">NMDA Antagonist</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Scientific Name</td>
+        <td class="meta-val"><strong>(RS)-2-(2-Chlorophenyl)-2-(methylamino)cyclohexan-1-one</strong></td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Common Names</td>
+        <td class="meta-val">Ketamine · Special K · Ket · K · Vitamin K · Kit Kat · Super K</td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Primary Mechanism</td>
+        <td class="meta-val">
+          <strong>NMDA receptor open-channel blockade.</strong>
+          Ketamine enters the NMDA receptor ion channel after it opens and physically occludes the pore — preventing calcium influx. This is "use-dependent" antagonism: the channel must open (glutamate must bind) before ketamine can enter. The result is broadly suppressed excitatory glutamatergic transmission throughout the central nervous system.
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Secondary Effects</td>
+        <td class="meta-val">Opioid receptor partial agonism (mu and delta). Sigma receptor agonism. Dopaminergic and monoaminergic activity at higher concentrations. The antidepressant mechanism of low-dose ketamine is an area of active clinical research, potentially involving AMPA receptor upregulation following NMDA blockade.</td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Half-Life</td>
+        <td class="meta-val"><strong>2 – 3 hours</strong> (plasma, multiple routes)</td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Onset</td>
+        <td class="meta-val">
+          Intramuscular: <strong>2–5 min</strong> ·
+          Intranasal: <strong>10–20 min</strong> ·
+          Oral: <strong>20–30 min</strong>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Duration</td>
+        <td class="meta-val">
+          IM / Intranasal: <strong>45–90 min</strong> (active) ·
+          Oral: <strong>2–4 hours</strong> ·
+          After-effects: <strong>1–4 hours</strong>
+        </td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Primary Risks</td>
+        <td class="meta-val">
+          <span class="tag alert">Respiratory Depression</span>
+          <span class="tag alert">Incapacitation / K-Hole</span>
+          <span class="tag warn">Bladder Toxicity (chronic)</span>
+          <span class="tag warn">Psychological Dependence</span>
+          <span class="tag warn">Dissociation / Immobility</span>
+          <br>Respiratory depression is dose-dependent and clinically significant — most dangerous when combined with other CNS depressants. The k-hole state (extreme dissociation, temporary unresponsiveness) creates acute vulnerability in unsupervised environments.
+        </td>
+      </tr>
+
+      <tr>
+        <td class="meta-key">Interactions</td>
+        <td class="meta-val">
+          <span class="tag alert">Alcohol (respiratory depression)</span>
+          <span class="tag alert">Opioids (respiratory depression)</span>
+          <span class="tag warn">Benzodiazepines</span>
+          <span class="tag warn">Other CNS Depressants</span>
+          <br>Combination with CNS depressants — particularly alcohol and opioids — significantly amplifies respiratory depression risk. Unlike many anaesthetic interactions, this combination does not require large doses to produce dangerous effects.
+        </td>
+      </tr>
+
+      <tr class="meta-divider"><td colspan="2"></td></tr>
+
+      <tr>
+        <td class="meta-key">Status</td>
+        <td class="meta-val status-verified">
+          <span class="status-dot"></span>
+          <strong>Canonical Lock</strong> · Emerging Research · 2026
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+</div>
+</section>
+
+
+<!-- ④ HARM REDUCTION NOTES -->
+<section class="hr-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Field Intelligence</div>
+  <div class="hr-panel reveal">
+    <div class="hr-panel-header">
+      <div class="hr-panel-title">
+        HARM REDUCTION NOTES
+        <span class="hr-panel-title-mark">ASA-DS-01</span>
+      </div>
+      <div class="hr-panel-meta">Evidence-first · Non-judgemental · Operational</div>
+    </div>
+    <div class="hr-grid reveal-stagger">
+
+      <div class="hr-note">
+        <div class="hr-note-key">Never Alone</div>
+        <div class="hr-note-body">Ketamine can produce rapid, complete incapacitation. <strong>A k-hole — the state of extreme dissociation approaching temporary unresponsiveness — represents a period of absolute physical vulnerability.</strong> Anyone in a k-hole cannot respond to danger, communicate distress, or protect themselves. A trusted, sober person who understands what is happening should always be present.</div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Depressant Combinations</div>
+        <div class="hr-note-body"><strong>Ketamine combined with alcohol, opioids, or benzodiazepines can suppress breathing to dangerous levels.</strong> Each substance independently reduces respiratory drive; the combination is more than additive. This is not a risk that can be managed by experience with either substance in isolation — the interaction produces qualitatively different suppression.</div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Bladder Health</div>
+        <div class="hr-note-body">Ketamine-induced uropathy — chronic bladder and urinary tract damage — is a documented consequence of regular use. The mechanism is incompletely understood but involves ketamine and its metabolites causing inflammatory damage to the urinary tract. <strong>Symptoms include severe abdominal pain, frequent urination, and blood in urine.</strong> These require prompt clinical attention. The condition can be irreversible in severe cases.</div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Route Considerations</div>
+        <div class="hr-note-body">The route of administration substantially changes both onset speed and depth of effect. Intranasal use produces rapid onset and moderate dissociation. Intramuscular injection produces faster, deeper, and longer effects — the k-hole is far more likely at IM doses. <strong>Oral use is slower and more forgiving in onset, but redosing before effects are felt is a common cause of unexpectedly deep experiences.</strong></div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Set and Setting</div>
+        <div class="hr-note-body">Ketamine's dissociative mechanism means the psychological character of the experience is highly sensitive to the immediate environment and mental state at onset. Unfamiliar, crowded, or unsafe environments substantially increase the risk of psychological distress. <strong>Disorientation, confusion, and inability to navigate are normal at moderate-to-high doses — this is pharmacological, not a sign of pathology.</strong> Being in a calm, safe space matters.</div>
+      </div>
+
+      <div class="hr-note">
+        <div class="hr-note-key">Psychological Dependence</div>
+        <div class="hr-note-body">Ketamine carries genuine psychological dependence potential, distinct from physical addiction in profile but not in consequence. A pattern of frequent use to manage emotional distress is a recognisable escalation pathway. <strong>Daily or near-daily use is associated with both worsening dissociative episodes and accelerated urinary tract damage.</strong> Frequency reduction and harm reduction services exist specifically for this pattern.</div>
+      </div>
+
+      <div class="hr-note full">
+        <div class="hr-note-key">Wingmate Protocol</div>
+        <div class="hr-note-body">
+          Watch your group. Ketamine can transition someone from functional to completely non-responsive faster than most substances.
+          <strong>Red flags: person becomes very still and unresponsive to voice or touch, breathing becomes slow and shallow, they are in an awkward or unsafe position and cannot correct it, skin colour changes, vomiting while unresponsive (aspiration risk).</strong>
+          Place an unresponsive person in the recovery position immediately. Get to the event medical team. Tell them what was taken and approximately when.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ⑤ RESEARCH NOTE / CONTEXT BLOCK -->
+<section class="research-section">
+<div class="container">
+  <div class="section-eyebrow reveal">Archive Context</div>
+  <div class="research-inner reveal">
+    <div class="research-sidebar">
+      <div class="research-sidebar-label">ARCHIVE<br>RECORD</div>
+      <div class="research-sidebar-id">ASA-DS-01</div>
+      <div class="research-sidebar-meta">
+        Type<br>
+        Substance Plate<br>
+        <br>
+        Division<br>
+        ViceLab Research<br>
+        Intelligence<br>
+        <br>
+        Indexed<br>
+        2026<br>
+        <br>
+        Status<br>
+        Canonical Lock
+      </div>
+    </div>
+    <div class="research-body">
+      <h3 class="research-title">Why the first dissociative plate is ketamine.</h3>
+      <div class="research-text">
+        <p>
+          Ketamine occupies a genuinely unusual position in contemporary psychoactive culture. It is simultaneously a licenced anaesthetic agent used in clinical surgery and emergency medicine, an FDA-approved antidepressant treatment (via esketamine nasal spray), and one of the most widely used recreational dissociatives at festivals and nightlife events globally. This range of contexts — clinical, therapeutic, and recreational — means the pharmacology is better documented than for most substances in this archive, while the specific risks in recreational settings remain poorly understood by most people who encounter it.
+        </p>
+        <p>
+          The dissociative class presents a distinct epistemic challenge. Unlike stimulants or empathogens, where effects scale relatively predictably with dose, ketamine has qualitative phase boundaries — the transition from mild dissociation to a k-hole is not merely a quantitative increase in effect but a shift in the character of the experience that most descriptions do not prepare people for. <strong>The archive's approach here is precise, evidence-based, and non-judgmental</strong> — acknowledging the clinical documentation of harm while avoiding the moralising frame that makes harm reduction information less accessible to the people who need it.
+        </p>
+        <p>
+          The NMDA Open-Channel Block Model was selected for this plate because it makes the most consequential pharmacological fact about ketamine visually legible: the mechanism is positional, not purely competitive. The blocker must enter the channel after it opens — which is why use-dependent antagonism creates the specific interaction risk with other CNS depressants. The fragmented glutamate wave in the plate represents blocked excitatory transmission across the cleft. The Ca²⁺ ions shown accumulating above the blocked pore represent the ionic consequence of that suppression — the substrate of ketamine's anaesthetic and dissociative effects.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- RELATED PLATES -->
+<section class="related-section">
+<div class="container">
+  <div class="related-eyebrow reveal">Altered State Archive</div>
+  <div class="related-grid reveal-stagger">
+
+    <a href="asa-st-02-cocaine.html" class="rel-card" data-accent="stimulant">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <path d="M 30 100 L 88 100" stroke="#4DA3FF" stroke-width="1.2" stroke-opacity="0.50"/>
+          <path d="M 100 100 L 142 100" stroke="#4DA3FF" stroke-width="1" stroke-opacity="0.35"/>
+          <path d="M 158 100 L 202 100" stroke="#4DA3FF" stroke-width="1.1" stroke-opacity="0.44"/>
+          <circle cx="88"  cy="100" r="5" fill="#4DA3FF" fill-opacity="0.65"/>
+          <circle cx="142" cy="100" r="4" fill="#4DA3FF" fill-opacity="0.48"/>
+          <circle cx="202" cy="100" r="4.5" fill="#4DA3FF" fill-opacity="0.58"/>
+          <ellipse cx="150" cy="100" rx="80" ry="40" fill="none" stroke="#4DA3FF" stroke-width="0.6" stroke-opacity="0.20" stroke-dasharray="4 6"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4DA3FF" fill-opacity="0.30" letter-spacing="1.5">ASA-ST-02 · COCAINE</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-ST-02</div>
+        <div class="rel-title">Cocaine</div>
+        <div class="rel-class">Substance Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="asa-em-01-mdma.html" class="rel-card" data-accent="empathogen">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <path d="M 20 110 Q 65 55 110 90 Q 155 125 200 70 Q 235 30 270 75"
+            fill="none" stroke="#E43CFF" stroke-width="1.2" stroke-opacity="0.50"/>
+          <circle cx="110" cy="90" r="5"  fill="#E43CFF" fill-opacity="0.65"/>
+          <circle cx="200" cy="70" r="4"  fill="#E43CFF" fill-opacity="0.55"/>
+          <circle cx="150" cy="100" r="3" fill="#E43CFF" fill-opacity="0.40"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#E43CFF" fill-opacity="0.30" letter-spacing="1.5">ASA-EM-01 · MDMA</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-EM-01</div>
+        <div class="rel-title">MDMA</div>
+        <div class="rel-class">Substance Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="archive.html" class="rel-card" data-accent="psychedelic">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <circle cx="150" cy="100" r="55" fill="none" stroke="#00FFC6" stroke-width="0.7" stroke-opacity="0.22" stroke-dasharray="6 8"/>
+          <circle cx="150" cy="100" r="38" fill="none" stroke="#00FFC6" stroke-width="0.6" stroke-opacity="0.28"/>
+          <circle cx="150" cy="100" r="22" fill="none" stroke="#00FFC6" stroke-width="0.8" stroke-opacity="0.38"/>
+          <circle cx="150" cy="100" r="9"  fill="none" stroke="#00FFC6" stroke-width="1.0" stroke-opacity="0.52"/>
+          <circle cx="150" cy="100" r="3"  fill="#00FFC6" fill-opacity="0.70"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#00FFC6" fill-opacity="0.28" letter-spacing="1.5">ASA-PL-DS · DISSOCIATIVES</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-DS</div>
+        <div class="rel-title">Dissociatives</div>
+        <div class="rel-class">Class Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="archive.html" class="rel-card" data-accent="opioid">
+      <div class="rel-thumb">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#04060D"/>
+          <path d="M 20 80 Q 60 115 100 92 Q 140 70 180 112 Q 220 152 262 122"
+            fill="none" stroke="#F0A030" stroke-width="1.2" stroke-opacity="0.48"/>
+          <circle cx="100" cy="92"  r="4" fill="#F0A030" fill-opacity="0.58"/>
+          <circle cx="180" cy="112" r="4" fill="#F0A030" fill-opacity="0.55"/>
+          <text x="8" y="193" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#F0A030" fill-opacity="0.30" letter-spacing="1.5">ASA-PL-OP · DEPRESSANTS</text>
+        </svg>
+      </div>
+      <div class="rel-body">
+        <div class="rel-id">ASA-PL-OP</div>
+        <div class="rel-title">Depressants</div>
+        <div class="rel-class">Class Plate <span class="rel-arrow">→</span></div>
+      </div>
+    </a>
+
+  </div>
+</div>
+</section>
+
+
+<!-- ⑥ PLATE NAVIGATION -->
+<div class="plate-nav">
+<div class="container">
+  <div class="plate-nav-inner">
+    <a href="asa-st-02-cocaine.html" class="plate-nav-link prev">
+      <span>←</span>
+      <span>
+        Previous Plate
+        <span class="plate-nav-link-sub">ASA-ST-02 · Cocaine</span>
+      </span>
+    </a>
+    <a href="archive.html" class="plate-nav-back">Back to Archive</a>
+    <a href="asa-pl-02-stimulants.html" class="plate-nav-link next">
+      <span>
+        Next Plate
+        <span class="plate-nav-link-sub">ASA-PL-02 · Stimulants</span>
+      </span>
+      <span>→</span>
+    </a>
+  </div>
+</div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-brand">Vice<em>Lab</em></a>
+  <div class="footer-sys">
+    Altered State Archive · <em>ViceLab Research Division</em>
+  </div>
+  <div class="footer-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="signal.html">Signal</a>
+    <a href="archive.html">Archive</a>
+  </div>
+</footer>
+
+</div><!-- /site -->
+
+<script src="asa-plate.js"></script>
+</body>
+</html>

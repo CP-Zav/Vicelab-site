@@ -43,6 +43,29 @@
     },
     "published": true,
     "prev_plate": "ASA-EM-01",
+    "next_plate": "ASA-DS-01"
+  },
+  {
+    "id": "ASA-DS-01",
+    "title": "Ketamine",
+    "slug": "asa-ds-01-ketamine",
+    "filename": "asa-ds-01-ketamine.html",
+    "plate_type": "substance",
+    "substance_name": "Ketamine",
+    "class_name": "Dissociative",
+    "category": "di",
+    "status": "emerging",
+    "evidence_tier": "tier-2",
+    "archive_summary": "NMDA receptor open-channel blockade, use-dependent glutamate suppression, and the k-hole as the primary acute harm vector in unsupervised environments.",
+    "tags": ["KETAMINE", "NMDA", "DISSOCIATIVE", "K-HOLE", "ARYLCYCLOHEXYLAMINE", "GLUTAMATE", "ANAESTHETIC"],
+    "family_tree": {
+      "Chemical Family": "Arylcyclohexylamine",
+      "Pharmacological Class": "Dissociative Anaesthetic",
+      "Functional Class": "NMDA Receptor Antagonist",
+      "Substance": "Ketamine"
+    },
+    "published": true,
+    "prev_plate": "ASA-ST-02",
     "next_plate": "ASA-PL-02"
   },
   {
@@ -60,7 +83,7 @@
     "tags": ["STIMULANTS", "CLASS PLATE", "DOPAMINE", "NORADRENALINE", "DAT", "NET"],
     "family_tree": null,
     "published": true,
-    "prev_plate": "ASA-ST-02",
+    "prev_plate": "ASA-DS-01",
     "next_plate": null
   }
 ]

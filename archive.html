@@ -162,6 +162,12 @@
 }
 .plate-card.pl-st:hover { border-color: rgba(255,184,48,0.40); background: rgba(255,184,48,0.04); }
 
+.plate-card.di {
+  --card-accent: #00FFC6;
+  border-color: rgba(0,255,198,0.18);
+}
+.plate-card.di:hover { border-color: rgba(0,255,198,0.40); background: rgba(0,255,198,0.04); }
+
 /* ── CLASS PLATE BADGE ── */
 .class-badge {
   display: inline-block;
@@ -278,11 +284,11 @@ footer {
 <div class="container">
 <div class="archive-stats reveal">
   <div class="stat-item">
-    <div class="stat-num" id="stat-total"><em>3</em></div>
+    <div class="stat-num" id="stat-total"><em>4</em></div>
     <div class="stat-label">Plates Published</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num" id="stat-substances">2</div>
+    <div class="stat-num" id="stat-substances">3</div>
     <div class="stat-label">Substance Entries</div>
   </div>
   <div class="stat-item">
@@ -290,7 +296,7 @@ footer {
     <div class="stat-label">Class Plates</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num" id="stat-classes">2</div>
+    <div class="stat-num" id="stat-classes">3</div>
     <div class="stat-label">Classes Covered</div>
   </div>
 </div>
@@ -324,6 +330,17 @@ footer {
       </div>
       <h3>Cocaine</h3>
       <p>Dopamine transporter blockade, rapid-onset cardiovascular activation, and adulteration as the primary harm vector in festival and nightlife environments.</p>
+      <div class="plate-card-cta">View Plate →</div>
+    </a>
+
+    <!-- ASA-DS-01 · Ketamine -->
+    <a href="asa-ds-01-ketamine.html" class="plate-card di reveal">
+      <div class="plate-card-head">
+        <span class="plate-id">ASA-DS-01</span>
+        <span class="plate-class">Dissociative</span>
+      </div>
+      <h3>Ketamine</h3>
+      <p>NMDA receptor open-channel blockade, use-dependent glutamate suppression, and the k-hole as the primary acute harm vector in unsupervised environments.</p>
       <div class="plate-card-cta">View Plate →</div>
     </a>
 
@@ -387,6 +404,7 @@ footer {
   var CATEGORY_CSS = {
     'em':    'em',
     'st':    'st',
+    'di':    'di',
     'pl-st': 'pl-st'
   };
 
