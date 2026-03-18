@@ -12,8 +12,10 @@
 ║                                                                          ║
 ║  HOW TO CREATE A NEW PLATE PAGE                                         ║
 ║  ─────────────────────────────────────────────────────────────────────  ║
-║  1. Copy this file. Rename: asa-[substance].html                        ║
-║     e.g.  asa-ketamine.html  /  asa-lsd.html                           ║
+║  1. Copy this file. Rename using the ASA convention:                    ║
+║     Substance: asa-[class]-[nn]-[name].html                            ║
+║     Class:     asa-pl-[nn]-[class].html                                ║
+║     e.g.  asa-ds-01-ketamine.html  /  asa-ps-01-lsd.html              ║
 ║                                                                          ║
 ║  2. Fill in the 4 CONFIG values (marked ← CHANGE) at the top:          ║
 ║     ① Page title                                                        ║
@@ -116,14 +118,15 @@
 
   <!--
     SLOT: BREADCRUMB
-    Update: class filter slug + current plate ID.
-    Filter slugs: stimulant / psychedelic / opioid / dissociative /
-                  empathogen / cannabinoid / entactogen
+    Both Archive and Class links point to archive.html — no filter routing.
+    Class label: plural class name (Stimulants / Empathogens / Dissociatives /
+                 Psychedelics / Opioids / Cannabinoids / Depressants)
+    Current: the plate ID only (e.g. ASA-ST-02)
   -->
   <div class="breadcrumb reveal">
     <a href="archive.html">Archive</a>
     <span class="breadcrumb-sep">/</span>
-    <a href="archive.html">[Class plural]</a>
+    <a href="archive.html">[Class plural — e.g. Stimulants]</a>
     <span class="breadcrumb-sep">/</span>
     <span class="breadcrumb-current">ASA-XX-00</span>
   </div>
