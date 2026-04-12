@@ -1,0 +1,91 @@
+/*
+ * ╔══════════════════════════════════════════════════════════════════╗
+ * ║  LOCKED HERO HEADLINE — canonical component stylesheet           ║
+ * ║  File: components/locked-hero-headline.css                       ║
+ * ║                                                                  ║
+ * ║  This file is the SOLE owner of all .hero-headline styles.       ║
+ * ║  Do NOT add hero-headline rules anywhere else in the codebase.   ║
+ * ║                                                                  ║
+ * ║  CANONICAL MOBILE LAYOUT (320–767px):                            ║
+ * ║    Line 1 — The people at                                        ║
+ * ║    Line 2 — your festival                                        ║
+ * ║    Line 3 — deserve better   ← .accent (green)                  ║
+ * ║    Line 4 — than luck.                                           ║
+ * ║                                                                  ║
+ * ║  RULES — DO NOT:                                                 ║
+ * ║  · Convert back to fluid / auto-wrapping on mobile              ║
+ * ║  · Remove hyphens:none — prevents syllable breaks               ║
+ * ║  · Delete the <br> tags — they enforce the 4-line lock          ║
+ * ║  · Move these rules into the page stylesheet                     ║
+ * ║  · Make the copy editable — this is the canonical landing hero  ║
+ * ╚══════════════════════════════════════════════════════════════════╝
+ *
+ * HTML USAGE (copy exactly — do not alter structure):
+ *
+ *   <h1 class="hero-headline">
+ *     <span>The people at</span><br>
+ *     <span>your festival</span><br>
+ *     <span class="accent">deserve better</span><br>
+ *     <span>than luck.</span>
+ *   </h1>
+ */
+
+/* ─── Base styles — mobile-first (320px+) ─────────────────────────── */
+.hero-headline {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 8vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.07;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  max-width: 22ch;
+  word-spacing: normal;
+  hyphens: none;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  word-break: normal;
+  overflow-wrap: normal;
+  overflow: hidden;
+  margin-bottom: 22px;
+  opacity: 0;
+  animation: fadeUp 0.35s ease 0.1s forwards;
+}
+
+/* ─── Green accent — "deserve better" ────────────────────────────── */
+/* DO NOT remove — this is a hard brand requirement */
+.hero-headline .accent {
+  font-style: normal;
+  color: var(--green);
+}
+
+/* ─── Mid-range (431px–767px) ─────────────────────────────────────── */
+@media (min-width: 431px) and (max-width: 767px) {
+  .hero-headline {
+    font-size: clamp(2.4rem, 7vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+    margin-bottom: 28px;
+  }
+}
+
+/* ─── Desktop (768px+) ────────────────────────────────────────────── */
+/*
+ * <br> tags are hidden here — text flows naturally at large viewport sizes.
+ * max-width is lifted to let the headline breathe across the full layout.
+ * DO NOT re-enable forced breaks on desktop — it breaks the premium feel.
+ */
+@media (min-width: 768px) {
+  .hero-headline {
+    font-size: clamp(2.6rem, 6vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    max-width: none;
+    overflow: visible;
+    margin-bottom: 32px;
+  }
+  /* Forced <br> hidden — desktop layout relies on natural text flow */
+  .hero-headline br {
+    display: none;
+  }
+}
