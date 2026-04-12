@@ -1238,7 +1238,205 @@ button:active,
 /* ── Nav elements ── */
 .nav-badge { font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
 
+
+/* ─── HERO HEADLINE MOBILE OVERFLOW FIX ─── */
+@media (max-width: 600px) {
+  .hero-headline {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  .hero-headline br {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   PRODUCTS SECTION
+   ═══════════════════════════════════════════ */
+.products-section {
+  padding: 96px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.products-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+}
+.product-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.product-tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.product-name {
+  font-family: var(--display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+}
+.product-desc {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.6;
+  flex: 1;
+}
+.product-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.product-bullets li {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-secondary, #8a95a3);
+  letter-spacing: 0.05em;
+  padding-left: 18px;
+  position: relative;
+}
+.product-bullets li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  opacity: 0.7;
+}
+.products-cta {
+  margin-top: 48px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.products-note {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-secondary, #8a95a3);
+  letter-spacing: 0.08em;
+}
+@media (max-width: 768px) {
+  .products-section {
+    padding: 72px 24px;
+  }
+  .products-header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+  .product-card {
+    padding: 28px 24px;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SIGNUP SECTION
+   ═══════════════════════════════════════════ */
+.signup-section {
+  padding: 96px 48px;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.signup-inner {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+}
+.signup-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--green);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.signup-title {
+  font-family: var(--display);
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.signup-title em {
+  font-style: normal;
+  color: var(--green);
+}
+.signup-body {
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.65;
+  margin-bottom: 40px;
+}
+/* MailerLite dark-theme overrides */
+.ml-embedded .ml-form-embedWrapper {
+  background: transparent !important;
+}
+.ml-embedded .ml-form-embedBody {
+  padding: 0 !important;
+}
+.ml-embedded .ml-form-fieldRow input {
+  background: var(--bg-space, #04060D) !important;
+  border: 1px solid var(--border-2, rgba(255,255,255,0.12)) !important;
+  color: var(--white, #fff) !important;
+  border-radius: 0 !important;
+  font-family: var(--mono) !important;
+  font-size: 0.85rem !important;
+}
+.ml-embedded .ml-form-fieldRow input::placeholder {
+  color: var(--text-secondary, #8a95a3) !important;
+  opacity: 1 !important;
+}
+.ml-embedded button[type="submit"] {
+  background: var(--green, #3de89e) !important;
+  color: #060a0a !important;
+  font-family: var(--mono) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  font-weight: 500 !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+.ml-embedded button[type="submit"]:hover {
+  background: #5af0b5 !important;
+}
+.ml-embedded .ml-form-successBody {
+  color: var(--green, #3de89e) !important;
+  font-family: var(--mono) !important;
+}
+@media (max-width: 768px) {
+  .signup-section {
+    padding: 72px 24px;
+  }
+}
+
 </style>
+<script defer src="https://assets.mailerlite.com/js/universal.js"></script>
 </head>
 <body>
 
@@ -1365,7 +1563,7 @@ button:active,
           <li>Education materials for frontline workers</li>
           <li>Ethics frameworks for organisers &amp; councils</li>
         </ul>
-        <a href="#ecosystem" class="div-link">Explore the lab →</a>
+        <a href="vicelab.html" class="div-link">Explore the lab →</a>
       </div>
 
       <!-- Cooked Pilot -->
@@ -1392,7 +1590,7 @@ button:active,
           <li>MAYDAY escalation — not surveillance</li>
           <li>Zero personal data retention</li>
         </ul>
-        <a href="#divisions" class="div-link">See the platform →</a>
+        <a href="cooked-pilot.html" class="div-link">See the platform →</a>
       </div>
 
       <!-- VibeGuard -->
@@ -1413,13 +1611,58 @@ button:active,
           <li>Regulatory reporting &amp; export tools</li>
           <li>Post-event safety reviews</li>
         </ul>
-        <a href="#divisions" class="div-link">See VibeGuard →</a>
+        <a href="vibeguard.html" class="div-link">See VibeGuard →</a>
       </div>
 
     </div>
   </div>
 </div>
 
+
+<!-- ═══════════════════════════════════ PRODUCTS -->
+<div class="products-section" id="products">
+  <div class="products-header reveal">
+    <div>
+      <div class="section-label">Field Intelligence</div>
+      <h2 class="section-title">Not merch.<br><em>Field intelligence.</em></h2>
+    </div>
+    <p class="section-body">
+      Every ViceLab product is built on one principle: precision, density, real-world usability. Limited runs. No restock guarantees. These are working documents — not decoration.
+    </p>
+  </div>
+  <div class="products-grid reveal-stagger">
+
+    <div class="product-card">
+      <div class="product-tag">Limited — First Edition</div>
+      <div class="product-name">Harm-Reduction Prints</div>
+      <p class="product-desc">Hand-numbered, first edition prints designed as both awareness tools and art objects. Built on ViceLab field research. Once the edition closes, it doesn't reopen.</p>
+      <ul class="product-bullets">
+        <li>Hand-numbered — each print is unique</li>
+        <li>First edition, no guaranteed restock</li>
+        <li>Awareness tool and art object</li>
+        <li>Grounded in ViceLab research</li>
+      </ul>
+    </div>
+
+    <div class="product-card">
+      <div class="product-tag">Access</div>
+      <div class="product-name">Field Access Cards</div>
+      <p class="product-desc">Unique access codes that unlock ViceLab's digital resources — field guides, protocol documents, and updates as they're released. Your entry point into the ecosystem.</p>
+      <ul class="product-bullets">
+        <li>Unique access code per card</li>
+        <li>Unlocks digital field resources</li>
+        <li>Ongoing updates included</li>
+        <li>Ecosystem entry point</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="products-cta reveal">
+    <a href="https://vicelab-collective.bigcartel.com/" class="btn-primary" target="_blank" rel="noopener">Shop Now</a>
+    <span class="products-note">5 products live · Limited stock</span>
+  </div>
+</div>
+<div class="divider-line"></div>
 
 <!-- ═══════════════════════════════════ TRUST PILLARS -->
 <section class="trust" id="trust">
@@ -1463,28 +1706,28 @@ button:active,
     </div>
     <div class="audience-paths reveal-stagger">
 
-      <a href="#divisions" class="path-card">
+      <a href="cooked-pilot.html" class="path-card">
         <div class="path-who">For festival-goers</div>
         <div class="path-title">You're going to a festival and you want to look out for yourself and your people.</div>
         <p class="path-body">Cooked Pilot gives you real-time safety information, peer check-in tools, and a direct line to support — without anyone watching over your shoulder.</p>
         <div class="path-arrow">→ Download the app</div>
       </a>
 
-      <a href="#partners" class="path-card">
+      <a href="mailto:hello@thevicelab.com" class="path-card">
         <div class="path-who">For festival organisers</div>
         <div class="path-title">You run events and you want a safety infrastructure that actually works.</div>
         <p class="path-body">Licence Cooked Pilot for your event. Get VibeGuard for real-time ops and compliance documentation. Build something you can stand behind.</p>
         <div class="path-arrow">→ Explore licensing</div>
       </a>
 
-      <a href="#partners" class="path-card">
+      <a href="mailto:hello@thevicelab.com" class="path-card">
         <div class="path-who">For harm reduction orgs</div>
         <div class="path-title">You work in harm reduction and want field-ready tools or research collaboration.</div>
         <p class="path-body">ViceLab's education materials are freely available to partner organisations. We're actively seeking embedded partners for pilot events in Australia and Europe.</p>
         <div class="path-arrow">→ Partner with us</div>
       </a>
 
-      <a href="#partners" class="path-card">
+      <a href="mailto:hello@thevicelab.com" class="path-card">
         <div class="path-who">For sponsors &amp; investors</div>
         <div class="path-title">You see harm reduction infrastructure as a fundable, scalable public good.</div>
         <p class="path-body">We're building across three divisions, targeting AU and EU markets, with an evidence base and established partner relationships. Let's talk about what that looks like.</p>
@@ -1522,6 +1765,20 @@ button:active,
 </div>
 
 
+
+<!-- ═══════════════════════════════════ SIGNUP -->
+<div class="signup-section" id="signup">
+  <div class="signup-inner reveal">
+    <div class="signup-label">Stay in the loop</div>
+    <h2 class="signup-title">Early access.<br><em>Field updates.</em></h2>
+    <p class="signup-body">
+      New products, field intelligence drops, and partner announcements — direct to your inbox. No noise.
+    </p>
+    <div class="ml-embedded" data-form="i3ue1l"></div>
+  </div>
+</div>
+<div class="divider-line"></div>
+
 <!-- ═══════════════════════════════════ PARTNERS CTA -->
 <div class="partners-cta" id="partners">
   <div class="cta-inner">
@@ -1530,31 +1787,31 @@ button:active,
       <p class="cta-body">
         Whether you're organising an event, running a harm reduction program, or looking to fund infrastructure that matters — there's a place for you in this ecosystem.
       </p>
-      <a href="#partners" class="btn-primary">Get in touch</a>
+      <a href="mailto:hello@thevicelab.com" class="btn-primary">Get in touch</a>
     </div>
     <div class="cta-options reveal-stagger">
-      <a href="#divisions" class="cta-option">
+      <a href="mailto:hello@thevicelab.com" class="cta-option">
         <div class="cta-option-left">
           <div class="cta-option-tag">Festival organisers</div>
           <div class="cta-option-label">Licence Cooked Pilot for your event</div>
         </div>
         <div class="cta-option-arrow">→</div>
       </a>
-      <a href="#partners" class="cta-option">
+      <a href="mailto:hello@thevicelab.com" class="cta-option">
         <div class="cta-option-left">
           <div class="cta-option-tag">Harm reduction organisations</div>
           <div class="cta-option-label">Partner with ViceLab on research or deployment</div>
         </div>
         <div class="cta-option-arrow">→</div>
       </a>
-      <a href="#partners" class="cta-option">
+      <a href="mailto:hello@thevicelab.com" class="cta-option">
         <div class="cta-option-left">
           <div class="cta-option-tag">Investors &amp; sponsors</div>
           <div class="cta-option-label">Fund harm reduction infrastructure at scale</div>
         </div>
         <div class="cta-option-arrow">→</div>
       </a>
-      <a href="#ecosystem" class="cta-option">
+      <a href="vicelab.html" class="cta-option">
         <div class="cta-option-left">
           <div class="cta-option-tag">Harm reduction workers</div>
           <div class="cta-option-label">Access free field guides &amp; education materials</div>
@@ -1572,7 +1829,8 @@ button:active,
   <div class="footer-meta">
     ViceLab · Cooked Pilot · VibeGuard<br>
     Harm reduction infrastructure for live events<br>
-    Australia &amp; Europe
+    Australia &amp; Europe<br>
+    <a href="mailto:hello@thevicelab.com" style="color: inherit; text-decoration: none; opacity: 0.7;">hello@thevicelab.com</a>
   </div>
 </footer>
 
