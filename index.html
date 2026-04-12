@@ -234,26 +234,7 @@ nav {
   50%      { opacity: 0.4; transform: scale(0.7); }
 }
 
-.hero-headline {
-  font-family: var(--display);
-  font-size: clamp(2.2rem, 8vw, 5.5rem);
-  font-weight: 800;
-  line-height: 1.07;
-  color: var(--white);
-  letter-spacing: -0.01em;
-  max-width: 22ch;
-  word-spacing: normal;
-  hyphens: none;
-  -webkit-hyphens: none;
-  overflow: visible;
-  margin-bottom: 32px;
-  opacity: 0;
-  animation: fadeUp 0.35s ease 0.1s forwards;
-}
-.hero-headline .accent {
-  font-style: normal;
-  color: var(--green);
-}
+/* .hero-headline styles → components/locked-hero-headline.css */
 
 .hero-sub {
   font-size: 19px;
@@ -904,9 +885,6 @@ footer {
   .hero {
     padding: 100px 24px 80px;
   }
-  .hero-headline {
-    font-size: 42px;
-  }
   .hero-stats {
     display: none;
   }
@@ -1244,19 +1222,7 @@ button:active,
 .nav-badge { font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
 
 
-/* ─── HERO HEADLINE LOCKED STRUCTURE ─── */
-/* BRs are FORCED on mobile — hide on desktop where natural flow takes over */
-@media (min-width: 768px) {
-  .hero-headline br {
-    display: none;
-  }
-  .hero-headline {
-    max-width: none;
-    font-size: clamp(2.6rem, 6vw, 5.5rem);
-    line-height: 1.0;
-    letter-spacing: -0.025em;
-  }
-}
+/* .hero-headline desktop rules → components/locked-hero-headline.css */
 
 /* ═══════════════════════════════════════════
    PRODUCTS SECTION
@@ -1450,7 +1416,7 @@ button:active,
 
 /* ── 1. Kill automatic hyphenation on ALL headings ── */
 h1, h2, h3, h4,
-.hero-headline, .section-title, .cta-title, .signup-title,
+.section-title, .cta-title, .signup-title,
 .div-name, .eco-name, .trust-heading, .path-title,
 .philosophy-anchor, .product-name, .cta-option-label {
   hyphens: none;
@@ -1539,17 +1505,7 @@ h1, h2, h3, h4,
     letter-spacing: 0.14em;
     margin-bottom: 22px;
   }
-  .hero-headline {
-    font-size: clamp(2.2rem, 8vw, 3.2rem);
-    line-height: 1.07;
-    letter-spacing: -0.01em;
-    max-width: 22ch;
-    word-spacing: normal;
-    hyphens: none;
-    -webkit-hyphens: none;
-    overflow: hidden;
-    margin-bottom: 22px;
-  }
+  /* hero-headline mobile → components/locked-hero-headline.css */
   .hero-sub {
     font-size: 15px;
     line-height: 1.6;
@@ -1777,12 +1733,7 @@ h1, h2, h3, h4,
 
 /* ── 4. 431px–768px middle tier ── */
 @media (min-width: 431px) and (max-width: 768px) {
-  .hero-headline {
-    font-size: clamp(2.4rem, 7vw, 4rem);
-    line-height: 1.05;
-    letter-spacing: -0.015em;
-    max-width: 22ch;
-  }
+  /* hero-headline → components/locked-hero-headline.css */
   .section-title {
     font-size: clamp(26px, 5.5vw, 38px);
     line-height: 1.15;
@@ -1804,6 +1755,10 @@ h1, h2, h3, h4,
 
 </style>
 <script defer src="https://assets.mailerlite.com/js/universal.js"></script>
+  <!-- LOCKED HERO HEADLINE COMPONENT — owns all .hero-headline styles.
+       Source: components/locked-hero-headline.css
+       DO NOT add .hero-headline rules anywhere else. -->
+  <link rel="stylesheet" href="components/locked-hero-headline.css">
 </head>
 <body>
 
@@ -1824,6 +1779,12 @@ h1, h2, h3, h4,
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">Harm reduction infrastructure for live music</div>
+    <!-- ╔═══════════════════════════════════════════════════════════╗
+         ║  CANONICAL LOCKED HERO HEADLINE                           ║
+         ║  Styles: components/locked-hero-headline.css              ║
+         ║  DO NOT replace with inline H1 or fluid-wrapping text.    ║
+         ║  DO NOT alter span structure or remove <br> tags.         ║
+         ╚═══════════════════════════════════════════════════════════╝ -->
     <h1 class="hero-headline">
       <span>The people at</span><br>
       <span>your festival</span><br>
