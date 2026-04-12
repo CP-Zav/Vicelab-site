@@ -236,16 +236,21 @@ nav {
 
 .hero-headline {
   font-family: var(--display);
-  font-size: clamp(36px, 9vw, 88px);
+  font-size: clamp(2.2rem, 8vw, 5.5rem);
   font-weight: 800;
-  line-height: 1.0;
+  line-height: 1.07;
   color: var(--white);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
+  max-width: 22ch;
+  word-spacing: normal;
+  hyphens: none;
+  -webkit-hyphens: none;
+  overflow: visible;
   margin-bottom: 32px;
   opacity: 0;
   animation: fadeUp 0.35s ease 0.1s forwards;
 }
-.hero-headline em {
+.hero-headline .accent {
   font-style: normal;
   color: var(--green);
 }
@@ -1239,16 +1244,17 @@ button:active,
 .nav-badge { font-size: 0.75rem !important; letter-spacing: 0.06em !important; }
 
 
-/* ─── HERO HEADLINE MOBILE OVERFLOW FIX ─── */
-@media (max-width: 600px) {
-  .hero-headline {
-    overflow-wrap: normal;
-    word-break: normal;
-    hyphens: none;
-    -webkit-hyphens: none;
-  }
+/* ─── HERO HEADLINE LOCKED STRUCTURE ─── */
+/* BRs are FORCED on mobile — hide on desktop where natural flow takes over */
+@media (min-width: 768px) {
   .hero-headline br {
     display: none;
+  }
+  .hero-headline {
+    max-width: none;
+    font-size: clamp(2.6rem, 6vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
   }
 }
 
@@ -1534,10 +1540,14 @@ h1, h2, h3, h4,
     margin-bottom: 22px;
   }
   .hero-headline {
-    font-size: clamp(30px, 8.5vw, 40px);
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    max-width: 95vw;
+    font-size: clamp(2.2rem, 8vw, 3.2rem);
+    line-height: 1.07;
+    letter-spacing: -0.01em;
+    max-width: 22ch;
+    word-spacing: normal;
+    hyphens: none;
+    -webkit-hyphens: none;
+    overflow: hidden;
     margin-bottom: 22px;
   }
   .hero-sub {
@@ -1768,9 +1778,10 @@ h1, h2, h3, h4,
 /* ── 4. 431px–768px middle tier ── */
 @media (min-width: 431px) and (max-width: 768px) {
   .hero-headline {
-    font-size: clamp(36px, 8vw, 58px);
+    font-size: clamp(2.4rem, 7vw, 4rem);
     line-height: 1.05;
-    letter-spacing: -0.022em;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
   }
   .section-title {
     font-size: clamp(26px, 5.5vw, 38px);
@@ -1814,7 +1825,10 @@ h1, h2, h3, h4,
   <div class="hero-inner">
     <div class="hero-eyebrow">Harm reduction infrastructure for live music</div>
     <h1 class="hero-headline">
-      The people at your<br>festival<br><em>deserve better</em><br>than luck.
+      <span>The people at</span><br>
+      <span>your festival</span><br>
+      <span class="accent">deserve better</span><br>
+      <span>than luck.</span>
     </h1>
     <p class="hero-sub">
       ViceLab builds the research, tools, and peer networks that make festivals safer — without surveillance, without judgment, without pretending drugs don't exist.
