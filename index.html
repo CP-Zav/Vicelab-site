@@ -236,7 +236,7 @@ nav {
 
 .hero-headline {
   font-family: var(--display);
-  font-size: clamp(48px, 7vw, 88px);
+  font-size: clamp(36px, 9vw, 88px);
   font-weight: 800;
   line-height: 1.0;
   color: var(--white);
@@ -1242,9 +1242,10 @@ button:active,
 /* ─── HERO HEADLINE MOBILE OVERFLOW FIX ─── */
 @media (max-width: 600px) {
   .hero-headline {
-    overflow-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    -webkit-hyphens: none;
   }
   .hero-headline br {
     display: none;
@@ -1432,6 +1433,361 @@ button:active,
 @media (max-width: 768px) {
   .signup-section {
     padding: 72px 24px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE TYPOGRAPHY & RESPONSIVENESS REFACTOR — 2026-04
+   Scope: 320px–768px · Mobile-first · Aesthetic preserved
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 1. Kill automatic hyphenation on ALL headings ── */
+h1, h2, h3, h4,
+.hero-headline, .section-title, .cta-title, .signup-title,
+.div-name, .eco-name, .trust-heading, .path-title,
+.philosophy-anchor, .product-name, .cta-option-label {
+  hyphens: none;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+/* ── 2. 768px and below — layout + spacing baseline ── */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  /* Nav: clean two-row layout */
+  nav {
+    padding: 10px 20px;
+    height: auto;
+    gap: 0;
+  }
+  .nav-logo {
+    font-size: 14px;
+  }
+  .nav-links {
+    gap: 16px;
+    padding-top: 10px;
+    margin-top: 6px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .nav-links a {
+    font-size: 0.74rem !important;
+    letter-spacing: 0.06em;
+  }
+  .nav-cta {
+    font-size: 0.74rem !important;
+    padding: 6px 14px;
+  }
+
+  /* Hero sub-text */
+  .hero-sub {
+    font-size: 16px;
+    line-height: 1.62;
+    max-width: 100%;
+    margin-bottom: 40px;
+  }
+
+  /* Tighten section heading line-height */
+  .section-title {
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* ── 3. 430px and below — primary mobile target ── */
+@media (max-width: 430px) {
+  body {
+    font-size: 15px;
+  }
+
+  /* ── Nav ── */
+  nav {
+    padding: 10px 18px;
+  }
+  .nav-links {
+    gap: 12px;
+    padding-top: 8px;
+  }
+  .nav-links a {
+    font-size: 0.71rem !important;
+    letter-spacing: 0.05em;
+  }
+  .nav-cta {
+    font-size: 0.71rem !important;
+    padding: 5px 11px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 88px 18px 56px;
+  }
+  .hero-eyebrow {
+    font-size: 0.70rem;
+    letter-spacing: 0.14em;
+    margin-bottom: 22px;
+  }
+  .hero-headline {
+    font-size: clamp(30px, 8.5vw, 40px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 95vw;
+    margin-bottom: 22px;
+  }
+  .hero-sub {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .hero-actions {
+    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-primary {
+    font-size: 11px;
+    padding: 12px 26px;
+  }
+  .btn-ghost {
+    font-size: 11px;
+    padding: 11px 22px;
+  }
+
+  /* ── Sections ── */
+  section {
+    padding: 52px 18px;
+  }
+  .divisions-wrap,
+  .audience-wrap,
+  .partners-cta,
+  .philosophy {
+    padding: 52px 18px;
+  }
+  .products-section {
+    padding: 52px 18px;
+  }
+  .signup-section {
+    padding: 52px 18px;
+  }
+  footer {
+    padding: 28px 18px;
+  }
+
+  /* ── Section labels & titles ── */
+  .section-label {
+    font-size: 0.70rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(22px, 6.8vw, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    max-width: 92vw;
+    margin-bottom: 14px;
+  }
+  .section-body {
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: 100%;
+  }
+  .cta-title {
+    font-size: clamp(24px, 7vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 92vw;
+    margin-bottom: 18px;
+  }
+  .signup-title {
+    font-size: clamp(22px, 6.5vw, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Ecosystem ── */
+  .ecosystem-layout {
+    gap: 32px;
+    margin-top: 28px;
+  }
+  .ecosystem-text p {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .eco-name {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+  .eco-desc {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .eco-tag {
+    font-size: 0.70rem;
+  }
+  .eco-node {
+    padding: 18px 20px;
+  }
+
+  /* ── Divisions ── */
+  .divisions-header {
+    gap: 18px;
+    margin-bottom: 32px;
+  }
+  .division-card {
+    padding: 22px 18px;
+  }
+  .div-name {
+    font-size: 18px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .div-body {
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .div-bullets li {
+    font-size: 12px;
+  }
+
+  /* ── Trust ── */
+  .trust-card {
+    padding: 24px 18px;
+  }
+  .trust-heading {
+    font-size: 15px;
+    line-height: 1.25;
+  }
+  .trust-body {
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  /* ── Audience paths ── */
+  .audience-paths {
+    margin-top: 40px;
+  }
+  .path-card {
+    padding: 22px 18px;
+  }
+  .path-title {
+    font-size: 15px;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .path-body {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ── Products ── */
+  .products-header {
+    gap: 18px;
+    margin-bottom: 32px;
+  }
+  .product-card {
+    padding: 24px 18px;
+    gap: 14px;
+  }
+  .product-name {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+  .product-desc {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .product-bullets li {
+    font-size: 0.74rem;
+  }
+  .products-cta {
+    margin-top: 36px;
+    gap: 16px;
+  }
+
+  /* ── Signup ── */
+  .signup-inner {
+    text-align: left;
+  }
+  .signup-body {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+  .signup-label {
+    font-size: 0.70rem;
+  }
+
+  /* ── Partners CTA ── */
+  .cta-body {
+    font-size: 14px;
+    line-height: 1.65;
+    margin-bottom: 28px;
+  }
+  .cta-option {
+    padding: 14px 16px;
+  }
+  .cta-option-label {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  .cta-option-tag {
+    font-size: 0.70rem;
+  }
+
+  /* ── Philosophy ── */
+  .philosophy-inner {
+    gap: 28px;
+  }
+  .philosophy-anchor {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+  .philosophy-quote {
+    font-size: 14px;
+    line-height: 1.65;
+    padding-left: 18px;
+  }
+  .philosophy-body-col p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* ── Footer ── */
+  .footer-meta {
+    font-size: 0.70rem;
+    line-height: 1.75;
+  }
+}
+
+/* ── 4. 431px–768px middle tier ── */
+@media (min-width: 431px) and (max-width: 768px) {
+  .hero-headline {
+    font-size: clamp(36px, 8vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+  }
+  .section-title {
+    font-size: clamp(26px, 5.5vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+  .cta-title {
+    font-size: clamp(28px, 5.5vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .hero-sub {
+    font-size: 16px;
+    max-width: 100%;
+  }
+  .section-body {
+    font-size: 15px;
   }
 }
 
