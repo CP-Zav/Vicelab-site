@@ -1753,6 +1753,36 @@ h1, h2, h3, h4,
   }
 }
 
+
+/* ── Logo image sizing ── */
+.nav-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+.footer-logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+  opacity: 0.85;
+}
+.div-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+  margin-bottom: 6px;
+}
+.hero-logo {
+  height: 48px;
+  width: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+@media (max-width: 767px) {
+  .nav-logo img { height: 28px; }
+  .hero-logo { height: 36px; }
+}
+
 </style>
 <script defer src="https://assets.mailerlite.com/js/universal.js"></script>
   <!-- LOCKED HERO HEADLINE COMPONENT — owns all .hero-headline styles.
@@ -1764,7 +1794,7 @@ h1, h2, h3, h4,
 
 <!-- ═══════════════════════════════════ NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">Vice<span>Lab</span></a>
+  <a href="index.html" class="nav-logo"><img src="/logos/vicelab.svg" alt="ViceLab"></a>
   <div class="nav-links">
     <a href="vicelab.html">ViceLab</a>
     <a href="cooked-pilot.html">Cooked Pilot</a>
@@ -1888,7 +1918,7 @@ h1, h2, h3, h4,
             <line x1="22" y1="16" x2="31" y2="16" stroke="#3de89e" stroke-width="1"/>
           </svg>
         </div>
-        <div class="div-tag">ViceLab</div>
+        <img src="/logos/vicelab.svg" alt="ViceLab" class="div-logo">
         <div class="div-name">Research &amp; Instruments</div>
         <p class="div-body">ViceLab produces the evidence base that underpins every product in the ecosystem. Not academic research shelved in a journal — practical instruments, field guides, and education materials designed to be used by workers, not cited by researchers.</p>
         <ul class="div-bullets">
@@ -1915,7 +1945,7 @@ h1, h2, h3, h4,
             <line x1="18" y1="4" x2="18" y2="8" stroke="#5ab0ff" stroke-width="1.5"/>
           </svg>
         </div>
-        <div class="div-tag">Cooked Pilot</div>
+        <img src="/logos/cookedpilot.svg" alt="Cooked Pilot" class="div-logo">
         <div class="div-name">Festival Safety Platform</div>
         <p class="div-body">A peer-to-peer safety app for festival-goers. Not a hotline. Not a government service. Cooked Pilot puts harm reduction in people's pockets — real-time substance alerts, check-in tools, and a Wingmate network that keeps groups accountable to each other.</p>
         <ul class="div-bullets">
@@ -1936,7 +1966,7 @@ h1, h2, h3, h4,
             <circle cx="16" cy="17" r="2.5" fill="#f0a030" opacity="0.8"/>
           </svg>
         </div>
-        <div class="div-tag">VibeGuard</div>
+        <img src="/logos/vibeguard.svg" alt="VibeGuard" class="div-logo">
         <div class="div-name">Compliance &amp; Analytics</div>
         <p class="div-body">Built for the people responsible when things go wrong. VibeGuard gives event organisers a real-time safety operations layer — incident monitoring, regulatory reporting, and documented evidence of duty of care. Safety that's also defensible on paper.</p>
         <ul class="div-bullets">
@@ -2159,7 +2189,7 @@ h1, h2, h3, h4,
 
 <!-- ═══════════════════════════════════ FOOTER -->
 <footer>
-  <div class="footer-logo">Vice<span>Lab</span></div>
+  <div class="footer-logo"><img src="/logos/vicelab.svg" alt="ViceLab"></div>
   <div class="footer-meta">
     ViceLab · Cooked Pilot · VibeGuard<br>
     Harm reduction infrastructure for live events<br>
