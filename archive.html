@@ -227,6 +227,36 @@ footer {
   footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
   .footer-links { flex-wrap: wrap; gap: 16px; }
 }
+
+/* ── Logo image sizing ── */
+.nav-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+.footer-logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+  opacity: 0.85;
+}
+.div-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+  margin-bottom: 6px;
+}
+.hero-logo {
+  height: 48px;
+  width: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+@media (max-width: 767px) {
+  .nav-logo img { height: 28px; }
+  .hero-logo { height: 36px; }
+}
+
 </style>
 </head>
 
@@ -240,7 +270,7 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">Vice<em>Lab</em></a>
+  <a href="index.html" class="nav-logo"><img src="/logos/vicelab.svg" alt="ViceLab"></a>
   <div class="nav-links">
     <a href="dashboard.html">Dashboard</a>
     <a href="signal.html">Signal</a>
