@@ -1092,13 +1092,43 @@ footer {
   .hero * { animation: none !important; }
 }
 
+
+/* ── Logo image sizing ── */
+.nav-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+.footer-logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+  opacity: 0.85;
+}
+.div-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+  margin-bottom: 6px;
+}
+.hero-logo {
+  height: 48px;
+  width: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+@media (max-width: 767px) {
+  .nav-logo img { height: 28px; }
+  .hero-logo { height: 36px; }
+}
+
 </style>
 </head>
 <body>
 
 <!-- ═══════════════════════════════════ NAV -->
 <nav>
-<a href="index.html" class="nav-logo">Vice<span>Lab</span></a>
+<a href="index.html" class="nav-logo"><img src="/logos/vicelab.svg" alt="ViceLab"></a>
 
 <div class="nav-links">
 <a href="vicelab.html" class="nav-active">ViceLab</a>
@@ -1115,7 +1145,8 @@ footer {
 <div class="hero">
   <div class="hero-inner">
 
-    <div class="hero-eyebrow">ViceLab — Research &amp; Intelligence Layer</div>
+    <img src="/logos/vicelab.svg" alt="ViceLab" class="hero-logo">
+<div class="hero-eyebrow">ViceLab</div>
 
     <h1 class="hero-headline">
       The infrastructure<br>
@@ -1656,7 +1687,7 @@ footer {
 
 <!-- ═══════════════════════════════════ FOOTER -->
 <footer>
-  <div class="footer-logo">Vice<span>Lab</span></div>
+  <div class="footer-logo"><img src="/logos/vicelab.svg" alt="ViceLab"></div>
   <div class="footer-meta">
     ViceLab · Cooked Pilot · VibeGuard<br>
     Harm reduction infrastructure for live events<br>
