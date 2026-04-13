@@ -945,6 +945,36 @@ footer {
 .info-block-label { color: rgba(255,184,48,0.78) !important; }
 .info-block-label::before { opacity: 0.65 !important; }
 
+
+/* ── Logo image sizing ── */
+.nav-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+.footer-logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+  opacity: 0.85;
+}
+.div-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+  margin-bottom: 6px;
+}
+.hero-logo {
+  height: 48px;
+  width: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+@media (max-width: 767px) {
+  .nav-logo img { height: 28px; }
+  .hero-logo { height: 36px; }
+}
+
 </style>
 </head>
 <body>
@@ -961,7 +991,7 @@ footer {
 
 <!-- ══════════════ NAV ══════════════ -->
 <nav>
-  <a href="index.html" class="nav-logo">Vice<span>Lab</span></a>
+  <a href="index.html" class="nav-logo"><img src="/logos/vicelab.svg" alt="ViceLab"></a>
   <div class="nav-links">
     <a href="vicelab.html">ViceLab</a>
     <a href="cooked-pilot.html">Cooked Pilot</a>
