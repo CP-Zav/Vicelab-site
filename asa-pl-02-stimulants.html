@@ -839,6 +839,10 @@ footer {
   .plate-nav-inner { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 20px; }
 }
 
+
+.nav-logo img { height: 36px; width: auto; display: block; }
+@media (max-width: 767px) { .nav-logo img { height: 28px; } }
+
 </style>
 </head>
 <body>
@@ -853,7 +857,7 @@ footer {
 
 <!-- ══════════ NAV ══════════ -->
 <nav>
-  <a href="index.html" class="nav-logo">Vice<em>Lab</em></a>
+  <a href="index.html" class="nav-logo"><img src="/logos/vicelab.svg" alt="ViceLab"></a>
   <div class="nav-links">
     <a href="dashboard.html">Dashboard</a>
     <a href="signal.html">Signal</a>
