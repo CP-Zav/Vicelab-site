@@ -1,0 +1,378 @@
+{
+  "_comment": "Example payloads for ViceLab Lead Automation System. Replace placeholder values before use.",
+
+  "zap_a_new_lead": {
+    "_description": "Zap A — New lead created in Airtable. Input from trigger, outputs from each step.",
+    "trigger_output": {
+      "id": "recXXXXXXXXXXXXXX",
+      "lead_id": 42,
+      "brand_name": "Sounds By Max",
+      "instagram_handle": "@soundsbymax",
+      "business_type": "Creator/Influencer",
+      "city": "Miami",
+      "follower_count": 28000,
+      "engagement_level": "3–6%",
+      "branding_issue": "Moderate",
+      "lead_source": "Instagram Outreach",
+      "status": "New",
+      "priority_score": null,
+      "last_contact_date": null,
+      "next_followup_date": null,
+      "owner": "VP",
+      "notes": "Found via #miami DJ hashtag. Profile has inconsistent fonts and 3 different logo versions.",
+      "zep_user_id": null,
+      "created_at": "2025-04-16T09:15:00Z",
+      "updated_at": "2025-04-16T09:15:00Z"
+    },
+    "step2_scoring_output": {
+      "priority_score": 71,
+      "priority_tier": "Medium",
+      "score_breakdown": "followers: 12 | engagement: 14 | branding: 14 | type: 13 | source: 3 | interactions: 0 | recency: 0"
+    },
+    "step3_formatter_output": {
+      "clean_handle": "soundsbymax"
+    },
+    "step4_airtable_writeback": {
+      "record_id": "recXXXXXXXXXXXXXX",
+      "fields_updated": {
+        "priority_score": 71,
+        "zep_user_id": "vl-lead-42"
+      }
+    },
+    "step5_slack_blocks": [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": "New Lead — Sounds By Max"
+        }
+      },
+      {
+        "type": "section",
+        "fields": [
+          { "type": "mrkdwn", "text": "*Instagram:*\n@soundsbymax" },
+          { "type": "mrkdwn", "text": "*Type:*\nCreator/Influencer" },
+          { "type": "mrkdwn", "text": "*City:*\nMiami" },
+          { "type": "mrkdwn", "text": "*Followers:*\n28,000" },
+          { "type": "mrkdwn", "text": "*Engagement:*\n3–6%" },
+          { "type": "mrkdwn", "text": "*Source:*\nInstagram Outreach" }
+        ]
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*Priority Score:* `71/100` (Medium)\n*Branding Issue:* Moderate"
+        }
+      },
+      { "type": "divider" },
+      {
+        "type": "context",
+        "elements": [
+          { "type": "mrkdwn", "text": "Lead ID: VL-42 · Source: Instagram Outreach · Follow-up task created for +2 days" }
+        ]
+      }
+    ],
+    "step7_task_created": {
+      "table": "Tasks",
+      "fields": {
+        "lead_id": ["recXXXXXXXXXXXXXX"],
+        "task_type": "Follow-up DM",
+        "due_date": "2025-04-18",
+        "status": "Open",
+        "task_notes": "Initial follow-up for new lead: Sounds By Max",
+        "created_by": "Zap A"
+      }
+    },
+    "step8_zep_create_user_request": {
+      "url": "https://api.getzep.com/api/v2/users",
+      "method": "POST",
+      "headers": {
+        "Authorization": "Api-Key z_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "user_id": "vl-lead-42",
+        "email": "soundsbymax@instagram.lead",
+        "first_name": "Sounds By Max",
+        "metadata": {
+          "business_type": "Creator/Influencer",
+          "city": "Miami",
+          "lead_source": "Instagram Outreach",
+          "airtable_id": "recXXXXXXXXXXXXXX"
+        }
+      }
+    },
+    "step8_zep_response": {
+      "user_id": "vl-lead-42",
+      "email": "soundsbymax@instagram.lead",
+      "first_name": "Sounds By Max",
+      "created_at": "2025-04-16T09:15:30Z",
+      "updated_at": "2025-04-16T09:15:30Z"
+    }
+  },
+
+  "zap_b_status_updated": {
+    "_description": "Zap B — Lead status changes to Qualified. High-priority Slack alert + task created.",
+    "trigger_output": {
+      "id": "recXXXXXXXXXXXXXX",
+      "brand_name": "Sounds By Max",
+      "instagram_handle": "soundsbymax",
+      "status": "Qualified",
+      "priority_score": 78,
+      "priority_tier": "High",
+      "city": "Miami",
+      "business_type": "Creator/Influencer"
+    },
+    "slack_high_priority_blocks": [
+      {
+        "type": "section",
+        "text": { "type": "mrkdwn", "text": ":fire: *HIGH PRIORITY LEAD — ACTION REQUIRED*" }
+      },
+      {
+        "type": "section",
+        "fields": [
+          { "type": "mrkdwn", "text": "*Lead:*\nSounds By Max" },
+          { "type": "mrkdwn", "text": "*Status:*\nQualified :white_check_mark:" },
+          { "type": "mrkdwn", "text": "*Instagram:*\n@soundsbymax" },
+          { "type": "mrkdwn", "text": "*Priority Score:*\n`78/100`" }
+        ]
+      },
+      {
+        "type": "section",
+        "text": { "type": "mrkdwn", "text": "*Next step:* Send proposal. Task created — due tomorrow." }
+      }
+    ],
+    "task_created": {
+      "task_type": "Send Proposal",
+      "due_date": "2025-04-17",
+      "status": "Open",
+      "created_by": "Zap B"
+    }
+  },
+
+  "zap_c_followup_reminder": {
+    "_description": "Zap C — Daily reminder for follow-up due today.",
+    "lead_due_today": {
+      "brand_name": "NightVibe Events",
+      "instagram_handle": "nightvibe.events",
+      "status": "Contacted",
+      "next_followup_date": "2025-04-16",
+      "last_contact_date": "2025-04-13",
+      "priority_score": 65,
+      "priority_tier": "Medium",
+      "notes": "Interested in event branding package. Wants to see portfolio first.",
+      "lead_id": 31
+    },
+    "slack_reminder_blocks": [
+      {
+        "type": "section",
+        "text": { "type": "mrkdwn", "text": ":alarm_clock: *Follow-up Due Today*" }
+      },
+      {
+        "type": "section",
+        "fields": [
+          { "type": "mrkdwn", "text": "*Lead:*\nNightVibe Events" },
+          { "type": "mrkdwn", "text": "*Instagram:*\n@nightvibe.events" },
+          { "type": "mrkdwn", "text": "*Status:*\nContacted" },
+          { "type": "mrkdwn", "text": "*Priority:*\nMedium (65)" }
+        ]
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*Last contact:* 2025-04-13\n*Notes:* Interested in event branding package. Wants to see portfolio first."
+        }
+      }
+    ],
+    "overdue_example": {
+      "_description": "Same lead, but 3 days past due.",
+      "days_overdue": 3,
+      "slack_overdue_blocks": [
+        {
+          "type": "section",
+          "text": { "type": "mrkdwn", "text": ":rotating_light: *Overdue Follow-up — 3 Day(s) Late*" }
+        },
+        {
+          "type": "section",
+          "fields": [
+            { "type": "mrkdwn", "text": "*Lead:*\nNightVibe Events" },
+            { "type": "mrkdwn", "text": "*Instagram:*\n@nightvibe.events" },
+            { "type": "mrkdwn", "text": "*Status:*\nContacted" },
+            { "type": "mrkdwn", "text": "*Was due:*\n2025-04-13" }
+          ]
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "*Action needed:* Contact NightVibe Events today or mark as On Hold / Closed Lost."
+          }
+        }
+      ]
+    }
+  },
+
+  "zap_d_interaction_logged": {
+    "_description": "Zap D — New interaction record added. Pushes memory to Zep, updates lead.",
+    "trigger_output": {
+      "interaction_id": 17,
+      "lead_id": ["recXXXXXXXXXXXXXX"],
+      "brand_name": "Sounds By Max",
+      "channel": "Instagram DM",
+      "direction": "Outbound",
+      "message_summary": "Sent follow-up DM referencing their inconsistent logo across three posts. Offered a free brand audit call. Included two before/after examples from similar creators.",
+      "raw_message": "Hey Max! Noticed your branding varies a bit across your recent posts — totally common for growing creators. We do quick brand audits for free, would love to hop on a 15min call and show you what a consistent visual identity could do for your engagement. Here are two examples from creators we've worked with...",
+      "outcome": "No Reply",
+      "objection_notes": null,
+      "timestamp": "2025-04-16T14:30:00Z"
+    },
+    "zep_memory_request": {
+      "url": "https://api.getzep.com/api/v2/users/vl-lead-42/memory",
+      "method": "POST",
+      "body": {
+        "messages": [
+          {
+            "role": "assistant",
+            "role_type": "assistant",
+            "content": "Sent follow-up DM referencing their inconsistent logo across three posts. Offered a free brand audit call. Included two before/after examples from similar creators.",
+            "metadata": {
+              "channel": "Instagram DM",
+              "outcome": "No Reply",
+              "timestamp": "2025-04-16T14:30:00Z"
+            }
+          }
+        ]
+      }
+    },
+    "airtable_lead_update": {
+      "record_id": "recXXXXXXXXXXXXXX",
+      "fields_updated": {
+        "last_contact_date": "2025-04-16",
+        "priority_score": 73
+      }
+    }
+  },
+
+  "zep_add_fact": {
+    "_description": "Zep fact added when an objection is raised by a lead.",
+    "url": "https://api.getzep.com/api/v2/users/vl-lead-42/facts",
+    "method": "POST",
+    "body": {
+      "content": "Objection on 2025-04-18: Budget is tight for a full rebrand right now. Open to a smaller logo refresh or identity audit only. Revisit in 2 months."
+    },
+    "expected_response": {
+      "uuid": "fact_XXXXXXXXXXXXXXXX",
+      "content": "Objection on 2025-04-18: Budget is tight for a full rebrand right now. Open to a smaller logo refresh or identity audit only. Revisit in 2 months.",
+      "created_at": "2025-04-18T11:00:00Z"
+    }
+  },
+
+  "zep_get_memory": {
+    "_description": "GET memory for a lead before drafting outreach.",
+    "url": "https://api.getzep.com/api/v2/users/vl-lead-42/memory",
+    "method": "GET",
+    "headers": {
+      "Authorization": "Api-Key z_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    },
+    "example_response": {
+      "summary": "ViceLab has reached out twice to Sounds By Max, a Miami-based DJ and content creator with 28K followers. The first DM introduced ViceLab's services. The second follow-up specifically addressed branding inconsistencies in their posts and offered a free audit call. No replies received yet.",
+      "messages": [
+        {
+          "role": "assistant",
+          "content": "Sent intro DM introducing ViceLab branding services. Highlighted their inconsistent color palette.",
+          "metadata": { "channel": "Instagram DM", "outcome": "No Reply" }
+        },
+        {
+          "role": "assistant",
+          "content": "Sent follow-up DM referencing inconsistent logo across three posts. Offered free brand audit call.",
+          "metadata": { "channel": "Instagram DM", "outcome": "No Reply" }
+        }
+      ],
+      "facts": [
+        {
+          "content": "Objection on 2025-04-18: Budget tight for full rebrand. Open to smaller logo refresh. Revisit in 2 months."
+        }
+      ]
+    }
+  },
+
+  "lead_won_notification": {
+    "_description": "Slack message when lead is marked Closed Won.",
+    "blocks": [
+      {
+        "type": "section",
+        "text": { "type": "mrkdwn", "text": ":trophy: *Lead Won — Sounds By Max*" }
+      },
+      {
+        "type": "section",
+        "fields": [
+          { "type": "mrkdwn", "text": "*Instagram:*\n@soundsbymax" },
+          { "type": "mrkdwn", "text": "*Type:*\nCreator/Influencer" },
+          { "type": "mrkdwn", "text": "*City:*\nMiami" },
+          { "type": "mrkdwn", "text": "*Final Score:*\n78/100" }
+        ]
+      },
+      {
+        "type": "context",
+        "elements": [
+          { "type": "mrkdwn", "text": "All open tasks cancelled · VL-42 · Source: Instagram Outreach" }
+        ]
+      }
+    ]
+  },
+
+  "lead_lost_notification": {
+    "_description": "Slack message when lead is marked Closed Lost.",
+    "blocks": [
+      {
+        "type": "section",
+        "text": { "type": "mrkdwn", "text": ":x: *Lead Lost — NightVibe Events*" }
+      },
+      {
+        "type": "section",
+        "fields": [
+          { "type": "mrkdwn", "text": "*Instagram:*\n@nightvibe.events" },
+          { "type": "mrkdwn", "text": "*Type:*\nEvent Brand" },
+          { "type": "mrkdwn", "text": "*Notes:*\nWent with a cheaper freelancer. Revisit in Q3." },
+          { "type": "mrkdwn", "text": "*Score at close:*\n65/100" }
+        ]
+      },
+      {
+        "type": "context",
+        "elements": [
+          { "type": "mrkdwn", "text": "Tasks cancelled · VL-31 · Review notes for future targeting" }
+        ]
+      }
+    ]
+  },
+
+  "scoring_example": {
+    "_description": "Example scoring run for a lead.",
+    "input": {
+      "follower_count": 28000,
+      "engagement_level": "3–6%",
+      "branding_issue": "Moderate",
+      "business_type": "Creator/Influencer",
+      "lead_source": "Instagram Outreach",
+      "interaction_count": 2,
+      "last_contact_date": "2025-04-13"
+    },
+    "output": {
+      "priority_score": 73,
+      "priority_tier": "Medium",
+      "score_breakdown": "followers: 12 | engagement: 14 | branding: 14 | type: 13 | source: 3 | interactions: 7 | recency: 2"
+    },
+    "dimension_breakdown": {
+      "follower_count": { "value": 28000, "bracket": "20k–50k", "points": 12 },
+      "engagement_level": { "value": "3–6%", "points": 14 },
+      "branding_issue": { "value": "Moderate", "points": 14 },
+      "business_type": { "value": "Creator/Influencer", "points": 13 },
+      "lead_source": { "value": "Instagram Outreach", "points": 3 },
+      "interaction_count": { "value": 2, "bracket": "1–2 interactions", "points": 7 },
+      "recency": { "value": "3 days since contact", "points": 2 },
+      "total": 73
+    }
+  }
+}
