@@ -1,3 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" width="1024" height="512">
-  <image href="vicelab.png" width="1024" height="512" preserveAspectRatio="xMidYMid meet"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none"><defs><linearGradient id="vl" x1="32" y1="170" x2="224" y2="82" gradientUnits="userSpaceOnUse"><stop stop-color="#37E6FF"/><stop offset=".48" stop-color="#7C5CFF"/><stop offset="1" stop-color="#FF3EDB"/></linearGradient></defs><g stroke="url(#vl)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><path d="M31 131h32l16-45 31 103 35-122 27 82 15-34h38"/><path d="M33 180h190" opacity=".18"/><path d="M33 76h190" opacity=".16"/><circle cx="128" cy="128" r="92" opacity=".22" stroke-width="4"/></g></svg>
